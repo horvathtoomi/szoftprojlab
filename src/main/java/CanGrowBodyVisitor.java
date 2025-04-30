@@ -1,0 +1,47 @@
+package main.java;
+
+/**
+ * Visitor implementáció, amely meghatározza, hogy egy adott Tecton típuson 
+ * lehet-e gombatest növesztését kezdeményezni.
+ * A döntést a 'canPerformAction' logikai érték reprezentálja.
+ */
+public class CanGrowBodyVisitor implements TectonVisitor<Void> {
+
+	private boolean canPerformAction = true;
+	
+	/**
+     * Eredmény lekérdezése: az utolsó meglátogatott Tecton típus alapján
+     * visszaadja, hogy azon lehet-e testet növeszteni.
+     */
+    public boolean canPerformAction() { return canPerformAction; }
+
+    @Override
+    public Void visit(BigTecton big) {
+        canPerformAction = !big.hasBodyGrown();
+		return null;
+    }
+    
+    @Override
+    public Void visit(SmallTecton small) {
+        canPerformAction = !small.hasBodyGrown();
+		return null;
+    }
+    
+    @Override
+    public Void visit(ToxicTecton toxic) {
+        canPerformAction = !toxic.hasBodyGrown();
+		return null;
+    }
+    
+    @Override
+    public Void visit(HealingTecton healing) {
+        canPerformAction = !healing.hasBodyGrown();
+		return null;
+    }
+    
+    @Override
+    public Void visit(CoarseTecton coarse) {
+        canPerformAction = false;  // Coarse sose engedi
+		return null;
+    }
+}
