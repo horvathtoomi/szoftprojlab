@@ -1,4 +1,4 @@
 
 public interface InsectDrawer {
-    public void draw(Graphics g, Insect i, int x, int y);
+    public void draw(Graphics2D g2, Insect i, int x, int y);
 }

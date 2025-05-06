@@ -8,7 +8,9 @@ public class DrawManager {
     private DefaultMushroomStringDrawer mushroomStringDrawer;
     private DefaultInsectDrawer insectDrawer;
 
-    public void setDrawers(DrawingFactory factory){}
+    public void setDrawers(DrawingFactory factory){
+        
+    }
 
     public void drawTecton(Graphics g, Tecton t, int x, int y){}
 

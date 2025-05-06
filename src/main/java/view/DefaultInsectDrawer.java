@@ -1,10 +1,18 @@
 
-public class DefaultInsectDrawer implements InsectDrawer {
+public class DefaultInsectDrawer extends UtilityTool implements InsectDrawer {
 
     private int x;
     private int y;
+    private final int width = 20, height = 20;
+    private BufferedImage image;
+
+    DefaultInsectDrawer(){
+        image = load("insect");
+    }
 
     @Override
-    public void draw(Graphics g, Insect insect, int x, int y){}
+    public void draw(Graphics2D g2, Insect insect, int x, int y) {
+        g2.drawImage(image, x, y, width, height, null);
+    }
 
 }

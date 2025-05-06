@@ -1,4 +1,4 @@
 
 public interface MushroomStringDrawer {
-    public void draw(Graphics g, MushroomString ms, int x, int y);
+    public void draw(Graphics2D g2, MushroomString ms, int x1, int y1, int x2, int y2);
 }
