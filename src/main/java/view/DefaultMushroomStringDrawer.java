@@ -1,3 +1,8 @@
+package main.java.view;
+
+import java.awt.*;
+import main.java.MushroomString;
+
 public class DefaultMushroomStringDrawer implements MushroomStringDrawer {
     
     private int x1, y1, x2, y2;

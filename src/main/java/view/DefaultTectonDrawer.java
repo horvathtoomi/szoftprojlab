@@ -1,3 +1,7 @@
+package main.java.view;
+
+import java.awt.*;
+import main.java.Tecton;
 
 public class DefaultTectonDrawer implements TectonDrawer {
 

@@ -1,3 +1,4 @@
+package main.java.view;
 
 public interface DrawingFactory {
     public TectonDrawer createTectonDrawer();

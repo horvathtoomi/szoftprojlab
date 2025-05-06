@@ -1,3 +1,8 @@
+package main.java.view;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import main.java.Insect;
 
 public class DefaultInsectDrawer extends UtilityTool implements InsectDrawer {
 

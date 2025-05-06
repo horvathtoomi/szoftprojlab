@@ -1,3 +1,9 @@
+package main.java.view;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import main.java.Spore;
+
 
 public class DefaultSporeDrawer extends UtilityTool implements SporeDrawer {
 
