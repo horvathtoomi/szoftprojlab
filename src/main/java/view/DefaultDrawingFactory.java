@@ -3,28 +3,28 @@ package main.java.view;
 public class DefaultDrawingFactory implements DrawingFactory {
 
     @Override
-    public TectonDrawer createTectonDrawer(){
-        return new TectonDrawer();
+    public DefaultTectonDrawer createTectonDrawer(){
+        return new DefaultTectonDrawer();
     }
 
     @Override
-    public SporeDrawer createSporeDrawer(){
-
+    public DefaultSporeDrawer createSporeDrawer(){
+        return new DefaultSporeDrawer();
     }
 
     @Override
-    public MushroomBodyDrawer createMushroomBodyDrawer(){
-
+    public DefaultMushroomBodyDrawer createMushroomBodyDrawer(){
+        return new DefaultMushroomBodyDrawer();
     }
 
     @Override
-    public MushroomStringDrawer createMushroomStringDrawer(){
-
+    public DefaultMushroomStringDrawer createMushroomStringDrawer(){
+        return new DefaultMushroomStringDrawer();
     }
 
     @Override
-    public InsectDrawer createInsectDrawer(){
-
+    public DefaultInsectDrawer createInsectDrawer(){
+        return new DefaultInsectDrawer();
     }
 
 }

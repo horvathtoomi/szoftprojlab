@@ -1,9 +1,9 @@
 package main.java.view;
 
 public interface DrawingFactory {
-    public TectonDrawer createTectonDrawer();
-    public SporeDrawer createSporeDrawer();
-    public MushroomBodyDrawer createMushroomBodyDrawer();
-    public MushroomStringDrawer createMushroomStringDrawer();
-    public InsectDrawer createInsectDrawer();
+    public DefaultTectonDrawer createTectonDrawer();
+    public DefaultSporeDrawer createSporeDrawer();
+    public DefaultMushroomBodyDrawer createMushroomBodyDrawer();
+    public DefaultMushroomStringDrawer createMushroomStringDrawer();
+    public DefaultInsectDrawer createInsectDrawer();
 }

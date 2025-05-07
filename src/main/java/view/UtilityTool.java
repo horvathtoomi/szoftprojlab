@@ -10,7 +10,7 @@ public class UtilityTool {
     public BufferedImage load(String path){
         BufferedImage bufim = null;
         try{
-            bufim = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path + ".png")));
+            bufim = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)));
         } catch(IOException e) {
             System.out.println("[UTILITYTOOL] ERROR " + e.getMessage());
         }
