@@ -5,6 +5,8 @@ import java.awt.*;
 import main.java.*;
 
 public class DrawManager {
+	
+	private Planet planet;
 
     private DefaultTectonDrawer tectonDrawer;
     private DefaultSporeDrawer sporeDrawer;
@@ -24,16 +26,16 @@ public class DrawManager {
         this.mushroomBodyDrawer = factory.createMushroomBodyDrawer();
     }
 
-    public void drawTecton(Graphics2D g, Tecton t, int x, int y){
-        tectonDrawer.draw(g, t, x, y);
+    public void drawTecton(Graphics2D g, Tecton t){
+        tectonDrawer.draw(g, t);
     }
 
     public void drawSpore(Graphics2D g, Spore spore, int x, int y){
         sporeDrawer.draw(g, spore, x, y);
     }
 
-    public void drawMushroomBody(Graphics2D g, MushroomBody mushroomBody, int x, int y){
-        mushroomBodyDrawer.draw(g, mushroomBody, x, y);
+    public void drawMushroomBody(Graphics2D g, MushroomBody mushroomBody){
+        mushroomBodyDrawer.draw(g, mushroomBody);
     }
 
     public void drawMushroomString(Graphics2D g, MushroomString mushroomString, int x1, int x2, int y1, int y2){
@@ -44,6 +46,15 @@ public class DrawManager {
         insectDrawer.draw(g, insect, x, y);
     }
 
-    public void drawPlanet(Graphics2D g, Planet p){}
+    public void drawPlanet(Graphics2D g, Planet p) {
+    	for(Tecton t : p.getTectons()) {
+    		drawTecton(g, t);
+    	}
+    	
+    	for(MushroomBody b : p.getMushbodies()) {
+    		System.out.println(b.getName());
+    		drawMushroomBody(g, b);
+    	}
+    }
 
 }

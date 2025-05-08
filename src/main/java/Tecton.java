@@ -12,6 +12,7 @@ public abstract class Tecton extends Nameable implements Updatable {
     private ArrayList<Tecton> neighbours;
     private final int maxStrings;
     private boolean bodyGrown = false;
+    private GeometryTecton geometry;
 
     /**
      * Konstruktor: létrehoz egy új Tecton példányt megadott névvel és maximális fonalszámmal.
@@ -34,6 +35,14 @@ public abstract class Tecton extends Nameable implements Updatable {
         this.neighbours = neighbours;
     }
 
+    public GeometryTecton getGeometry() {
+        return this.geometry;
+    }
+
+    public void setGeometry(GeometryTecton geometry) {
+        this.geometry = geometry;
+    }
+    
     public void addNeighbour(Tecton tecton) {
         this.neighbours.add(tecton);
     }

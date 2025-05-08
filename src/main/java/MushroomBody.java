@@ -15,6 +15,7 @@ public class MushroomBody extends Nameable implements Updatable {
 	private int state;
 	boolean dead;
 	boolean testing;
+	Geometry geometry;
 	
 	private static int counter = 1;
 	public static synchronized String nextBodyName(String base) {
@@ -60,6 +61,14 @@ public class MushroomBody extends Nameable implements Updatable {
 
 		public boolean canSpreadSpores() {
 			return availableSpores;
+		}
+		
+		public Geometry getGeometry() {
+			return geometry;
+		}
+		
+		public void setGeometry(Geometry geometry) {
+			this.geometry = geometry;
 		}
 	
 	/**

@@ -8,9 +8,8 @@ public class Main {
 	static MainMenu menu;
 
 	public static void main(String[] args) {
-
 		frame = new JFrame();
-		menu = new MainMenu();
+		menu = new MainMenu(frame);
 		frame.add(menu);
 		frame.setVisible(true);
 		frame.setSize(1024, 1024);

@@ -29,6 +29,35 @@ public class GameController {
 
     //Getterek, Setterek
     public Planet getPlanet(){
+    	Planet planet = new Planet();
+    	
+    	BigTecton t1 = new BigTecton("T1", 3);
+    	t1.setGeometry(new GeometryTecton(50, 50, 90));
+
+    	SmallTecton t2 = new SmallTecton("T2", 3);
+    	t2.setGeometry(new GeometryTecton(300, 400, 35));
+    	
+    	HealingTecton t3 = new HealingTecton("T3", 3);
+    	t3.setGeometry(new GeometryTecton(250, 250, 60));
+    	
+    	CoarseTecton t4 = new CoarseTecton("T4", 3);
+    	t4.setGeometry(new GeometryTecton(400, 400, 65));
+    	
+    	ToxicTecton t5 = new ToxicTecton("T5", 3);
+    	t5.setGeometry(new GeometryTecton(600, 600, 70));
+    	
+    	Shroomer s = new Shroomer("s", false);
+    	Mushroom m = new Mushroom("m", false);
+    	MushroomBody mb0 = new MushroomBody(t1, m, 0, "mb0", false);
+    	MushroomBody mb1 = new MushroomBody(t4, m, 1, "mb1", false);
+    	MushroomBody mb2 = new MushroomBody(t3, m, 2, "mb2", false);
+    	
+    	planet.addTecton(t1);
+    	planet.addTecton(t2);
+    	planet.addTecton(t3);
+    	planet.addTecton(t4);
+    	planet.addTecton(t5);
+    	
     	return planet;
     }
     

@@ -10,11 +10,15 @@ public class MainMenu extends JPanel {
 	private final int BUTTON_WIDTH = 200;
 	private final int BUTTON_HEIGHT = 50;
 
-	public MainMenu() {
+	private JFrame frame;
+	
+	public MainMenu(JFrame frame) {
+		this.frame = frame;
+		
 		// Háttérkép betöltése
 		ImageIcon backgroundIcon = new ImageIcon(getClass().getResource("/menu_bg.png"));
 		JLabel backgroundLabel = new JLabel(backgroundIcon);
-		backgroundLabel.setLayout(new GridBagLayout()); // A JLabel-re tesszük a gombokat
+		backgroundLabel.setLayout(new GridBagLayout());
 		this.setLayout(new BorderLayout());
 		this.add(backgroundLabel, BorderLayout.CENTER);
 
@@ -47,18 +51,43 @@ public class MainMenu extends JPanel {
 		button.setFont(font);
 		button.setFocusable(false);
 		button.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
-		button.setOpaque(false);               // átlátszó háttér
-		button.setContentAreaFilled(false);    // ne fedje le a háttérképet
-		button.setBorderPainted(true);         // keret maradjon meg (vagy false ha nem kell)
+		button.setContentAreaFilled(true);
+		button.setBorderPainted(true);
+		button.setOpaque(true);
+		button.setForeground(Color.WHITE);
+
+		Color baseColor = new Color(30, 30, 30);
+		Color hoverColor = new Color(60, 60, 60);
+
+		button.setBackground(baseColor);
+
+		button.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseEntered(java.awt.event.MouseEvent evt) {
+				button.setBackground(hoverColor);
+			}
+
+			public void mouseExited(java.awt.event.MouseEvent evt) {
+				button.setBackground(baseColor);
+			}
+		});
+
 		button.addActionListener(e -> {
-			if (button.getText().equals("NEW GAME")) startGame();
-			else if (button.getText().equals("LOAD GAME")) loadGame();
-			else if (button.getText().equals("EXIT")) exit();
+			switch (button.getText()) {
+				case "NEW GAME" -> startGame();
+				case "LOAD GAME" -> loadGame();
+				case "EXIT" -> exit();
+			}
 		});
 	}
 
 	private void startGame() {
-		// játék indítása
+		GamePanel gamePanel = new GamePanel();
+		frame.getContentPane().removeAll();
+		frame.setJMenuBar(new GameMenu());
+		frame.add(gamePanel);
+		frame.revalidate();
+		frame.repaint();
+		gamePanel.requestFocusInWindow();
 	}
 
 	private void loadGame() {

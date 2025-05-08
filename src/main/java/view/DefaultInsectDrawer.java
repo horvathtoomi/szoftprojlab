@@ -12,7 +12,7 @@ public class DefaultInsectDrawer extends UtilityTool implements InsectDrawer {
     private BufferedImage image;
 
     DefaultInsectDrawer(){
-        image = load("C:/Users/horvath_toomi/Music/EGYETEM/SZOFTPROJ/SzoftProjLab---csapatnev/src/circle.jpg");
+        image = load("/insect_icon.png");
     }
 
     @Override

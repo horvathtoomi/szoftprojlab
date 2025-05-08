@@ -12,13 +12,13 @@ public class DefaultMushroomBodyDrawer extends UtilityTool implements MushroomBo
     private BufferedImage mediumImage;
 
     DefaultMushroomBodyDrawer() {
-        shortImage = load("C:/Users/horvath_toomi/Music/EGYETEM/SZOFTPROJ/SzoftProjLab---csapatnev/src/circle.jpg");
-        mediumImage = load("C:/Users/horvath_toomi/Music/EGYETEM/SZOFTPROJ/SzoftProjLab---csapatnev/src/circle.jpg");
-        grownImage = load("C:/Users/horvath_toomi/Music/EGYETEM/SZOFTPROJ/SzoftProjLab---csapatnev/src/circle.jpg");
+        shortImage = load("/mb_small.png");
+        mediumImage = load("/mb_medium.png");
+        grownImage = load("/mb_big.png");
     }
 
     @Override
-    public void draw(Graphics2D g2, MushroomBody mb, int x, int y) {
+    public void draw(Graphics2D g2, MushroomBody mb) {
         BufferedImage image;
         switch(mb.getState()){
             case "SMALL" :
@@ -34,7 +34,7 @@ public class DefaultMushroomBodyDrawer extends UtilityTool implements MushroomBo
                 image = shortImage;
                 break;
         }
-        g2.drawImage(image, x, y, width, height, null);
+        g2.drawImage(image, mb.getGeometry().getX(), mb.getGeometry().getY(), width, height, null);
     }
 
 }

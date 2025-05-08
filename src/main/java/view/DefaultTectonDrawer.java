@@ -15,13 +15,9 @@ public class DefaultTectonDrawer extends UtilityTool implements TectonDrawer {
     }
 
     @Override
-    public void draw(Graphics2D g2, Tecton tecton, int x, int y){
-        BufferedImage tectonImage = image;
-        if(tecton instanceof BigTecton){}
-        else if(tecton instanceof SmallTecton){}
-        else if(tecton instanceof ToxicTecton){}
-        else if(tecton instanceof HealingTecton){}
-        else{}
-        g2.drawImage(tectonImage, x, y, width, height, null);
+    public void draw(Graphics2D g2, Tecton tecton){
+    	TectonAccept acceptor = (TectonAccept) tecton;
+    	TectonDrawerVisitor tdvisitor = new TectonDrawerVisitor(g2);
+    	acceptor.accept(tdvisitor);
     }
 }
