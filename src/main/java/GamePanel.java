@@ -43,6 +43,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public static void main(String[] args) {
         GamePanel gamePanel = new GamePanel();
+        MainMenu menu = new MainMenu();
     }
 
 }
