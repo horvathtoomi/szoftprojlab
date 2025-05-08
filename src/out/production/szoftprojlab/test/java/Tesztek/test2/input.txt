@@ -1,0 +1,8 @@
+Shroomer s1
+Tecton t1 big
+Tecton t2 small
+SetNeighbours t1 t2
+Mushroom m1 s1
+MushroomBody mb1 m1 t1 big s1
+SpreadSpore sp1 mb1 t2 fast s1
+List

@@ -35,12 +35,12 @@ public class GamePanel extends JPanel {
 			g2.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 		}
 
-		drawManager.drawPlanet(g2, gameController.getPlanet());
+		drawManager.drawPlanet(g2, gameController.buildPlanet());
 	}
 
 
     public static void main(String[] args) {
-    	JFrame frame = new JFrame("Faszgorium");
+    	JFrame frame = new JFrame("Fungorium");
     	MainMenu mainMenu = new MainMenu(frame);
     	frame.setContentPane(mainMenu);
     	frame.setExtendedState(JFrame.MAXIMIZED_BOTH);

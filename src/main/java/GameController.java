@@ -17,7 +17,7 @@ public class GameController {
     private ArrayList<Player> players;
     private Player currentPlayer;
 
-    public boolean initializing = true;
+    private boolean init = true;
     
     /**
      * Létrehoz egy GameController példányt a megadott maximális körszámmal, és egy tesztelési paraméterrel.
@@ -32,8 +32,10 @@ public class GameController {
         turnCounter = 1;
     }
 
-    //Getterek, Setterek
-    public Planet getPlanet(){
+    /**
+     * Létrehozza a pályát - ez egyelőre placeholder
+     */
+    public Planet buildPlanet(){
     	Planet planet = new Planet();
     	
     	BigTecton t1 = new BigTecton("T1", 3);
@@ -72,10 +74,21 @@ public class GameController {
     	
     	return planet;
     }
-    
+    /**
+     * Megvizsgálja, hogy minden játékos letette-e már a kezdő objektumát. Ha igen, akkor innentől kezdve éles a játék.
+     */
+    public void setInitCheck()
+    {
+        if(planet.getInsects().size() == 2 && planet.getMushbodies().size() == 2)
+            init = false;
+    }
+
+    //getterek, setterek
     public int getTurnCounter() {
     	return turnCounter;
     }
+
+    public Planet getPlanet() {return planet;}
 
     public void setTurnCounter(int turnCounter) {
         this.turnCounter = turnCounter;
@@ -104,6 +117,7 @@ public class GameController {
     public void setCurrentPlayer(Player player) {
         this.currentPlayer = player;
     }
+    public boolean getInit() {return init;}
     
 
     /**
