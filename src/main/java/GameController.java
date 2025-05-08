@@ -1,6 +1,9 @@
 package main.java;
 
 import java.util.ArrayList;
+import main.java.player.*;
+import main.java.tecton.*;
+import main.java.mushroom.*;
 
 /**
  * A GameController osztály felel a játék menetért, körváltásért, 
@@ -8,11 +11,13 @@ import java.util.ArrayList;
  */
 public class GameController {
     private Planet planet;
-    private int maxTurn;
+    private final int maxTurn;
     boolean testing;
     private int turnCounter;
     private ArrayList<Player> players;
     private Player currentPlayer;
+
+    public boolean initializing = true;
     
     /**
      * Létrehoz egy GameController példányt a megadott maximális körszámmal, és egy tesztelési paraméterrel.

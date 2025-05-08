@@ -3,6 +3,7 @@ package main.java;
 import java.awt.*;
 
 public class Geometry {
+    
     private int x;
     private int y;
 

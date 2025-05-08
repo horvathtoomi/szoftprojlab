@@ -5,6 +5,11 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import main.java.insect.*;
+import main.java.tecton.*;
+import main.java.mushroom.*;
+import main.java.spore.*;
+import main.java.player.*;
 
 /**
  * A parancssori futtatáshoz, parancsok értelmezéséhez létrehozott osztály. Felelőssége az inputot és az outputot kezelni.

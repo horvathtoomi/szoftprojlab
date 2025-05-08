@@ -1,12 +1,11 @@
 package main.java;
 
 import main.java.view.DrawManager;
+import main.java.view.UtilityTool;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class GamePanel extends JPanel {
 
@@ -21,12 +20,8 @@ public class GamePanel extends JPanel {
 		setPreferredSize(new Dimension(800, 600));
 		setBackground(Color.BLACK);
 		setDoubleBuffered(true);
-
-		try {
-			backgroundImage = ImageIO.read(getClass().getResource("/Background_icon.png"));
-		} catch (IOException | IllegalArgumentException e) {
-			System.err.println("Hiba a háttér betöltésekor: " + e.getMessage());
-		}
+		UtilityTool ut = new UtilityTool();
+		backgroundImage = ut.load("resources/Background_icon.png");
 	}
 	
 	@Override
@@ -43,9 +38,8 @@ public class GamePanel extends JPanel {
 		drawManager.drawPlanet(g2, gameController.getPlanet());
 	}
 
-    /*
+
     public static void main(String[] args) {
-    	System.out.println("románok buzik2");
     	JFrame frame = new JFrame("Faszgorium");
     	MainMenu mainMenu = new MainMenu(frame);
     	frame.setContentPane(mainMenu);
@@ -53,5 +47,5 @@ public class GamePanel extends JPanel {
     	frame.setVisible(true);
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    */
+
 }

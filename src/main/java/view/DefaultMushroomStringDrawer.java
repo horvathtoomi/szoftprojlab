@@ -1,7 +1,7 @@
 package main.java.view;
 
 import java.awt.*;
-import main.java.MushroomString;
+import main.java.mushroom.*;
 
 public class DefaultMushroomStringDrawer implements MushroomStringDrawer {
 

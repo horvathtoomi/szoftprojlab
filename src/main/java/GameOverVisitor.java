@@ -1,5 +1,7 @@
 package main.java;
 
+import main.java.player.*;
+
 /**
  * A GameOverVisitor egy PlayerVisitor implementáció,
  * amely a játék végén meghatározza a legjobb játékosokat típusonként:

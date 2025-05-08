@@ -1,6 +1,6 @@
 package main.java.view;
 
-import main.java.Tecton;
+import main.java.tecton.Tecton;
 import java.awt.*;
 
 public interface TectonDrawer {

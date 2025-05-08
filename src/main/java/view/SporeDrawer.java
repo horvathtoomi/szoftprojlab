@@ -1,6 +1,6 @@
 package main.java.view;
 
-import main.java.Spore;
+import main.java.spore.Spore;
 import java.awt.*;
 
 public interface SporeDrawer {

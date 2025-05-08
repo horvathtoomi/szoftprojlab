@@ -2,6 +2,12 @@ package main.java;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import main.java.insect.*;
+import main.java.player.Player;
+import main.java.player.PlayerAccept;
+import main.java.tecton.*;
+import main.java.mushroom.*;
+import main.java.spore.*;
 
 /**
  * A Planet osztály felelős a játék világának kezeléséért, amely magába foglalja a különböző objektumokat

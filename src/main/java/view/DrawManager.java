@@ -2,7 +2,12 @@ package main.java.view;
 
 
 import java.awt.*;
-import main.java.*;
+
+import main.java.Planet;
+import main.java.tecton.*;
+import main.java.mushroom.*;
+import main.java.insect.Insect;
+import main.java.spore.Spore;
 
 public class DrawManager {
 	
