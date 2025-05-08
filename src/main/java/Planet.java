@@ -37,6 +37,10 @@ public class Planet implements Updatable{
     public void addTecton(Tecton tecton) {
         tectons.add(tecton);
     }
+    
+    public void addMushroomBody(MushroomBody mushroombody) {
+    	mushbodies.add(mushroombody);
+    }
 
     /**
      * Eltávolít egy tekton objektumot a listából.

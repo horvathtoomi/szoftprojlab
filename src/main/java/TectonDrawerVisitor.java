@@ -2,47 +2,65 @@ package main.java;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
-public class TectonDrawerVisitor implements TectonVisitor<Void> {
+import main.java.view.UtilityTool;
+
+public class TectonDrawerVisitor extends UtilityTool implements TectonVisitor<Void> {
 	
 	private Graphics2D g2;
-	private Geometry geometry;
 	
 	public TectonDrawerVisitor(Graphics2D g2) {
 		this.g2 = g2;
 	}
 	
 	public Void visit(BigTecton big) {
-		g2.setColor(new Color(102, 93, 30));
-		g2.fillOval(big.getGeometry().getX(), big.getGeometry().getY(), 2*big.getGeometry().getRadius(), 2*big.getGeometry().getRadius());
+		BufferedImage image = load("bt.png");
+		int r = big.getGeometry().getRadius();
+		g2.drawImage(image, big.getGeometry().getX() - r,
+				big.getGeometry().getY() - r,
+                r * 2, r * 2, null);
 		
 		return null;
     }
 	
 	public Void visit(SmallTecton small) {
-		g2.setColor(new Color(80, 50, 20));
-		g2.fillOval(small.getGeometry().getX(), small.getGeometry().getY(), 2*small.getGeometry().getRadius(), 2*small.getGeometry().getRadius());
+		BufferedImage image = load("st.png");
+		int r = small.getGeometry().getRadius();
+		g2.drawImage(image, small.getGeometry().getX() - r,
+				small.getGeometry().getY() - r,
+                r * 2, r * 2, null);
 		
 		return null;
-    }
+	}
+
 
 	public Void visit(ToxicTecton toxic) {
-		g2.setColor(new Color(0, 255, 0));
-		g2.fillOval(toxic.getGeometry().getX(), toxic.getGeometry().getY(), 2*toxic.getGeometry().getRadius(), 2*toxic.getGeometry().getRadius());
+		BufferedImage image = load("tt.png");
+		int r = toxic.getGeometry().getRadius();
+		g2.drawImage(image, toxic.getGeometry().getX() - r,
+				toxic.getGeometry().getY() - r,
+                r * 2, r * 2, null);
 		
 		return null;
     }
 	
 	public Void visit(HealingTecton healing) {
-		g2.setColor(new Color(173, 216, 230));
-		g2.fillOval(healing.getGeometry().getX(), healing.getGeometry().getY(), 2*healing.getGeometry().getRadius(), 2*healing.getGeometry().getRadius());
+		BufferedImage image = load("ht.png");
+		int r = healing.getGeometry().getRadius();
+		g2.drawImage(image, healing.getGeometry().getX() - r,
+				healing.getGeometry().getY() - r,
+                r * 2, r * 2, null);
 		
 		return null;
     }
 	
 	public Void visit(CoarseTecton coarse) {
-		g2.setColor(Color.LIGHT_GRAY);
-		g2.fillOval(coarse.getGeometry().getX(), coarse.getGeometry().getY(), 2*coarse.getGeometry().getRadius(), 2*coarse.getGeometry().getRadius());
+		BufferedImage image = load("ct.png");
+		int r = coarse.getGeometry().getRadius();
+		g2.drawImage(image, coarse.getGeometry().getX() - r,
+	    		coarse.getGeometry().getY() - r,
+                r * 2, r * 2, null);
 		
 		return null;
     }

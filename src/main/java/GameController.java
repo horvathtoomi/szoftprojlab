@@ -32,7 +32,7 @@ public class GameController {
     	Planet planet = new Planet();
     	
     	BigTecton t1 = new BigTecton("T1", 3);
-    	t1.setGeometry(new GeometryTecton(50, 50, 90));
+    	t1.setGeometry(new GeometryTecton(100, 100, 90));
 
     	SmallTecton t2 = new SmallTecton("T2", 3);
     	t2.setGeometry(new GeometryTecton(300, 400, 35));
@@ -49,8 +49,15 @@ public class GameController {
     	Shroomer s = new Shroomer("s", false);
     	Mushroom m = new Mushroom("m", false);
     	MushroomBody mb0 = new MushroomBody(t1, m, 0, "mb0", false);
+    	mb0.setGeometry(t1.getGeometry());
     	MushroomBody mb1 = new MushroomBody(t4, m, 1, "mb1", false);
+    	mb1.setGeometry(t4.getGeometry());
     	MushroomBody mb2 = new MushroomBody(t3, m, 2, "mb2", false);
+    	mb2.setGeometry(t3.getGeometry());
+    	
+    	planet.addMushroomBody(mb0);
+    	planet.addMushroomBody(mb1);
+    	planet.addMushroomBody(mb2);
     	
     	planet.addTecton(t1);
     	planet.addTecton(t2);

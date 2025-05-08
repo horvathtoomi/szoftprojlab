@@ -16,8 +16,10 @@ public class MainMenu extends JPanel {
 		this.frame = frame;
 		
 		// Háttérkép betöltése
-		ImageIcon backgroundIcon = new ImageIcon(getClass().getResource("/menu_bg.png"));
+		ImageIcon backgroundIcon = new ImageIcon(getClass().getResource("/menu_bg6.png"));
 		JLabel backgroundLabel = new JLabel(backgroundIcon);
+		System.out.println(backgroundIcon.getIconWidth() + backgroundIcon.getIconWidth());
+		frame.setSize(backgroundIcon.getIconWidth(), backgroundIcon.getIconHeight());
 		backgroundLabel.setLayout(new GridBagLayout());
 		this.setLayout(new BorderLayout());
 		this.add(backgroundLabel, BorderLayout.CENTER);

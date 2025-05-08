@@ -12,7 +12,6 @@ public class Main {
 		menu = new MainMenu(frame);
 		frame.add(menu);
 		frame.setVisible(true);
-		frame.setSize(1024, 1024);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 	}
