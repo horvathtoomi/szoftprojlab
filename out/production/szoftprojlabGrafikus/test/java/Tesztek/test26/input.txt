@@ -1,0 +1,15 @@
+tecton t1 big
+tecton t2 big
+Shroomer s
+Mushroom m s
+MushroomBody mb m t1 big s
+MushroomString ms m t1 s
+setneighbours t1 t2
+Insecter i
+Insect in t2 i
+branch ms t2 s
+spreadspore spore mb t2 paralyzer s
+pass s
+consume in spore i
+pass i
+list

@@ -42,8 +42,18 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public static void main(String[] args) {
-        GamePanel gamePanel = new GamePanel();
-        MainMenu menu = new MainMenu();
+        //GamePanel gamePanel = new GamePanel();
+
+        //myThingy
+        JFrame frame = new JFrame("Faszgorium");
+        GameMenu menu = new GameMenu();
+        frame.setJMenuBar(menu);
+
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setVisible(true);
+        frame.getContentPane().setBackground(Color.GREEN);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
     }
 
 }

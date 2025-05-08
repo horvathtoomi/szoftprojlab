@@ -9,10 +9,12 @@ public class UtilityTool {
 
     public BufferedImage load(String path){
         BufferedImage bufim = null;
-        try{
+        try {
             bufim = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)));
-        } catch(IOException e) {
-            System.out.println("[UTILITYTOOL] ERROR " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("[UTILITYTOOL] ERROR: " + e.getMessage());
+        } catch (NullPointerException e) {
+            System.out.println("[UTILITYTOOL] ERROR: File not found at path: " + path);
         }
         return bufim;
     }

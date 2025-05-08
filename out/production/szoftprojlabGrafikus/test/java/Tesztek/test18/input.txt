@@ -1,0 +1,6 @@
+Shroomer s
+Insecter i
+Tecton t big
+Mushroom m s
+Insect in t i
+pass s
