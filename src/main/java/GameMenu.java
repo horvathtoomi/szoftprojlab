@@ -43,7 +43,5 @@ public class GameMenu extends JMenuBar {
             menu.add(b2);
             menu.add(b3);
             this.add(menu);
-
         }
-
 }
