@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 
 public class MainMenu extends JPanel {
 	
-	public static String prefix = "";
+	public static String prefix = "resources/";  //Intellij-ben írjátok be a resources/-t, eclipseben legyen üres sztring
 	
 	private JButton newGameButton;
 	private JButton loadGameButton;

@@ -39,18 +39,20 @@ public class GameController {
         players = new ArrayList<>();
         turnCounter = 1;
     }
-    
+
     private Geometry randomOffsetInsideCircle(GeometryTecton geometry) {
         Random rand = new Random();
-        int x;
-        int y;
-        
+        Geometry g;
+        int x, y;
+
         do {
-        	x = rand.nextInt(-(geometry.getRadius() + DefaultSporeDrawer.SIZE), geometry.getRadius() + DefaultSporeDrawer.SIZE);
-            y = rand.nextInt(-(geometry.getRadius() + DefaultSporeDrawer.SIZE), geometry.getRadius() + DefaultSporeDrawer.SIZE);
-        } while(Math.sqrt((double) (x*x + y*y)) > geometry.getRadius());
-        
-        return new Geometry(geometry.getX() + x, geometry.getY() + y);
+            x = rand.nextInt(2 * geometry.getRadius()) - geometry.getRadius();
+            y = rand.nextInt(2 * geometry.getRadius()) - geometry.getRadius();
+        } while (Math.sqrt((double) (x * x + y * y)) > geometry.getRadius() - DefaultSporeDrawer.SIZE);
+
+        g = new Geometry(geometry.getX() + x, geometry.getY() + y);
+
+        return g;
     }
 
     /**
@@ -87,7 +89,7 @@ public class GameController {
     	Insect in = new Insect(t4, "in");
     	in.setGeometry(t4.getGeometry());
     	
-    	FastSpore spore = new FastSpore(100, m, t4, "dominikegycsira");
+    	FastSpore spore = new FastSpore(100, m, t4, "spore");
     	Geometry geometry = randomOffsetInsideCircle(t4.getGeometry());
     	spore.setGeometry(geometry);
     	
