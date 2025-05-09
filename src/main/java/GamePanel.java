@@ -1,5 +1,6 @@
 package main.java;
 
+import main.java.control.MouseHandler;
 import main.java.player.Player;
 import main.java.view.DrawManager;
 import main.java.view.UtilityTool;
@@ -13,18 +14,21 @@ public class GamePanel extends JPanel {
 
 	private final GameController gameController;
 	private final DrawManager drawManager;
-	private BufferedImage backgroundImage;
+	private final BufferedImage backgroundImage;
+	MouseHandler mouseHandler;
 
 	public GamePanel(ArrayList<Player> players) {
 		gameController = new GameController(false, 20);
-		for(int i = 0; i < players.size(); i++) {
-			gameController.addPlayer(players.get(i));
-		}
+		gameController.setPlanet(gameController.buildPlanet());
+        for (Player player : players) {
+            gameController.addPlayer(player);
+        }
 		drawManager = new DrawManager();
 		setBackground(Color.BLACK);
 		setDoubleBuffered(true);
 		UtilityTool ut = new UtilityTool();
 		backgroundImage = ut.load(MainMenu.prefix + "Background_icon3.png");
+		mouseHandler = new MouseHandler(gameController, this::repaint);
 	}
 	
 	@Override
@@ -37,7 +41,7 @@ public class GamePanel extends JPanel {
 			g2.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 		}
 
-		drawManager.drawPlanet(g2, gameController.buildPlanet());
+		drawManager.drawPlanet(g2, gameController.getPlanet());
 	}
 	public GameController getGameController() {return gameController;}
 }

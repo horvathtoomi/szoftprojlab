@@ -22,7 +22,7 @@ public class GameController {
     private final int maxTurn;
     boolean testing;
     private int turnCounter;
-    private ArrayList<Player> players;
+    private final ArrayList<Player> players;
     private Player currentPlayer;
 
     private boolean init = true;
@@ -56,7 +56,7 @@ public class GameController {
     }
 
     /**
-     * Létrehozza a pályát - ez egyelőre placeholder
+     * Létrehozza a pályát - ez egyelőre placeholder, kell több tecton majd
      */
     public Planet buildPlanet(){
     	Planet planet = new Planet();
@@ -76,35 +76,11 @@ public class GameController {
     	ToxicTecton t5 = new ToxicTecton("T5", 3);
     	t5.setGeometry(new GeometryTecton(600, 600, 95));
     	
-    	/*Shroomer s = new Shroomer("s", false);
-    	Mushroom m = new Mushroom("m", false);
-    	MushroomBody mb0 = new MushroomBody(t1, m, 0, "mb0", false);
-    	mb0.setGeometry(t1.getGeometry());
-    	MushroomBody mb1 = new MushroomBody(t4, m, 1, "mb1", false);
-    	mb1.setGeometry(t4.getGeometry());
-    	MushroomBody mb2 = new MushroomBody(t3, m, 2, "mb2", false);
-    	mb2.setGeometry(t3.getGeometry());
-    	
-    	Insecter i = new Insecter("i", false);
-    	Insect in = new Insect(t4, "in");
-    	in.setGeometry(t4.getGeometry());
-    	
-    	FastSpore spore = new FastSpore(100, m, t4, "spore");
-    	Geometry geometry = randomOffsetInsideCircle(t4.getGeometry());
-    	spore.setGeometry(geometry);
-    	
-    	planet.addMushroomBody(mb0);
-    	planet.addMushroomBody(mb1);
-    	planet.addMushroomBody(mb2);*/
-    	
     	planet.addTecton(t1);
     	planet.addTecton(t2);
     	planet.addTecton(t3);
     	planet.addTecton(t4);
     	planet.addTecton(t5);
-    	/*
-    	planet.addInsect(in);
-    	planet.addSpore(spore);*/
     	
     	return planet;
     }
@@ -150,6 +126,18 @@ public class GameController {
 
     public void setCurrentPlayer(Player player) {
         this.currentPlayer = player;
+    }
+    public void setCurrentPlayerToNextPlayer() {
+        int i1 = 0;
+        int i2 = 0;
+        for(Player p : players){
+            if(p.equals(currentPlayer)){
+                i2 = i1;
+                break;
+            }
+            i1++;
+        }
+        currentPlayer = players.get(i2);
     }
     public boolean getInit() {return init;}
     
