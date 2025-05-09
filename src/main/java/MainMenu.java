@@ -19,10 +19,11 @@ public class MainMenu extends JPanel {
 		this.frame = frame;
 
 		UtilityTool uTool = new UtilityTool();
-		BufferedImage bgImage = uTool.load("resources/menu_bg.png");
+		BufferedImage bgImage = uTool.load("resources/menu_bg6.png");
 
 		ImageIcon backgroundIcon = new ImageIcon(bgImage);
 		JLabel backgroundLabel = new JLabel(backgroundIcon);
+		frame.setSize(bgImage.getWidth(), bgImage.getHeight());
 		backgroundLabel.setLayout(new GridBagLayout());
 		this.setLayout(new BorderLayout());
 		this.add(backgroundLabel, BorderLayout.CENTER);

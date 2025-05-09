@@ -39,19 +39,19 @@ public class GameController {
     	Planet planet = new Planet();
     	
     	BigTecton t1 = new BigTecton("T1", 3);
-    	t1.setGeometry(new GeometryTecton(100, 100, 90));
+    	t1.setGeometry(new GeometryTecton(600, 200, 110));
 
     	SmallTecton t2 = new SmallTecton("T2", 3);
-    	t2.setGeometry(new GeometryTecton(300, 400, 35));
+    	t2.setGeometry(new GeometryTecton(900, 400, 55));
     	
     	HealingTecton t3 = new HealingTecton("T3", 3);
-    	t3.setGeometry(new GeometryTecton(250, 250, 60));
+    	t3.setGeometry(new GeometryTecton(250, 250, 85));
     	
     	CoarseTecton t4 = new CoarseTecton("T4", 3);
-    	t4.setGeometry(new GeometryTecton(400, 400, 65));
+    	t4.setGeometry(new GeometryTecton(400, 400, 90));
     	
     	ToxicTecton t5 = new ToxicTecton("T5", 3);
-    	t5.setGeometry(new GeometryTecton(600, 600, 70));
+    	t5.setGeometry(new GeometryTecton(600, 600, 95));
     	
     	Shroomer s = new Shroomer("s", false);
     	Mushroom m = new Mushroom("m", false);
