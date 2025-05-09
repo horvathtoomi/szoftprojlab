@@ -23,7 +23,7 @@ public class Insecter extends Player implements PlayerAccept{
      */
     public Insecter(String name, boolean infinite) {
         super(name, infinite);
-        insects = new ArrayList<Insect>();
+        insects = new ArrayList<>();
     }
 
     /**

@@ -9,8 +9,7 @@ import main.java.insect.Insect;
 
 public class DefaultInsectDrawer extends UtilityTool implements InsectDrawer {
 
-    private final int width = 40, height = 40;
-    private BufferedImage image;
+    private final BufferedImage image;
 
     DefaultInsectDrawer(){
         image = load(MainMenu.prefix + "insect_icon3.png");
@@ -18,6 +17,8 @@ public class DefaultInsectDrawer extends UtilityTool implements InsectDrawer {
 
     @Override
     public void draw(Graphics2D g2, Insect insect) {
+        int width = 40;
+        int height = 40;
         g2.drawImage(image, insect.getGeometry().getX(), insect.getGeometry().getY(), width, height, null);
     }
 

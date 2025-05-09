@@ -136,28 +136,14 @@ public class MushroomBody extends Nameable implements Updatable {
 	private Spore createRandomSpore(Tecton target, String newName) {
 	    Random rand = new Random();
 	    int type = rand.nextInt(5);
-		Spore spore;
-        switch (type) {
-            case 0 :
-				spore = new FastSpore(Spore.randomNutrientValue(), mushroom, target, newName);
-				break;
-            case 1 :
-				spore = new SlowSpore(Spore.randomNutrientValue(), mushroom, target, newName);
-				break;
-			case 2 :
-				spore = new GentleSpore(Spore.randomNutrientValue(), mushroom, target, newName);
-				break;
-			case 3 : 
-				spore = new ParalyzerSpore(Spore.randomNutrientValue(), mushroom, target, newName);
-				break;
-			case 4 : 
-				spore = new MultiplierSpore(Spore.randomNutrientValue(), mushroom, target, newName);
-				break;
-			default :
-				spore = new FastSpore(Spore.randomNutrientValue(), mushroom, target, newName);
-				break;
-		}
-		return spore;
+        return switch (type) {
+case 0 -> new FastSpore(Spore.randomNutrientValue(), mushroom, target, newName);
+case 1 -> new SlowSpore(Spore.randomNutrientValue(), mushroom, target, newName);
+case 2 -> new GentleSpore(Spore.randomNutrientValue(), mushroom, target, newName);
+case 3 -> new ParalyzerSpore(Spore.randomNutrientValue(), mushroom, target, newName);
+case 4 -> new MultiplierSpore(Spore.randomNutrientValue(), mushroom, target, newName);
+default -> null;
+};
     }
 	
 	/**
@@ -201,7 +187,7 @@ public class MushroomBody extends Nameable implements Updatable {
                 spore = new FastSpore(1, mushroom, target, newName);
 				break;
             }
-        };
+        }
 		return spore;
 	}
 	
@@ -213,7 +199,7 @@ public class MushroomBody extends Nameable implements Updatable {
      * @param newName Az új spóra neve.
      * @param type A spóra típusa.
      */
-	public Spore spreadSpores(Tecton target, String newName, String type, Shroomer shroomer) {
+	public Spore spreadSpores(Tecton target, String newName, String type) {
 		Spore sp;
 		if (!isTargetInRange(target)) return null;
 		if(!availableSpores) return null;

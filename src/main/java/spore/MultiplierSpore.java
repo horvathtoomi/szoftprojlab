@@ -59,7 +59,6 @@ public class MultiplierSpore extends Spore implements SporeAccept
     public Insect makeNewInsect(Insect insect)
     {
         Tecton location = insect.getLocation();
-        Insect newInsect = new Insect(location, insect.getName() + "_clone" + CloneCounter.next());
-        return newInsect;
+        return new Insect(location, insect.getName() + "_clone" + CloneCounter.next());
     }
 }

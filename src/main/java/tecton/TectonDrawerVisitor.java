@@ -1,6 +1,5 @@
 package main.java.tecton;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
@@ -9,7 +8,7 @@ import main.java.view.UtilityTool;
 
 public class TectonDrawerVisitor implements TectonVisitor<Void> {
 
-	private Graphics2D g2;
+	private final Graphics2D g2;
 	UtilityTool uTool = new UtilityTool();
 
 	public TectonDrawerVisitor(Graphics2D g2) {

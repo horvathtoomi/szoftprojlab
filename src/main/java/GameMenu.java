@@ -2,8 +2,6 @@ package main.java;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * A játékbeli menü megvalósításáért felelős osztály.
@@ -21,21 +19,11 @@ public class GameMenu extends JMenuBar {
             b2 = new JButton("Load");
             b3 = new JButton("Exit");
 
-            b1.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("save");
-                }
-            });
-            b2.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("load");
-                }
-            });
-            b3.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("exit");
-                    System.exit(0);
-                }
+            b1.addActionListener(e -> System.out.println("save"));
+            b2.addActionListener(e -> System.out.println("load"));
+            b3.addActionListener(e -> {
+                System.out.println("exit");
+                System.exit(0);
             });
 
             JMenu menu = new JMenu("Menu");

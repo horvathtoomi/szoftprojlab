@@ -56,8 +56,8 @@ public abstract class Tecton extends Nameable implements Updatable {
     }
     
     /** @return true, ha már nőtt rajta egy MushroomBody. */
-    public boolean hasBodyGrown() {
-        return bodyGrown;
+    public boolean hasSpace() {
+        return !bodyGrown;
     }
     
     /** Jelzi, hogy ezután már nem lehet rajta új body. */

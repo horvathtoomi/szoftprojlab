@@ -217,10 +217,10 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
             selectTecton(mouseX, mouseY, false);
             if(clickedTecton != null){
                 if(true){
-                    clickedMushroomBody.spreadSpores(clickedTecton, "spore", "random", (Shroomer) p);
+                    clickedMushroomBody.spreadSpores(clickedTecton, "spore", "random");
                     gc.nextTurnCheck();
                 }
-                else {
+                else if(clickedTecton.canGrowHypha(gc.getPlanet().getMushstrings())){
                     if(clickedMushroomString != null){
                         clickedMushroomString.branch(clickedTecton, gc.getPlanet().getMushstrings());
                         gc.nextTurnCheck();

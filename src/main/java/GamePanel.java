@@ -43,5 +43,4 @@ public class GamePanel extends JPanel {
 
 		drawManager.drawPlanet(g2, gameController.getPlanet());
 	}
-	public GameController getGameController() {return gameController;}
 }

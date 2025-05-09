@@ -8,10 +8,9 @@ import main.java.mushroom.*;
 
 public class DefaultMushroomBodyDrawer extends UtilityTool implements MushroomBodyDrawer {
 
-    private final int width = 50, height = 50;
-    private BufferedImage shortImage;
-    private BufferedImage grownImage;
-    private BufferedImage mediumImage;
+    private final BufferedImage shortImage;
+    private final BufferedImage grownImage;
+    private final BufferedImage mediumImage;
 
     DefaultMushroomBodyDrawer() {
         shortImage = load(MainMenu.prefix + "mb_small.png");
@@ -37,8 +36,10 @@ public class DefaultMushroomBodyDrawer extends UtilityTool implements MushroomBo
                 break;
         }
 
-        int drawX = mb.getGeometry().getX() - width/2;
-        int drawY = mb.getGeometry().getY() - height/2;
+        int width = 50;
+        int drawX = mb.getGeometry().getX() - width /2;
+        int height = 50;
+        int drawY = mb.getGeometry().getY() - height /2;
 
         g2.drawImage(image, drawX, drawY, width, height, null);
     }

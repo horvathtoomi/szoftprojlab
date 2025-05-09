@@ -3,7 +3,6 @@ package main.java.tecton;
 /**
  * A TectonAccept interfészt minden olyan osztálynak implementálnia kell,
  * amely elfogad egy TectonVisitor látogatót a Visitor tervezési minta szerint.
- * 
  * Ez lehetővé teszi, hogy különböző Tecton típusok viselkedése
  * bővíthető legyen anélkül, hogy módosítani kellene őket.
  */

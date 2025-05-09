@@ -19,25 +19,25 @@ public class CanGrowBodyVisitor implements TectonVisitor<Void> {
 
     @Override
     public Void visit(BigTecton big) {
-        canPerformAction = !big.hasBodyGrown();
+        canPerformAction = big.hasSpace();
 		return null;
     }
     
     @Override
     public Void visit(SmallTecton small) {
-        canPerformAction = !small.hasBodyGrown();
+        canPerformAction = small.hasSpace();
 		return null;
     }
     
     @Override
     public Void visit(ToxicTecton toxic) {
-        canPerformAction = !toxic.hasBodyGrown();
+        canPerformAction = toxic.hasSpace();
 		return null;
     }
     
     @Override
     public Void visit(HealingTecton healing) {
-        canPerformAction = !healing.hasBodyGrown();
+        canPerformAction = healing.hasSpace();
 		return null;
     }
     

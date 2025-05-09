@@ -14,14 +14,8 @@ import java.util.ArrayList;
 public class MainMenu extends JPanel {
 	
 	public static String prefix = "resources/";  //Intellij-ben írjátok be a resources/-t, eclipseben legyen üres sztring
-	
-	private JButton newGameButton;
-	private JButton loadGameButton;
-	private JButton exitButton;
-	private final int BUTTON_WIDTH = 200;
-	private final int BUTTON_HEIGHT = 50;
 
-	private JFrame frame;
+    private final JFrame frame;
 	
 	public MainMenu(JFrame frame) {
 		this.frame = frame;
@@ -39,13 +33,13 @@ public class MainMenu extends JPanel {
 
 		Font buttonFont = new Font("SansSerif", Font.BOLD, 18);
 
-		newGameButton = new JButton("NEW GAME");
+        JButton newGameButton = new JButton("NEW GAME");
 		styleButton(newGameButton, buttonFont);
 
-		loadGameButton = new JButton("LOAD GAME");
+        JButton loadGameButton = new JButton("LOAD GAME");
 		styleButton(loadGameButton, buttonFont);
 
-		exitButton = new JButton("EXIT");
+        JButton exitButton = new JButton("EXIT");
 		styleButton(exitButton, buttonFont);
 
 		GridBagConstraints c = new GridBagConstraints();
@@ -65,7 +59,9 @@ public class MainMenu extends JPanel {
 	private void styleButton(JButton button, Font font) {
 		button.setFont(font);
 		button.setFocusable(false);
-		button.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
+        int BUTTON_WIDTH = 200;
+        int BUTTON_HEIGHT = 50;
+        button.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
 		button.setContentAreaFilled(true);
 		button.setBorderPainted(true);
 		button.setOpaque(true);

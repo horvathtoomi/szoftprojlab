@@ -2,18 +2,15 @@ package main.java.view;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 import main.java.MainMenu;
 import main.java.spore.Spore;
-import main.java.tecton.Tecton;
 
 
 public class DefaultSporeDrawer extends UtilityTool implements SporeDrawer {
 
     public static final int SIZE = 30;
-    private BufferedImage image;
+    private final BufferedImage image;
     DefaultSporeDrawer() {
         image = load(MainMenu.prefix + "spore.png");
     }

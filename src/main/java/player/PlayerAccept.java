@@ -3,7 +3,6 @@ package main.java.player;
 /**
  * A PlayerAccept interfészt minden olyan osztálynak implementálnia kell,
  * amely elfogad egy PlayerVisitor látogatót a Visitor tervezési minta szerint.
- * 
  * Ez lehetővé teszi, hogy különböző Player típusok viselkedése
  * bővíthető legyen anélkül, hogy módosítani kellene őket.
  */

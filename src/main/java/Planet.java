@@ -15,12 +15,12 @@ import main.java.spore.*;
  */
 public class Planet implements Updatable{
 
-    private ArrayList<Tecton> tectons;
-    private ArrayList<Mushroom> mushrooms;
-    private ArrayList<MushroomBody> mushbodies;
-    private ArrayList<MushroomString> mushstrings;
-    private ArrayList<Insect> insects;
-    private ArrayList<Spore> spores;
+    private final ArrayList<Tecton> tectons;
+    private final ArrayList<Mushroom> mushrooms;
+    private final ArrayList<MushroomBody> mushbodies;
+    private final ArrayList<MushroomString> mushstrings;
+    private final ArrayList<Insect> insects;
+    private final ArrayList<Spore> spores;
 
     
     /**
@@ -42,27 +42,6 @@ public class Planet implements Updatable{
      */
     public void addTecton(Tecton tecton) {
         tectons.add(tecton);
-    }
-    
-    public void addMushroomBody(MushroomBody mushroombody) {
-    	mushbodies.add(mushroombody);
-    }
-
-    public void addInsect(Insect insect) {
-    	insects.add(insect);
-    }
-    
-    public void addSpore(Spore spore) {
-    	spores.add(spore);
-    }
-    
-    /**
-     * Eltávolít egy tekton objektumot a listából.
-     *
-     * @param tecton az eltávolítandó Tecton
-     */
-    public void removeTecton(Tecton tecton) {
-        tectons.remove(tecton);
     }
     
     //Getterek, Setterek
@@ -312,26 +291,10 @@ public class Planet implements Updatable{
     /**
      * Megkeresi a dead állapotó gombatesteket, és dead-re állítja a hozzá kapcsolódó MString-eket is.
      *
-     * 
-     * @return a gombatestek listája, amik rajta vannak
      */
     public void checkForDeadShrooms(){
     	for(MushroomBody b : mushbodies)
         	if(b.getRemainingSporulation() == 0) b.die(mushstrings);
-    }
-
-    /**
-     * Visszaadja egy tekton szomszédjainak neveit vesszővel elválasztva.
-     * @param tecton A vizsgált Tecton.
-     * @return A szomszédok neveinek listája sztringként.
-     */
-    public String printTectonNeighbours(Tecton tecton) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < tecton.getNeighbours().size(); i++) {
-            sb.append(tecton.getNeighbours().get(i).getName());
-            if (i < tecton.getNeighbours().size() - 1) sb.append(", ");
-        }
-        return sb.toString();
     }
 
     /**

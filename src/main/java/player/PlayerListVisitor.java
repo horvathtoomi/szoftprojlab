@@ -7,14 +7,13 @@ import java.util.ArrayList;
 /**
  * A code PlayerListVisitor egy látogató, amely a játékos adatait
  * sorokba formázza megjelenítés céljából.
- * 
  * Egy Shroomer vagy Insecter játékos típushoz különféle
  * adatokat listáz ki (név, pontszám, gombák vagy rovarok).
  */
 public class PlayerListVisitor implements PlayerVisitor {
 
-    private ArrayList<String> lines = new ArrayList<>();
-    private String playerName;
+    private final ArrayList<String> lines = new ArrayList<>();
+    private final String playerName;
 
     /**
      * Létrehozza a PlayerListVisitor példányt a megadott játékosnévvel.

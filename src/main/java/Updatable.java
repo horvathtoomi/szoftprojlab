@@ -12,5 +12,5 @@ public interface Updatable {
      * 
      * @param random - ha igaz, a frissítés véletlenszerű elemeket is tartalmazhat.
      */
-    public void update(boolean random);
+    void update(boolean random);
 }

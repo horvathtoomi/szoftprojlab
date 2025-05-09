@@ -6,7 +6,6 @@ import main.java.player.*;
  * A GameOverVisitor egy PlayerVisitor implementáció,
  * amely a játék végén meghatározza a legjobb játékosokat típusonként:
  * külön a legjobb Shroomer-t és a legjobb Insecter-t.
- * 
  * Az osztály a látogató minta alapján működik, és minden meglátogatott
  * játékostípust kiértékel az aktuális legjobbal összevetve.
  */

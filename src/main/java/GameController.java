@@ -1,17 +1,12 @@
 package main.java;
 
-import java.awt.Point;
+
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 import main.java.player.*;
-import main.java.spore.FastSpore;
-import main.java.spore.Spore;
 import main.java.tecton.*;
 import main.java.view.DefaultSporeDrawer;
-import main.java.insect.Insect;
-import main.java.mushroom.*;
 
 /**
  * A GameController osztály felel a játék menetért, körváltásért, 
@@ -40,6 +35,12 @@ public class GameController {
         turnCounter = 1;
     }
 
+    /**
+     * A kirajzoláskor egy vélwtlen eltolást hoz létre az adott tektonon, hogy ne minden objektum egymáson legyen.
+     *
+     * @param geometry a felhasznált GeometryTecton példány
+     * @return az új geometry
+     */
     private Geometry randomOffsetInsideCircle(GeometryTecton geometry) {
         Random rand = new Random();
         Geometry g;
@@ -48,7 +49,7 @@ public class GameController {
         do {
             x = rand.nextInt(2 * geometry.getRadius()) - geometry.getRadius();
             y = rand.nextInt(2 * geometry.getRadius()) - geometry.getRadius();
-        } while (Math.sqrt((double) (x * x + y * y)) > geometry.getRadius() - DefaultSporeDrawer.SIZE);
+        } while (Math.sqrt((x * x + y * y)) > geometry.getRadius() - DefaultSporeDrawer.SIZE);
 
         g = new Geometry(geometry.getX() + x, geometry.getY() + y);
 

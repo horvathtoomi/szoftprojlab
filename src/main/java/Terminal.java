@@ -299,7 +299,7 @@ public class Terminal {
             Tecton tecton = gc.getPlanet().getTectons().stream().filter(t -> t.getName().equalsIgnoreCase(dest_tecton)).findFirst().orElseThrow();
             Player pl =  gc.getPlayers().stream().filter(p -> p.getName().equalsIgnoreCase(player)).findFirst().orElseThrow();
             Shroomer shroom = (Shroomer)pl;
-            Spore sp = mb.spreadSpores(tecton, spore_name, spore_type, shroom);
+            Spore sp = mb.spreadSpores(tecton, spore_name, spore_type);
             if(sp != null) {
             	gc.getPlanet().getSpores().add(sp);
             	gc.nextTurnCheck(); 

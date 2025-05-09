@@ -22,7 +22,7 @@ public class Insect extends Nameable implements Updatable {
 	/**
      * A rovar sebességét meghatározó enum.
      */
-	public enum Speed { SLOW, NORMAL, FAST };
+	public enum Speed { SLOW, NORMAL, FAST }
 	private Speed speed;
 	private final String name;
 	private boolean dead;

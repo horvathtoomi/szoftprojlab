@@ -17,12 +17,12 @@ public class MushroomString extends Nameable implements Updatable {
 	    static synchronized int next() { return counter++; }
 	}
 	
-	private ArrayList<Tecton> connection;
-	private ArrayList<MushroomString> neighbours;
+	private final ArrayList<Tecton> connection;
+	private final ArrayList<MushroomString> neighbours;
 	private final Mushroom mushroom;
 	private static final int TOXIC_AGE_LIMIT = 3; // 3 kör után elpusztul a toxic tektonon
 
-	public enum LifeCycle {Child, Grown};
+	public enum LifeCycle {Child, Grown}
 	private LifeCycle lifeCycle = LifeCycle.Child;
 	
 	private boolean connectedToBody = false;
@@ -91,11 +91,7 @@ public class MushroomString extends Nameable implements Updatable {
 	public void setConnectedToBody(boolean b) {
 	    connectedToBody = b;
 	}
-	
-	public void setNeighbour(int index, MushroomString s) {
-		if (index < 0 || index >= 2) return;
-		neighbours.set(index, s);
-	}
+
 	
 	/**
 	 * Megnöveli a fonal aktuális "életszámlálóját" 1-gyel
