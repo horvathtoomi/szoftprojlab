@@ -1,7 +1,11 @@
 package main.java;
 
 import javax.swing.*;
+
+import main.java.view.UtilityTool;
+
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class MainMenu extends JPanel {
 	private JButton newGameButton;
@@ -14,12 +18,14 @@ public class MainMenu extends JPanel {
 	
 	public MainMenu(JFrame frame) {
 		this.frame = frame;
-		
-		// Háttérkép betöltése
-		ImageIcon backgroundIcon = new ImageIcon(getClass().getResource("/menu_bg6.png"));
+
+		UtilityTool uTool = new UtilityTool();
+		BufferedImage bgImage = uTool.load("resources/menu_bg6.png");
+
+		ImageIcon backgroundIcon = new ImageIcon(bgImage);
 		JLabel backgroundLabel = new JLabel(backgroundIcon);
-		System.out.println(backgroundIcon.getIconWidth() + backgroundIcon.getIconWidth());
-		frame.setSize(backgroundIcon.getIconWidth(), backgroundIcon.getIconHeight());
+		frame.setSize(bgImage.getWidth(), bgImage.getHeight());
+
 		backgroundLabel.setLayout(new GridBagLayout());
 		this.setLayout(new BorderLayout());
 		this.add(backgroundLabel, BorderLayout.CENTER);
