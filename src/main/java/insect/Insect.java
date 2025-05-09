@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import main.java.tecton.*;
 import main.java.mushroom.*;
 import main.java.spore.Spore;
+import main.java.Geometry;
 import main.java.Nameable;
 import main.java.Updatable;
 
@@ -25,6 +26,7 @@ public class Insect extends Nameable implements Updatable {
 	private Speed speed;
 	private final String name;
 	private boolean dead;
+	private Geometry geometry;
 
 	/**
      * Konstruktor – új rovar létrehozása.
@@ -84,6 +86,14 @@ public class Insect extends Nameable implements Updatable {
 		if(speed == Speed.FAST) return "FAST";
 		else if(speed == Speed.NORMAL && canCutString && canMove) return "NO EFFECT";
 		else return "SLOW";
+	}
+	
+	public Geometry getGeometry() {
+		return geometry;
+	}
+	
+	public void setGeometry(Geometry geometry) {
+		this.geometry = geometry;
 	}
 	
 	public void setCollectedNutrients(int n)

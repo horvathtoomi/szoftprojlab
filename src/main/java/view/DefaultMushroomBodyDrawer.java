@@ -2,6 +2,8 @@ package main.java.view;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+
+import main.java.MainMenu;
 import main.java.mushroom.*;
 
 public class DefaultMushroomBodyDrawer extends UtilityTool implements MushroomBodyDrawer {
@@ -12,9 +14,9 @@ public class DefaultMushroomBodyDrawer extends UtilityTool implements MushroomBo
     private BufferedImage mediumImage;
 
     DefaultMushroomBodyDrawer() {
-        shortImage = load("resources/mb_small.png");
-        mediumImage = load("resources/mb_medium.png");
-        grownImage = load("resources/mb_big.png");
+        shortImage = load(MainMenu.prefix + "mb_small.png");
+        mediumImage = load(MainMenu.prefix + "mb_medium.png");
+        grownImage = load(MainMenu.prefix + "mb_big.png");
     }
 
     @Override

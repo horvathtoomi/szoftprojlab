@@ -1,5 +1,6 @@
 package main.java.spore;
 
+import main.java.Geometry;
 import main.java.Nameable;
 import main.java.tecton.Tecton;
 import main.java.insect.Insect;
@@ -18,6 +19,7 @@ public abstract class Spore extends Nameable {
     protected Mushroom mushroom;     // A gomba, amelyből a spóra származik
     protected Tecton location;       // A spóra jelenlegi elhelyezkedése a játéktéren
     protected boolean dead;          // A spóra él-e (false) vagy már elpusztult (true)
+    protected Geometry geometry;
 
     /**
      * Konstruktor a Spore példány létrehozására.
@@ -60,6 +62,14 @@ public abstract class Spore extends Nameable {
 
     public boolean getDead() {
         return dead;
+    }
+    
+    public Geometry getGeometry() {
+    	return geometry;
+    }
+    
+    public void setGeometry(Geometry geometry) {
+    	this.geometry = geometry;
     }
 
     /**

@@ -34,10 +34,11 @@ public class GameMenu extends JMenuBar {
             b3.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("exit");
+                    System.exit(0);
                 }
             });
 
-            JMenu menu = new JMenu("MenuGeci");
+            JMenu menu = new JMenu("Menu");
 
             menu.add(b1);
             menu.add(b2);

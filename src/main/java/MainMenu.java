@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class MainMenu extends JPanel {
+	
+	public static String prefix = "";
+	
 	private JButton newGameButton;
 	private JButton loadGameButton;
 	private JButton exitButton;
@@ -20,7 +23,7 @@ public class MainMenu extends JPanel {
 		this.frame = frame;
 
 		UtilityTool uTool = new UtilityTool();
-		BufferedImage bgImage = uTool.load("resources/menu_bg6.png");
+		BufferedImage bgImage = uTool.load(prefix + "menu_bg6.png");
 
 		ImageIcon backgroundIcon = new ImageIcon(bgImage);
 		JLabel backgroundLabel = new JLabel(backgroundIcon);
@@ -90,9 +93,15 @@ public class MainMenu extends JPanel {
 
 	private void startGame() {
 		GamePanel gamePanel = new GamePanel();
+
+		// Teljes képernyő mód
+		frame.dispose();
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		frame.setVisible(true);
+		frame.setLayout(new BorderLayout());
 		frame.getContentPane().removeAll();
 		frame.setJMenuBar(new GameMenu());
-		frame.add(gamePanel);
+		frame.add(gamePanel, BorderLayout.CENTER);
 		frame.revalidate();
 		frame.repaint();
 		gamePanel.requestFocusInWindow();

@@ -4,5 +4,5 @@ import main.java.spore.Spore;
 import java.awt.*;
 
 public interface SporeDrawer {
-    public void draw(Graphics2D g2, Spore s, int x, int y);
+    public void draw(Graphics2D g2, Spore s);
 }

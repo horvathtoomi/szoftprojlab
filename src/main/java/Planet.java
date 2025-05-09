@@ -48,6 +48,14 @@ public class Planet implements Updatable{
     	mushbodies.add(mushroombody);
     }
 
+    public void addInsect(Insect insect) {
+    	insects.add(insect);
+    }
+    
+    public void addSpore(Spore spore) {
+    	spores.add(spore);
+    }
+    
     /**
      * Eltávolít egy tekton objektumot a listából.
      *

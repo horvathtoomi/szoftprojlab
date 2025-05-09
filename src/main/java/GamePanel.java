@@ -16,12 +16,10 @@ public class GamePanel extends JPanel {
 	public GamePanel() {
 		gameController = new GameController(false, 100);
 		drawManager = new DrawManager();
-
-		setPreferredSize(new Dimension(800, 600));
 		setBackground(Color.BLACK);
 		setDoubleBuffered(true);
 		UtilityTool ut = new UtilityTool();
-		backgroundImage = ut.load("resources/Background_icon.png");
+		backgroundImage = ut.load(MainMenu.prefix + "Background_icon3.png");
 	}
 	
 	@Override
@@ -37,15 +35,4 @@ public class GamePanel extends JPanel {
 
 		drawManager.drawPlanet(g2, gameController.buildPlanet());
 	}
-
-
-    public static void main(String[] args) {
-    	JFrame frame = new JFrame("Fungorium");
-    	MainMenu mainMenu = new MainMenu(frame);
-    	frame.setContentPane(mainMenu);
-    	frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    	frame.setVisible(true);
-    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
-
 }

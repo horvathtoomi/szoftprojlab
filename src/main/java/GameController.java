@@ -1,8 +1,16 @@
 package main.java;
 
+import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 import main.java.player.*;
+import main.java.spore.FastSpore;
+import main.java.spore.Spore;
 import main.java.tecton.*;
+import main.java.view.DefaultSporeDrawer;
+import main.java.insect.Insect;
 import main.java.mushroom.*;
 
 /**
@@ -30,6 +38,19 @@ public class GameController {
         planet = new Planet();
         players = new ArrayList<>();
         turnCounter = 1;
+    }
+    
+    private Geometry randomOffsetInsideCircle(GeometryTecton geometry) {
+        Random rand = new Random();
+        int x;
+        int y;
+        
+        do {
+        	x = rand.nextInt(-(geometry.getRadius() + DefaultSporeDrawer.SIZE), geometry.getRadius() + DefaultSporeDrawer.SIZE);
+            y = rand.nextInt(-(geometry.getRadius() + DefaultSporeDrawer.SIZE), geometry.getRadius() + DefaultSporeDrawer.SIZE);
+        } while(Math.sqrt((double) (x*x + y*y)) > geometry.getRadius());
+        
+        return new Geometry(geometry.getX() + x, geometry.getY() + y);
     }
 
     /**
@@ -62,6 +83,14 @@ public class GameController {
     	MushroomBody mb2 = new MushroomBody(t3, m, 2, "mb2", false);
     	mb2.setGeometry(t3.getGeometry());
     	
+    	Insecter i = new Insecter("i", false);
+    	Insect in = new Insect(t4, "in");
+    	in.setGeometry(t4.getGeometry());
+    	
+    	FastSpore spore = new FastSpore(100, m, t4, "dominikegycsira");
+    	Geometry geometry = randomOffsetInsideCircle(t4.getGeometry());
+    	spore.setGeometry(geometry);
+    	
     	planet.addMushroomBody(mb0);
     	planet.addMushroomBody(mb1);
     	planet.addMushroomBody(mb2);
@@ -71,6 +100,9 @@ public class GameController {
     	planet.addTecton(t3);
     	planet.addTecton(t4);
     	planet.addTecton(t5);
+    	
+    	planet.addInsect(in);
+    	planet.addSpore(spore);
     	
     	return planet;
     }

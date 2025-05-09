@@ -35,8 +35,8 @@ public class DrawManager {
         tectonDrawer.draw(g, t);
     }
 
-    public void drawSpore(Graphics2D g, Spore spore, int x, int y){
-        sporeDrawer.draw(g, spore, x, y);
+    public void drawSpore(Graphics2D g, Spore spore){
+        sporeDrawer.draw(g, spore);
     }
 
     public void drawMushroomBody(Graphics2D g, MushroomBody mushroomBody){
@@ -47,8 +47,8 @@ public class DrawManager {
         mushroomStringDrawer.draw(g, mushroomString, x1, x2, y1, y2);
     }
 
-    public void drawInsect(Graphics2D g, Insect insect, int x, int y){
-        insectDrawer.draw(g, insect, x, y);
+    public void drawInsect(Graphics2D g, Insect insect){
+        insectDrawer.draw(g, insect);
     }
 
     public void drawPlanet(Graphics2D g, Planet p) {
@@ -57,8 +57,15 @@ public class DrawManager {
     	}
     	
     	for(MushroomBody b : p.getMushbodies()) {
-    		System.out.println(b.getName());
     		drawMushroomBody(g, b);
+    	}
+    	
+    	for(Insect i : p.getInsects()) {
+    		drawInsect(g, i);
+    	}
+    	
+    	for(Spore sp : p.getSpores()) {
+    		drawSpore(g, sp);
     	}
     }
 
