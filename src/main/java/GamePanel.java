@@ -1,11 +1,13 @@
 package main.java;
 
+import main.java.player.Player;
 import main.java.view.DrawManager;
 import main.java.view.UtilityTool;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel {
 
@@ -13,8 +15,11 @@ public class GamePanel extends JPanel {
 	private final DrawManager drawManager;
 	private BufferedImage backgroundImage;
 
-	public GamePanel() {
-		gameController = new GameController(false, 100);
+	public GamePanel(ArrayList<Player> players) {
+		gameController = new GameController(false, 20);
+		for(int i = 0; i < players.size(); i++) {
+			gameController.addPlayer(players.get(i));
+		}
 		drawManager = new DrawManager();
 		setBackground(Color.BLACK);
 		setDoubleBuffered(true);
@@ -29,10 +34,10 @@ public class GamePanel extends JPanel {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		if (backgroundImage != null) {
-			// méretezés a panel méretéhez
 			g2.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 		}
 
 		drawManager.drawPlanet(g2, gameController.buildPlanet());
 	}
+	public GameController getGameController() {return gameController;}
 }

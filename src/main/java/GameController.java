@@ -76,7 +76,7 @@ public class GameController {
     	ToxicTecton t5 = new ToxicTecton("T5", 3);
     	t5.setGeometry(new GeometryTecton(600, 600, 95));
     	
-    	Shroomer s = new Shroomer("s", false);
+    	/*Shroomer s = new Shroomer("s", false);
     	Mushroom m = new Mushroom("m", false);
     	MushroomBody mb0 = new MushroomBody(t1, m, 0, "mb0", false);
     	mb0.setGeometry(t1.getGeometry());
@@ -95,16 +95,16 @@ public class GameController {
     	
     	planet.addMushroomBody(mb0);
     	planet.addMushroomBody(mb1);
-    	planet.addMushroomBody(mb2);
+    	planet.addMushroomBody(mb2);*/
     	
     	planet.addTecton(t1);
     	planet.addTecton(t2);
     	planet.addTecton(t3);
     	planet.addTecton(t4);
     	planet.addTecton(t5);
-    	
+    	/*
     	planet.addInsect(in);
-    	planet.addSpore(spore);
+    	planet.addSpore(spore);*/
     	
     	return planet;
     }

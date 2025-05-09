@@ -2,10 +2,14 @@ package main.java;
 
 import javax.swing.*;
 
+import main.java.player.Insecter;
+import main.java.player.Player;
+import main.java.player.Shroomer;
 import main.java.view.UtilityTool;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class MainMenu extends JPanel {
 	
@@ -91,8 +95,32 @@ public class MainMenu extends JPanel {
 		});
 	}
 
+	private ArrayList<Player> addPlayers()	{
+		String insecterName1 = JOptionPane.showInputDialog(frame, "Enter name for Insecter 1:");
+		String insecterName2 = JOptionPane.showInputDialog(frame, "Enter name for Insecter 2:");
+		String shroomerName1 = JOptionPane.showInputDialog(frame, "Enter name for Shroomer 1:");
+		String shroomerName2 = JOptionPane.showInputDialog(frame, "Enter name for Shroomer 2:");
+
+		if (insecterName1 == null || insecterName2 == null || shroomerName1 == null || shroomerName2 == null ||
+				insecterName1.isBlank() || insecterName2.isBlank() || shroomerName1.isBlank() || shroomerName2.isBlank()) {
+			JOptionPane.showMessageDialog(frame, "All names must be provided.", "Input Error", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+
+		ArrayList<Player> players = new ArrayList<>();
+		players.add(new Insecter(insecterName1, false));
+		players.add(new Insecter(insecterName2, false));
+		players.add(new Shroomer(shroomerName1, false));
+		players.add(new Shroomer(shroomerName2, false));
+		return players;
+	}
+	GamePanel gamePanel;
 	private void startGame() {
-		GamePanel gamePanel = new GamePanel();
+		ArrayList<Player> players = addPlayers();
+		if(players != null) {
+           	gamePanel = new GamePanel(players);
+        } else
+			return;
 
 		// Teljes képernyő mód
 		frame.dispose();
