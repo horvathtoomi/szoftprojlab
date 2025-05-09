@@ -218,10 +218,12 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
             if(clickedTecton != null){
                 if(true){
                     clickedMushroomBody.spreadSpores(clickedTecton, "spore", "random", (Shroomer) p);
+                    gc.nextTurnCheck();
                 }
                 else {
                     if(clickedMushroomString != null){
                         clickedMushroomString.branch(clickedTecton, gc.getPlanet().getMushstrings());
+                        gc.nextTurnCheck();
                     }
                     else if(clickedMushroomBody != null){
                             if(clickedMushroomBody.getLocation().equals(clickedTecton)){
@@ -229,6 +231,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
                                 connection.add(clickedTecton);
                                 connection.add(null);
                                 gc.getPlanet().getMushstrings().add(new MushroomString("hypha", ((Shroomer) gc.getCurrentPlayer()).getMushroom(), connection, new ArrayList<>(Arrays.asList(null, null)), gc.getTurnCounter()));
+                                gc.nextTurnCheck();
                             }
                     }
                 }
