@@ -86,7 +86,8 @@ public class GameMenu extends JMenuBar {
                 MainMenu menu = new MainMenu(frame);
                 menu.setBackground(new Color(6, 26, 14));
                 frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                frame.add(menu); frame.setVisible(true);
+                frame.add(menu);
+                frame.setVisible(true);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 MenuSelectionManager.defaultManager().clearSelectedPath();
                 frame.revalidate();

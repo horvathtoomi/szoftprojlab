@@ -5,7 +5,6 @@ import main.java.view.UtilityTool;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Objects;
 
 public class Main {
 

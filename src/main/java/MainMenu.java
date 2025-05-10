@@ -20,6 +20,7 @@ public class MainMenu extends JPanel {
 	public MainMenu(JFrame frame) {
 		this.frame = frame;
 
+
 		UtilityTool uTool = new UtilityTool();
 		BufferedImage bgImage = uTool.load(prefix + "menu_bg6.png");
 
