@@ -119,7 +119,7 @@ public class Insect extends Nameable implements Updatable {
      * @return +1, ha FAST; -1, ha SLOW; 0 egyébként vagy ha nem tud mozogni.
      */
 	public int move(Tecton destination) {
-		if(canMove) {
+		if(canMove && location != destination){
 			location = destination;
 			if(speed == Insect.Speed.FAST) {
                 return 1;
