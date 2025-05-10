@@ -15,7 +15,7 @@ public class Main {
 	public static void main(String[] args) {
 		frame = new JFrame();
 
-		//app logo,
+		//app logo
 		BufferedImage logo = uTool.load(MainMenu.prefix + "mb_big.png");
 		frame.setIconImage(logo);
 

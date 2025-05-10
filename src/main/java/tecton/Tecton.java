@@ -96,11 +96,17 @@ public abstract class Tecton extends Nameable implements Updatable {
     }
 
     /**
-     * Meghatározza, hogy egy másik Tecton szomszédja-e az aktuálisnak.
-     * Ez majd csak a grafikus felület megcsinálása után fog megvalósulni. Egyelőre minden tekton szomszéd lesz.
+     * Meghatározza, hogy egy másik Tecton szomszédja-e az aktuálisnak. Ez akkor igaz, ha 400-nál kisebb a kettő távolsága
      */
     public boolean isNeighbour(Tecton t) {
-        return true;
+        if (this.geometry == null || t.geometry == null) return false;
+
+        double dx = this.geometry.getX() - t.geometry.getX();
+        double dy = this.geometry.getY() - t.geometry.getY();
+        double distance = Math.sqrt(dx * dx + dy * dy);
+        System.out.println(distance);
+
+        return distance <= 300;
     }
 
     /**
