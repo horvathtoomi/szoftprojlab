@@ -4,11 +4,24 @@ import main.java.GameController;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
+import java.util.Map;
 
 public class KeyHandler implements KeyListener {
 
     private int keyCode = -1; // alapértelmezett érték
-    GameController game;
+    private final GameController game;
+    private final Map<Integer, Boolean> keyMap = new HashMap<>();
+
+
+    public static final int KEY_PASS = KeyEvent.VK_P;
+    public static final int KEY_GROW_BODY = KeyEvent.VK_G;
+    public static final int KEY_MUSHROOM = KeyEvent.VK_M;
+    public static final int KEY_BRANCH = KeyEvent.VK_B;
+    public static final int KEY_SPREAD_SPORE = KeyEvent.VK_S;
+    public static final int KEY_HYPHA = KeyEvent.VK_H;
+    public static final int KEY_EAT = KeyEvent.VK_E;
+    public static final int KEY_CUT = KeyEvent.VK_C;
 
     public KeyHandler(GameController gc) {
         game = gc;
@@ -25,14 +38,25 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         keyCode = e.getKeyCode();
-        if(keyCode == KeyEvent.VK_P) {
-            game.getCurrentPlayer().pass();
-            game.nextTurnCheck();
+        keyMap.put(keyCode, true);
+
+        System.out.println("Key pressed: " + keyCode);
+
+        switch (keyCode) {
+            case KEY_PASS:
+                if (game.getCurrentPlayer() != null) {
+                    game.getCurrentPlayer().pass();
+                    game.nextTurnCheck();
+                }
+                break;
+
         }
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {}
+    public void keyReleased(KeyEvent e) {
+        keyMap.put(e.getKeyCode(), false);
+    }
 
     /**
      * Visszaadja az utoljára lenyomott billentyű kódját.
@@ -41,6 +65,13 @@ public class KeyHandler implements KeyListener {
     public int getKeyCode() {
         return keyCode;
     }
-    public void setKeyCode(int keyCode) {keyCode = keyCode;}
-    public void resetKeyCode() {keyCode = -1;}
+
+    public void setKeyCode(int keyCode) {
+        this.keyCode = keyCode;
+    }
+
+    public void resetKeyCode() {
+        keyCode = -1;
+    }
+
 }

@@ -1,7 +1,0 @@
-Shroomer s
-Insecter i
-Tecton t big
-Insect in t i
-Mushroom m s
-MushroomBody mb m t big s
-Split t splittedt1 splittedt2

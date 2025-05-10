@@ -24,14 +24,14 @@ import java.util.Arrays;
 public class MouseHandler implements MouseListener, MouseMotionListener {
 
     private final GameController gc;
-    boolean firstClick = true;
-    private final Runnable repaintCallback;
+    private boolean firstClick = true;
+    private Spore clickedSpore = null;
     private Insect clickedInsect = null;
     private Tecton clickedTecton = null;
-    private MushroomBody clickedMushroomBody = null;
-    private Spore clickedSpore = null;
-    private MushroomString clickedMushroomString = null;
     private final KeyHandler keyHandler;
+    private final Runnable repaintCallback;
+    private MushroomBody clickedMushroomBody = null;
+    private MushroomString clickedMushroomString = null;
 
     public MouseHandler(GameController gc, Runnable repaintCallback) {
         this.gc = gc;
@@ -148,18 +148,23 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
             ArrayList<Tecton> connections = ms.getConnection();
 
             // Ha kevesebb mint egy csatlakozás van, megyünk tovább
-            if (connections.size() < 2) continue;
+            if (connections.size() < 2) {
+                continue;
+            }
 
             // Az összekötött tektonok geometriáját lekérjük
             GeometryTecton geom1 = connections.get(0).getGeometry();
             GeometryTecton geom2 = connections.get(1).getGeometry();
 
-            if (geom1 == null || geom2 == null) continue;
+            if (geom1 == null || geom2 == null) {
+                continue;
+            }
 
             // Csak akkor folytatjuk, ha elég közel van a klikk a fonalhoz
             if (isClickNearLine(x, y, geom1.getX(), geom1.getY(), geom2.getX(), geom2.getY())) {
                 // Ha a current player Shroomer, akkor megnézzük, hogy az ő gombájának fonala-e
-                if (gc.getCurrentPlayer() instanceof Shroomer shroomer) {
+                if (gc.getCurrentPlayer() instanceof Shroomer) {
+                    Shroomer shroomer = (Shroomer) gc.getCurrentPlayer();
                     if (ms.getMushroom() == shroomer.getMushroom() && !ms.getDead()) {
                         clickedMushroomString = ms;
                         System.out.println("Selected mushroom string: " + ms.getName());
@@ -213,8 +218,9 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
             if (p instanceof Shroomer) {
                 MushroomBody mb = new MushroomBody(clickedTecton, ((Shroomer) p).getMushroom(), 2, "shroom", false);
                 for(MushroomBody m : gc.getPlanet().getMushbodies()) {
-                    if(m.getLocation().equals(clickedTecton))
+                    if(m.getLocation().equals(clickedTecton)) {
                         return;
+                    }
                 }
 
                 // Setting geometry for mushroom body
@@ -224,8 +230,9 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
                 gc.getPlanet().getMushbodies().add(mb);
             } else if (p instanceof Insecter) {
                 for(Insect i : gc.getPlanet().getInsects()) {
-                    if(i.getLocation().equals(clickedTecton))
+                    if(i.getLocation().equals(clickedTecton)) {
                         return;
+                    }
                 }
                 Insect i = new Insect(clickedTecton, "insect");
 
@@ -256,7 +263,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
                 selectTecton(mouseX, mouseY, true);
                 gc.nextTurnCheck(); //Ez akció, szóval ellenőrizzük a kört
             }
-            else if(keyHandler.getKeyCode() == 'm'){ // = mushroom
+            else if(keyHandler.getKeyCode() == 'm'){ // mushroom
                 selectMushroomBody(mouseX, mouseY);
             }
             else if(keyHandler.getKeyCode() == 'b') { // branch
@@ -319,7 +326,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
             else if(keyHandler.getKeyCode() == 'e'){ //E = eat spore
                 selectSpore(mouseX, mouseY);
             }
-            else if(keyHandler.getKeyCode() == 'c') { //C = cut (és nem cigány)
+            else if(keyHandler.getKeyCode() == 'c') { //C = cut
                 selectMushroomString(mouseX, mouseY);
             }
 
@@ -347,13 +354,11 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
      * @param mouseY a kattintás y koordinátája
      */
     private void gameClick(Player p, int mouseX, int mouseY) {
-        if(firstClick) {
+        if (firstClick) {
             firstGameClick(p, mouseX, mouseY);
-        }
-        else{
+        } else {
             secondGameClick(p, mouseX, mouseY);
         }
-
     }
 
     /**
@@ -365,10 +370,11 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
         Player p = gc.getCurrentPlayer();
         int x = e.getX();
         int y = e.getY();
-        if (gc.getInit())
+        if (gc.getInit()) {
             initClick(p, x, y);
-        else
+        } else {
             gameClick(p, x, y);
+        }
         repaintCallback.run();
     }
 

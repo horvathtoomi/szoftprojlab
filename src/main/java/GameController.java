@@ -14,9 +14,9 @@ import main.java.view.DefaultSporeDrawer;
  */
 public class GameController {
     private Planet planet;
-    private final int maxTurn;
-    boolean testing;
     private int turnCounter;
+    private final int maxTurn;
+    private final boolean testing;
     private final ArrayList<Player> players;
     private Player currentPlayer;
 

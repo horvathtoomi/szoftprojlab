@@ -1,6 +1,6 @@
 package main.java;
 
-import main.java.control.MouseHandler;
+import main.java.control.*;
 import main.java.player.*;
 import main.java.view.DrawManager;
 import main.java.view.UtilityTool;
@@ -15,7 +15,8 @@ public class GamePanel extends JPanel {
 	private final GameController gameController;
 	private final DrawManager drawManager;
 	private final BufferedImage backgroundImage;
-	private MouseHandler mouseHandler;
+	private final MouseHandler mouseHandler;
+	private final KeyHandler keyHandler;
 
 	public GamePanel(ArrayList<Player> players) {
 		gameController = new GameController(false, 20);
@@ -29,8 +30,11 @@ public class GamePanel extends JPanel {
 		UtilityTool ut = new UtilityTool();
 		backgroundImage = ut.load(MainMenu.prefix + "Background_icon3.png");
 		mouseHandler = new MouseHandler(gameController, this::repaint);
+		keyHandler = new KeyHandler(gameController);
 		this.addMouseListener(mouseHandler);
 		this.addMouseMotionListener(mouseHandler);
+		this.addKeyListener(keyHandler);
+		this.setFocusable(true);
 	}
 	/**
 	 * Draws the game status information including player scores and current game state

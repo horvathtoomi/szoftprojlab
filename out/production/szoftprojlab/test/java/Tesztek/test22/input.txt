@@ -1,2 +1,0 @@
-Tecton t coarse
-Split t t1 t2
