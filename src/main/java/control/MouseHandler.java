@@ -31,10 +31,12 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
     private MushroomBody clickedMushroomBody = null;
     private Spore clickedSpore = null;
     private MushroomString clickedMushroomString = null;
+    private final KeyHandler keyHandler;
 
     public MouseHandler(GameController gc, Runnable repaintCallback) {
         this.gc = gc;
         this.repaintCallback = repaintCallback;
+        this.keyHandler = new KeyHandler(gc);
     }
 
     private void reset(){
@@ -175,14 +177,14 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
     }
 
     /**
-     * Determines if a click point is near a line segment.
-     * @param clickX X coordinate of the click
-     * @param clickY Y coordinate of the click
-     * @param x1 X coordinate of line start
-     * @param y1 Y coordinate of line start
-     * @param x2 X coordinate of line end
-     * @param y2 Y coordinate of line end
-     * @return true if the click is within the threshold distance of the line
+     * Eldönti, hogy egy kattintás eléggé közel volt-e egy fonalhoz
+     * @param clickX X koordinátája a kattintásnak
+     * @param clickY Y koordinátája a kattintásnak
+     * @param x1 X koordinátája a fonal elejének
+     * @param y1 Y koordinátája a fonal elejének
+     * @param x2 X koordinátája a fonal végének
+     * @param y2 Y koordinátája a fonal végének
+     * @return igaz, ha a kattintás eléggé közel esik a fonalhoz
      */
     private boolean isClickNearLine(int clickX, int clickY, int x1, int y1, int x2, int y2) {
         final int THRESHOLD = 10;
@@ -249,15 +251,15 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
     private void firstGameClick(Player p, int mouseX, int mouseY) {
         if(p instanceof Shroomer) {
             System.out.println("Clicked at " + mouseX + ", " + mouseY);
-            //A gombára, spórás tektonra, vagy fonalra mehet, de ezt gombokkal lehessen kapcsolni. Addig placeholder if else
-            if(true){
+            //A gombára, spórás tektonra, vagy fonalra mehet
+            if(keyHandler.getKeyCode() == 'g'){ // G = give birth
                 selectTecton(mouseX, mouseY, true);
                 gc.nextTurnCheck(); //Ez akció, szóval ellenőrizzük a kört
             }
-            else if(false){
+            else if(keyHandler.getKeyCode() == 'm'){ // = mushroom
                 selectMushroomBody(mouseX, mouseY);
             }
-            else {
+            else if(keyHandler.getKeyCode() == 'b') { // branch
                 selectMushroomString(mouseX, mouseY);
             }
 
@@ -286,7 +288,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
             //Tektonra mehet, ahova a spórát szórjuk, vagy fonalat növesztünk oda. Egyelőre ideiglenes elágazás, és a gombafonalas cuccok is csak így láthatatlanban első gondolatra így kellene
             selectTecton(mouseX, mouseY, false);
             if(clickedTecton != null){
-                if(true){
+                if(keyHandler.getKeyCode() == 's'){ //S = spread spores
                     clickedMushroomBody.spreadSpores(clickedTecton, "spore", "random");
                     gc.nextTurnCheck();
                 }
@@ -295,7 +297,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
                         clickedMushroomString.branch(clickedTecton, gc.getPlanet().getMushstrings());
                         gc.nextTurnCheck();
                     }
-                    else if(clickedMushroomBody != null){
+                    else if(clickedMushroomBody != null && keyHandler.getKeyCode() == 'h'){ // H = hypha
                             if(clickedMushroomBody.getLocation().equals(clickedTecton)){
                                 ArrayList<Tecton> connection = new ArrayList<>();
                                 connection.add(clickedTecton);
@@ -311,13 +313,13 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
         else if(p instanceof Insecter) {
             System.out.println("Clicked at " + mouseX + ", " + mouseY);
             //A kattintás egy tektonra, spórára, vagy fonalra mehet, de lehet itt is célszerű lenne gombokkal szabályozni, hogy ne lehessen véletlenül mondjuk félrekattintani, emiatt az if-ek ideiglenesek
-            if(true){
+            if(keyHandler.getKeyCode() == 'm'){ // M = move
                 selectTecton(mouseX, mouseY, false);
             }
-            else if(false){
+            else if(keyHandler.getKeyCode() == 'e'){ //E = eat spore
                 selectSpore(mouseX, mouseY);
             }
-            else {
+            else if(keyHandler.getKeyCode() == 'c') { //C = cut (és nem cigány)
                 selectMushroomString(mouseX, mouseY);
             }
 
