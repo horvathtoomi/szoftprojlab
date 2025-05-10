@@ -79,6 +79,7 @@ public class GameController {
     	planet.addTecton(t3);
     	planet.addTecton(t4);
     	planet.addTecton(t5);
+        planet.recalcNeighbours();
     	
     	return planet;
     }

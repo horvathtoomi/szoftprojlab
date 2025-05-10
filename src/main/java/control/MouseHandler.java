@@ -317,12 +317,12 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
             else if(false){
                 selectSpore(mouseX, mouseY);
             }
-            else{
+            else {
                 selectMushroomString(mouseX, mouseY);
             }
 
-
-            if(clickedTecton != null && clickedInsect.getLocation() != clickedTecton) {
+            if(clickedTecton != null && clickedInsect.getLocation() != clickedTecton && clickedTecton.isNeighbour(clickedInsect.getLocation()) && gc.getPlanet().getMushstrings().stream()
+                    .anyMatch(ms -> ms.getConnection().contains(clickedInsect.getLocation()) && ms.getConnection().contains(clickedTecton))) {
                 clickedInsect.move(clickedTecton);
                 gc.nextTurnCheck();
             }
@@ -363,7 +363,6 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
         Player p = gc.getCurrentPlayer();
         int x = e.getX();
         int y = e.getY();
-        System.out.println("MOUSE CLICKED: X - " + x + ", Y - " + y);
         if (gc.getInit())
             initClick(p, x, y);
         else
