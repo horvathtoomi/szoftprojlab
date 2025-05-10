@@ -9,10 +9,11 @@ import java.awt.*;
 public class GameMenu extends JMenuBar {
 
         JButton b1, b2, b3;
+        JFrame frame;
 
-        public GameMenu() {
-
-            setBackground(Color.RED);
+        public GameMenu(JFrame frame) {
+            this.frame = frame;
+            setBackground(Color.LIGHT_GRAY);
 
             //Gombok
             b1 = new JButton("Save");
@@ -23,7 +24,15 @@ public class GameMenu extends JMenuBar {
             b2.addActionListener(e -> System.out.println("load"));
             b3.addActionListener(e -> {
                 System.out.println("exit");
-                System.exit(0);
+                frame.setJMenuBar(null);
+                frame.getContentPane().removeAll();
+                MainMenu menu = new MainMenu(frame);
+                frame.add(menu); frame.setVisible(true);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setLocationRelativeTo(null);
+                MenuSelectionManager.defaultManager().clearSelectedPath();
+                frame.revalidate();
+                frame.repaint();
             });
 
             JMenu menu = new JMenu("Menu");

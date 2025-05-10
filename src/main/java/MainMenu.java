@@ -122,7 +122,7 @@ public class MainMenu extends JPanel {
 		frame.setVisible(true);
 		frame.setLayout(new BorderLayout());
 		frame.getContentPane().removeAll();
-		frame.setJMenuBar(new GameMenu());
+		frame.setJMenuBar(new GameMenu(frame));
 		frame.add(gamePanel, BorderLayout.CENTER);
 		frame.revalidate();
 		frame.repaint();
