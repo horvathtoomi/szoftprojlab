@@ -71,8 +71,8 @@ public class MainMenu extends JPanel {
 		button.setOpaque(true);
 		button.setForeground(Color.WHITE);
 
-		Color baseColor = new Color(30, 30, 30);
-		Color hoverColor = new Color(60, 60, 60);
+		Color baseColor = new Color(47, 84, 39);
+		Color hoverColor = new Color(75, 125, 64);
 
 		button.setBackground(baseColor);
 
