@@ -1,7 +1,7 @@
 package main.java;
 
 import main.java.control.MouseHandler;
-import main.java.player.Player;
+import main.java.player.*;
 import main.java.view.DrawManager;
 import main.java.view.UtilityTool;
 
@@ -32,6 +32,73 @@ public class GamePanel extends JPanel {
 		this.addMouseListener(mouseHandler);
 		this.addMouseMotionListener(mouseHandler);
 	}
+	/**
+	 * Draws the game status information including player scores and current game state
+ 	 * @param g2 The Graphics2D context to draw on
+ 	*/
+	private void drawGameStatus(Graphics2D g2) {
+		// Draw player scores
+		ArrayList<Player> players = gameController.getPlayers();
+		Font regularFont = new Font("SansSerif", Font.BOLD, 14);
+		g2.setFont(regularFont);
+		g2.setColor(Color.WHITE);
+
+		int padding = 10;
+		int lineHeight = g2.getFontMetrics().getHeight();
+		int startX = getWidth() - 150;
+		int startY = padding + lineHeight;
+
+		// Draw player list with scores
+		for (int i = 0; i < players.size(); i++) {
+			Player p = players.get(i);
+			String text = p.getName() + " - " + p.getScore();
+			g2.drawString(text, startX, startY + i * lineHeight);
+		}
+
+		// Draw current player and remaining rounds at bottom right
+		Font statusFont = new Font("SansSerif", Font.BOLD, 16);
+		g2.setFont(statusFont);
+
+		// Create a semi-transparent background for better readability
+		int statusHeight = lineHeight * 2 + padding * 2;
+		int statusWidth = 250;
+		int statusX = getWidth() - statusWidth - padding;
+		int statusY = getHeight() - statusHeight - padding;
+
+		// Draw status background
+		g2.setColor(new Color(0, 0, 0, 180)); // Semi-transparent black
+		g2.fillRoundRect(statusX, statusY, statusWidth, statusHeight, 10, 10);
+
+		// Draw status text
+		g2.setColor(Color.WHITE);
+		Player currentPlayer = gameController.getCurrentPlayer();
+		int remainingRounds = gameController.getMaxTurn() - gameController.getTurnCounter();
+		String playerText = "Current Player: " + (currentPlayer != null ? currentPlayer.getName() : "None");
+		String roundText = "Remaining Rounds: " + remainingRounds;
+
+		// Draw the status text
+		g2.drawString(playerText, statusX + padding, statusY + lineHeight);
+		g2.drawString(roundText, statusX + padding, statusY + lineHeight * 2);
+
+		// If you want to highlight the current player's turn with a color
+		if (currentPlayer != null) {
+			Color playerColor;
+			if (currentPlayer instanceof Shroomer) {
+				playerColor = new Color(100, 200, 100); // Green for Shroomer
+			} else {
+				playerColor = new Color(200, 100, 100); // Red for Insecter
+			}
+
+			g2.setColor(playerColor);
+			g2.fillRoundRect(statusX + 160, statusY + lineHeight - 12, 10, 10, 5, 5);
+
+			// Add player's remaining actions
+			g2.setColor(Color.WHITE);
+			g2.setFont(new Font("SansSerif", Font.PLAIN, 14));
+			String actionsText = "Actions left: " + currentPlayer.getActions();
+			g2.drawString(actionsText, statusX + padding, statusY + lineHeight * 3);
+		}
+	}
 	
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -42,21 +109,6 @@ public class GamePanel extends JPanel {
 			g2.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 		}
 		drawManager.drawPlanet(g2, gameController.getPlanet());
-
-		ArrayList<Player> players = gameController.getPlayers();
-		Font font = new Font("SansSerif", Font.BOLD, 14);
-		g2.setFont(font);
-		g2.setColor(Color.WHITE);
-
-		int padding = 10;
-		int lineHeight = g2.getFontMetrics().getHeight();
-		int startX = getWidth() - 150;
-		int startY = padding + lineHeight;
-
-		for (int i = 0; i < players.size(); i++) {
-			Player p = players.get(i);
-			String text = p.getName() + " - " + p.getScore();
-			g2.drawString(text, startX, startY + i * lineHeight);
-		}
+		drawGameStatus(g2);
 	}
 }

@@ -139,9 +139,59 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
      */
     private void selectMushroomString(int x, int y) {
         for (MushroomString ms : gc.getPlanet().getMushstrings()) {
-            //Itt meg kellene határozni, hogy a fonal által meghatározott szakaszra esik-e a kattintás. Ha a currentPlayer shroomer, akkor ő branchelni akar, és akkor azt is meg kell nézni, hogy az ő gombájához
-            //tartozik-e a fonal. Ha insecter, akkor nem kell, hiszen az egy fonalvágás lesz. Csak ez egyelőre nemtom hogy kell, mert pl a fonalnak nincs geometryje ha jól látom
+            ArrayList<Tecton> connections = ms.getConnection();
+
+            // Ha kevesebb mint egy csatlakozás van, megyünk tovább
+            if (connections.size() < 2) continue;
+
+            // Az összekötött tektonok geometriáját lekérjük
+            GeometryTecton geom1 = connections.get(0).getGeometry();
+            GeometryTecton geom2 = connections.get(1).getGeometry();
+
+            if (geom1 == null || geom2 == null) continue;
+
+            // Csak akkor folytatjuk, ha elég közel van a klikk a fonalhoz
+            if (isClickNearLine(x, y, geom1.getX(), geom1.getY(), geom2.getX(), geom2.getY())) {
+                // Ha a current player Shroomer, akkor megnézzük, hogy az ő gombájának fonala-e
+                if (gc.getCurrentPlayer() instanceof Shroomer) {
+                    Shroomer shroomer = (Shroomer) gc.getCurrentPlayer();
+                    if (ms.getMushroom() == shroomer.getMushroom() && !ms.getDead()) {
+                        clickedMushroomString = ms;
+                        System.out.println("Selected mushroom string: " + ms.getName());
+                        return;
+                    }
+                } else if (gc.getCurrentPlayer() instanceof Insecter) {
+                    if (!ms.getDead()) {
+                        clickedMushroomString = ms;
+                        System.out.println("Selected mushroom string: " + ms.getName());
+                        return;
+                    }
+                }
+            }
         }
+    }
+
+    /**
+     * Determines if a click point is near a line segment.
+     * @param clickX X coordinate of the click
+     * @param clickY Y coordinate of the click
+     * @param x1 X coordinate of line start
+     * @param y1 Y coordinate of line start
+     * @param x2 X coordinate of line end
+     * @param y2 Y coordinate of line end
+     * @return true if the click is within the threshold distance of the line
+     */
+    private boolean isClickNearLine(int clickX, int clickY, int x1, int y1, int x2, int y2) {
+        final int THRESHOLD = 10;
+
+        double lineLength = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+        if (lineLength == 0) return false;
+
+        double distance = Math.abs((x2 - x1) * (y1 - clickY) - (x1 - clickX) * (y2 - y1)) / lineLength;
+        if (distance > THRESHOLD) return false;
+
+        double dotProduct = ((clickX - x1) * (x2 - x1) + (clickY - y1) * (y2 - y1)) / (lineLength * lineLength);
+        return dotProduct >= 0 && dotProduct <= 1;
     }
 
     /**
