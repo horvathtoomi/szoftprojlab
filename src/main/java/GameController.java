@@ -126,16 +126,9 @@ public class GameController {
         this.currentPlayer = player;
     }
     public void setCurrentPlayerToNextPlayer() {
-        int i1 = 0;
-        int i2 = 0;
-        for(Player p : players){
-            if(p.equals(currentPlayer)){
-                i2 = i1;
-                break;
-            }
-            i1++;
-        }
-        currentPlayer = players.get(i2);
+        int index = players.indexOf(currentPlayer);
+        index = (index + 1) % players.size();
+        currentPlayer = players.get(index);
     }
     public boolean getInit() {return init;}
     

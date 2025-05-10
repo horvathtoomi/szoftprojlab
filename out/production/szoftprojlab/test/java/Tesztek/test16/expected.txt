@@ -1,0 +1,51 @@
+Current round: 2
+
+1. Tecton t1 {
+  Type: BIG
+  Neighbours: {t2}
+  MushroomBodies: {mb1}
+  MushroomStrings: {}
+  Insects: {}
+  Spores: {}
+}
+2. Tecton t2 {
+  Type: BIG
+  Neighbours: {t1}
+  MushroomBodies: {}
+  MushroomStrings: {}
+  Insects: {i1}
+  Spores: {}
+}
+1. Insect i1 {
+  Tecton: t2
+  Nutrients: 2
+  Effect: SLOW
+  can move? yes
+  can cut string? yes
+  is dead? no
+}
+1. Mushroom m1 {
+  is dead? no
+}
+1. MushroomBody mb1 {
+  Owner: m1
+  Tecton: t1
+  state: BIG
+  spores available? yes
+  remaining sporulations: 2
+  is dead? no
+}
+1. Player s1 {
+Type: Shroomer
+Name: s1
+Score: 0
+Mushroom: m1
+}
+2. Player is1 {
+Type: Insecter
+Name: is1
+Score: 0
+Insects: 
+ - i1
+  Remaining actions: 9999
+}

@@ -207,6 +207,10 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
         if (clickedTecton != null) {
             if (p instanceof Shroomer) {
                 MushroomBody mb = new MushroomBody(clickedTecton, ((Shroomer) p).getMushroom(), 2, "shroom", false);
+                for(MushroomBody m : gc.getPlanet().getMushbodies()) {
+                    if(m.getLocation().equals(clickedTecton))
+                        return;
+                }
 
                 // Setting geometry for mushroom body
                 GeometryTecton tectonGeometry = clickedTecton.getGeometry();
@@ -214,6 +218,10 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
                 gc.getPlanet().getMushbodies().add(mb);
             } else if (p instanceof Insecter) {
+                for(Insect i : gc.getPlanet().getInsects()) {
+                    if(i.getLocation().equals(clickedTecton))
+                        return;
+                }
                 Insect i = new Insect(clickedTecton, "insect");
 
                 // THIS IS THE FIX - Set geometry for the insect
