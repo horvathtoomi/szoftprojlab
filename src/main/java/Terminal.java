@@ -631,122 +631,6 @@ public class Terminal {
             System.out.println("[SAVE] ERROR! -> Failed to save state: " + e.getMessage());
         }
     }
-
-    /**
-     * Mentés betöltését megvalósító függvény
-     *
-     * @param path A mentési file elérési útja
-     */
-    private void loadState(String path) {
-        try {
-            // Új játéktér létrehozása
-            gc = new GameController(gc.getTesting(), gc.getMaxTurn());
-            java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(path));
-            String line;
-
-            // Előfeldolgozás: sorok rendezése típus szerint
-            ArrayList<String> tectonLines = new ArrayList<>();
-            ArrayList<String> neighbourLines = new ArrayList<>();
-            ArrayList<String> playerLines = new ArrayList<>();
-            ArrayList<String> mushroomLines = new ArrayList<>();
-            ArrayList<String> bodyLines = new ArrayList<>();
-            ArrayList<String> stringLines = new ArrayList<>();
-            ArrayList<String> branchLines = new ArrayList<>();
-            ArrayList<String> insectLines = new ArrayList<>();
-            ArrayList<String> sporeLines = new ArrayList<>();
-            ArrayList<String> stateLines = new ArrayList<>();
-
-            while ((line = reader.readLine()) != null) {
-                if (line.startsWith("#") || line.trim().isEmpty()) continue; // Megjegyzések kihagyása
-
-                String[] parts = line.split("\\s+");
-                String command = parts[0].toLowerCase();
-
-                switch (command) {
-                    case "tecton": tectonLines.add(line); break;
-                    case "setneighbours": neighbourLines.add(line); break;
-                    case "shroomer": case "insecter": playerLines.add(line); break;
-                    case "mushroom": mushroomLines.add(line); break;
-                    case "mushroombody": bodyLines.add(line); break;
-                    case "mushroomstring": stringLines.add(line); break;
-                    case "branch": branchLines.add(line); break;
-                    case "insect": insectLines.add(line); break;
-                    case "spreadspore": sporeLines.add(line); break;
-                    case "turncounter": case "currentplayer": case "playerscore":
-                        stateLines.add(line); break;
-                }
-            }
-            reader.close();
-            // Tektonok feldolgozása
-            for (String tectonLine : tectonLines) {
-                processCommand(tectonLine, gc.getPlanet());
-            }
-            // Szomszédságok feldolgozása
-            for (String neighbourLine : neighbourLines) {
-                processCommand(neighbourLine, gc.getPlanet());
-            }
-            // Játékosok feldolgozása
-            for (String playerLine : playerLines) {
-                processCommand(playerLine, gc.getPlanet());
-            }
-            // Gombák feldolgozása
-            for (String mushroomLine : mushroomLines) {
-                processCommand(mushroomLine, gc.getPlanet());
-            }
-            // Gombatestek feldolgozása
-            for (String bodyLine : bodyLines) {
-                processCommand(bodyLine, gc.getPlanet());
-            }
-            // Gombafonalak feldolgozása
-            for (String stringLine : stringLines) {
-                processCommand(stringLine, gc.getPlanet());
-            }
-            // Elágazások feldolgozása
-            for (String branchLine : branchLines) {
-                processCommand(branchLine, gc.getPlanet());
-            }
-            // Rovarok feldolgozása
-            for (String insectLine : insectLines) {
-                processCommand(insectLine, gc.getPlanet());
-            }
-            // Spórák feldolgozása
-            for (String sporeLine : sporeLines) {
-                processCommand(sporeLine, gc.getPlanet());
-            }
-            // Játék állapot feldolgozása
-            for (String stateLine : stateLines) {
-                String[] parts = stateLine.split("\\s+");
-                if (parts[0].equalsIgnoreCase("TurnCounter")) {
-                    gc.setTurnCounter(Integer.parseInt(parts[1]));
-                }
-                else if (parts[0].equalsIgnoreCase("CurrentPlayer")) {
-                    String playerName = parts[1];
-                    for (Player player : gc.getPlayers()) {
-                        if (player.getName().equals(playerName)) {
-                            gc.setCurrentPlayer(player);
-                            break;
-                        }
-                    }
-                }
-                else if (parts[0].equalsIgnoreCase("PlayerScore")) {
-                    String playerName = parts[1];
-                    int score = Integer.parseInt(parts[2]);
-                    int actions = Integer.parseInt(parts[3]);
-                    for (Player player : gc.getPlayers()) {
-                        if (player.getName().equals(playerName)) {
-                            player.setScore(score);
-                            player.setActions(actions);
-                            break;
-                        }
-                    }
-                }
-            }
-            System.out.println("[LOAD] State loaded successfully from " + path);
-        } catch (Exception e) {
-            System.out.println("[LOAD] ERROR! -> Failed to load state: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
     
     /**
      * Annak vizsgálata, hogy egy akciót "felemésztő" parancsot az adott játékos végrehajthat-e
@@ -960,7 +844,7 @@ public class Terminal {
                         System.out.println("Incorrect usage of command: Load");
                         break;
                     }
-                    loadState(command[1]);
+                    //loadState(command[1]);
                     break;
                 }
                 default : {

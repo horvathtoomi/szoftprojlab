@@ -41,18 +41,15 @@ public class GameController {
      * @param geometry a felhasznált GeometryTecton példány
      * @return az új geometry
      */
-    private Geometry randomOffsetInsideCircle(GeometryTecton geometry) {
+    public Geometry randomOffsetInsideCircle(GeometryTecton geometry) {
         Random rand = new Random();
         Geometry g;
         int x, y;
-
         do {
             x = rand.nextInt(2 * geometry.getRadius()) - geometry.getRadius();
             y = rand.nextInt(2 * geometry.getRadius()) - geometry.getRadius();
         } while (Math.sqrt((x * x + y * y)) > geometry.getRadius() - DefaultSporeDrawer.SIZE);
-
         g = new Geometry(geometry.getX() + x, geometry.getY() + y);
-
         return g;
     }
 
