@@ -67,6 +67,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
                     }
                     if(counter >= 3) {
                         clickedTecton = t;
+                        System.out.println("Selected tecton: " + t.getName());
                         break;
                     }
                 }
@@ -92,6 +93,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
             if ((x <= (tx + radius) && x >= (tx - radius)) && (y <= (ty + radius) && y >= (ty - radius))
                     && ((Shroomer) gc.getCurrentPlayer()).getMushroom().equals(mb.getMushroom())) {
                 clickedMushroomBody = mb;
+                System.out.println("Selected body: " + mb.getName());
                 break;
             }
         }
@@ -110,6 +112,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
             if ((x <= (tx + radius) && x >= (tx - radius)) && (y <= (ty + radius) && y >= (ty - radius))
                     && ((Insecter) gc.getCurrentPlayer()).getInsects().contains(i)) {
                 clickedInsect = i;
+                System.out.println("Selected insect: " + i.getName());
                 break;
             }
         }
@@ -127,6 +130,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
             int radius = 35;
             if ((x <= (tx + radius) && x >= (tx - radius)) && (y <= (ty + radius) && y >= (ty - radius))) {
                 clickedSpore = s;
+                System.out.println("Selected spore: " + s.getName());
                 break;
             }
         }
@@ -153,8 +157,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
             // Csak akkor folytatjuk, ha elég közel van a klikk a fonalhoz
             if (isClickNearLine(x, y, geom1.getX(), geom1.getY(), geom2.getX(), geom2.getY())) {
                 // Ha a current player Shroomer, akkor megnézzük, hogy az ő gombájának fonala-e
-                if (gc.getCurrentPlayer() instanceof Shroomer) {
-                    Shroomer shroomer = (Shroomer) gc.getCurrentPlayer();
+                if (gc.getCurrentPlayer() instanceof Shroomer shroomer) {
                     if (ms.getMushroom() == shroomer.getMushroom() && !ms.getDead()) {
                         clickedMushroomString = ms;
                         System.out.println("Selected mushroom string: " + ms.getName());
@@ -207,6 +210,10 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
         if (clickedTecton != null) {
             if (p instanceof Shroomer) {
                 MushroomBody mb = new MushroomBody(clickedTecton, ((Shroomer) p).getMushroom(), 2, "shroom", false);
+                for(MushroomBody m : gc.getPlanet().getMushbodies()) {
+                    if(m.getLocation().equals(clickedTecton))
+                        return;
+                }
 
                 // Setting geometry for mushroom body
                 GeometryTecton tectonGeometry = clickedTecton.getGeometry();
@@ -214,6 +221,10 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
                 gc.getPlanet().getMushbodies().add(mb);
             } else if (p instanceof Insecter) {
+                for(Insect i : gc.getPlanet().getInsects()) {
+                    if(i.getLocation().equals(clickedTecton))
+                        return;
+                }
                 Insect i = new Insect(clickedTecton, "insect");
 
                 // THIS IS THE FIX - Set geometry for the insect
@@ -311,7 +322,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
             }
 
 
-            if(clickedTecton != null) {
+            if(clickedTecton != null && clickedInsect.getLocation() != clickedTecton) {
                 clickedInsect.move(clickedTecton);
                 gc.nextTurnCheck();
             }

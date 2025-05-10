@@ -1,0 +1,12 @@
+tecton t1 big
+tecton t2 big
+SetNeighbours t1 t2
+shroomer s
+mushroom m s
+mushroombody mb m t1 big s
+spreadspore spore mb t2 multiplier s
+pass s
+insecter i
+insect in t2 i
+pass s
+consume in spore i

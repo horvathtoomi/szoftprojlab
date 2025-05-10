@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/szoftprojlabGrafik3.0.iml" filepath="$PROJECT_DIR$/szoftprojlabGrafik3.0.iml" />
+      <module fileurl="file://$PROJECT_DIR$/szoftprojlab.iml" filepath="$PROJECT_DIR$/szoftprojlab.iml" />
     </modules>
   </component>
 </project>

@@ -1,0 +1,14 @@
+Tecton t1 small
+Tecton t2 small
+SetNeighbours t1 t2
+Shroomer sh1
+Mushroom m1 sh1
+MushroomBody mb1 m1 t1 big sh1
+MushroomString ms1 m1 t1 sh1
+Branch ms1 t2 sh1
+SpreadSpore s1 mb1 t2 gentle sh1
+Pass sh1
+SpreadSpore s2 mb1 t2 gentle sh1
+Pass sh1
+SpreadSpore s3 mb1 t2 gentle sh1
+MushroomBody mb2 m1 t2 small sh1
