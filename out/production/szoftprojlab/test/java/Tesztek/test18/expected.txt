@@ -1,0 +1,35 @@
+Current round: 2
+
+1. Tecton t {
+  Type: BIG
+  Neighbours: {}
+  MushroomBodies: {}
+  MushroomStrings: {}
+  Insects: {in}
+  Spores: {}
+}
+1. Insect in {
+  Tecton: t
+  Nutrients: 0
+  Effect: NO EFFECT
+  can move? yes
+  can cut string? yes
+  is dead? no
+}
+1. Mushroom m {
+  is dead? no
+}
+1. Player s {
+Type: Shroomer
+Name: s
+Score: 0
+Mushroom: m
+}
+2. Player i {
+Type: Insecter
+Name: i
+Score: 0
+Insects: 
+ - in
+  Remaining actions: 10000
+}

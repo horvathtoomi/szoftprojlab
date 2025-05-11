@@ -1,0 +1,11 @@
+Tecton t1 big
+Tecton t2 big
+SetNeighbours t1 t2
+Shroomer s1
+Insecter is1
+Mushroom m1 s1
+MushroomBody mb1 m1 t1 big s1
+SpreadSpore sp1 mb1 t2 fast s1
+Insect i1 t2 is1
+pass s1
+Consume i1 sp1 is1
