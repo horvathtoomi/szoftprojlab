@@ -2,6 +2,7 @@ package main.java.control;
 
 import main.java.GameController;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ public class KeyHandler implements KeyListener {
     private int keyCode = -1; // alapértelmezett érték
     private final GameController game;
     private final Map<Integer, Boolean> keyMap = new HashMap<>();
+    private final Runnable repaintCallback;
 
 
     public static final int KEY_PASS = KeyEvent.VK_P;
@@ -23,8 +25,9 @@ public class KeyHandler implements KeyListener {
     public static final int KEY_EAT = KeyEvent.VK_E;
     public static final int KEY_CUT = KeyEvent.VK_C;
 
-    public KeyHandler(GameController gc) {
+    public KeyHandler(GameController gc, Runnable repaintCallback) {
         game = gc;
+        this.repaintCallback = repaintCallback;
     }
 
     @Override
@@ -46,6 +49,7 @@ public class KeyHandler implements KeyListener {
             if (game.getCurrentPlayer() != null) {
                 game.getCurrentPlayer().pass();
                 game.nextTurnCheck();
+                repaintCallback.run();
             }
         }
     }

@@ -30,7 +30,7 @@ public class GamePanel extends JPanel {
 		UtilityTool ut = new UtilityTool();
 		backgroundImage = ut.load(MainMenu.prefix + "Background_icon3.png");
 		mouseHandler = new MouseHandler(gameController, this::repaint);
-		keyHandler = new KeyHandler(gameController);
+		keyHandler = new KeyHandler(gameController, this::repaint);
 		this.addMouseListener(mouseHandler);
 		this.addMouseMotionListener(mouseHandler);
 		this.addKeyListener(keyHandler);

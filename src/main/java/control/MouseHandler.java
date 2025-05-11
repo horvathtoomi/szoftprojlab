@@ -36,7 +36,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
     public MouseHandler(GameController gc, Runnable repaintCallback) {
         this.gc = gc;
         this.repaintCallback = repaintCallback;
-        this.keyHandler = new KeyHandler(gc);
+        this.keyHandler = new KeyHandler(gc, repaintCallback);
     }
 
     private void reset(){
