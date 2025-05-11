@@ -160,28 +160,29 @@ public class GameController {
      *  – ha minden játékos kifogyott az akcióból VAGY passzolt, új kör indul
      *  – ekkor Planet.update() fut, visszatöltjük az akciókat, körszámláló nő
      */
-    public void nextTurnCheck() {
-    	 planet.checkForDeadShrooms();
-    	 planet.deleteDeadObjects(turnCounter, players);
-    	 planet.checkForBodyConnection();
-    	 if(currentPlayer.getActions() > 0)
-    		 currentPlayer.takeAction();
+    public ArrayList<Player> nextTurnCheck() {
+        planet.checkForDeadShrooms();
+        planet.deleteDeadObjects(turnCounter, players);
+        planet.checkForBodyConnection();
 
-         if (currentPlayer.getActions() == 0) {
-             int currentIndex = players.indexOf(currentPlayer);
-             int nextIndex = (currentIndex + 1) % players.size();  
-             currentPlayer = players.get(nextIndex);
-             turnCounter++;  
-             currentPlayer.update(testing); 
-             planet.update(!testing); 
-             if (turnCounter == maxTurn) { 
-                 ArrayList<Player> winners = determineWinners();
-                 for (Player player : winners) {
-                     System.out.println("Winner: " + player.getName() + " ");
-                 }
-             }
-         }
+        if (currentPlayer.getActions() > 0)
+            currentPlayer.takeAction();
+
+        if (currentPlayer.getActions() == 0) {
+            if (turnCounter == maxTurn) {
+                return determineWinners();
+            }
+            int currentIndex = players.indexOf(currentPlayer);
+            int nextIndex = (currentIndex + 1) % players.size();
+            currentPlayer = players.get(nextIndex);
+            turnCounter++;
+            currentPlayer.update(testing);
+            planet.update(!testing);
+        }
+
+        return new ArrayList<>();
     }
+
 
     /**
      * Meghatározza a játék győzteseit egy GameOverVisitor segítségével.

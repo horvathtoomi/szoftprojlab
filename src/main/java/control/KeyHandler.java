@@ -42,14 +42,11 @@ public class KeyHandler implements KeyListener {
 
         System.out.println("Key pressed: " + keyCode);
 
-        switch (keyCode) {
-            case KEY_PASS:
-                if (game.getCurrentPlayer() != null) {
-                    game.getCurrentPlayer().pass();
-                    game.nextTurnCheck();
-                }
-                break;
-
+        if (keyCode == KEY_PASS) {
+            if (game.getCurrentPlayer() != null) {
+                game.getCurrentPlayer().pass();
+                game.nextTurnCheck();
+            }
         }
     }
 

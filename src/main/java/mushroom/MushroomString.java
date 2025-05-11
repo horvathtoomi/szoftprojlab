@@ -151,6 +151,33 @@ public class MushroomString extends Nameable implements Updatable {
 	    allStrings.add(child);
 	    return true;
 	}
+
+	private boolean hasHealingEnd(){
+		boolean hasHealingEnd = false;
+		for (Tecton t : connection) {
+			KeepStringAliveVisitor healV = new KeepStringAliveVisitor();
+			((TectonAccept) t).accept(healV);
+			if (healV.canPerformAction()) {      // Healing -> true
+				hasHealingEnd = true;
+				break;
+			}
+		}
+		return hasHealingEnd;
+	}
+
+	private void removeOrphans(){
+		connection.removeIf(t -> {
+			KeepStringAliveVisitor healV = new KeepStringAliveVisitor();
+			((TectonAccept) t).accept(healV);
+			return !healV.canPerformAction();      // true -> nem Healing, leesik
+		});
+
+		if (connection.isEmpty()) {                // csak akkor hal meg, ha SEMMI nem maradt
+			dead = true;
+			return;
+		}
+		orphanAge = 0;                             // számláló újraindul
+	}
 	
 	/**
      * Az Updatable interfész felüldefiniált update függvénye. 
@@ -161,97 +188,74 @@ public class MushroomString extends Nameable implements Updatable {
 	@Override
 	public void update(boolean random) {
 
-	    /* 1) öregszünk */
-		if(!dead)
-		{
-			lifeLine++;
-		    age++;
+		/* 1) öregszünk */
+		if (!dead) {
+			incrementAge();
 		}
-		
-	    /* 2) végig­nézzük, van-e toxikus Tecton */
-	    boolean toxicReachedLimit = false;
 
-	    CanKillStringVisitor v = new CanKillStringVisitor();
-	    for (Tecton t : new ArrayList<>(connection)) {       // biztonság kedvéért másolaton iterálunk
-	        ((TectonAccept) t).accept(v);
+		/* 2) végignézzük, van-e toxikus Tecton */
+		boolean toxicReachedLimit = false;
 
-	        /* csak ToxicTectonra ad true-t a visitor */
-	        if (v.canPerformAction() && age >= TOXIC_AGE_LIMIT) {
-	            toxicReachedLimit = true;
-	            connection.remove(t);        // ez a Tecton „leesik” a fonalról
-	        }
-	    }
+		CanKillStringVisitor v = new CanKillStringVisitor();
+		for (Tecton t : new ArrayList<>(connection)) {       // biztonság kedvéért másolaton iterálunk
+			((TectonAccept) t).accept(v);
 
-	    /* 3) ha minden ág leesett, tényleg meghalunk */
-	    if (toxicReachedLimit && connection.isEmpty()) {
-	        dead = true;
-	        return;
-	    }
+			/* csak ToxicTectonra ad true-t a visitor */
+			if (v.canPerformAction() && age >= TOXIC_AGE_LIMIT) {
+				toxicReachedLimit = true;
+				connection.remove(t);        // ez a Tecton „leesik” a fonalról
+			}
+		}
+
+		/* 3) ha minden ág leesett, tényleg meghalunk */
+		if (toxicReachedLimit && connection.isEmpty()) {
+			dead = true;
+			return;
+		}
 	    
-	    /*  if a fonal már nem kapcsolódik a gomba­testhez ÉS nem Healing-en áll,
-	    akkor öregszik s végül elpusztul  */
 	    /*  if a fonal már nem kapcsolódik a gombatesthez ÉS nem Healing-en áll,
 	    akkor öregszik s végül elpusztul  */
 		if (!connectedToBody) {
-		    v = new CanKillStringVisitor();                       // csak példányosítás
-		    ((TectonAccept) connection.get(0)).accept(v);     // de NEM új deklaráció
-	
-		    if (v.canPerformAction() && age >= TOXIC_AGE_LIMIT) {
-		        dead = true;
-		        return;
-		    }
+			v = new CanKillStringVisitor();
+			((TectonAccept) connection.get(0)).accept(v);
+
+			if (v.canPerformAction() && age >= TOXIC_AGE_LIMIT) {
+				dead = true;
+				return;
+			}
 		}
 
 	    /* 4) ha már nincs toxikus águnk, indulunk elölről a számlálással,
 	          különben a maradék ág is feleslegesen tovább öregedne */
-	    if (toxicReachedLimit) {
-	        age = 0;
-	    }
-	    
-	    /* 4/b) – árva-e?  (nincs gyökér-kapcsolat) */
-	    if (!connectedToBody) {
+		if (toxicReachedLimit) {
+			age = 0;
+		}
 
-	        orphanAge++;                 // <<<  minden körben NÖVELJÜK
+		/* 4/b) – árva-e?  (nincs gyökér-kapcsolat) */
+		if (!connectedToBody) {
 
-	        /* Healing-vég keresése visitorral */
-	        boolean hasHealingEnd = false;
-	        for (Tecton t : connection) {
-	            KeepStringAliveVisitor healV = new KeepStringAliveVisitor();
-	            ((TectonAccept) t).accept(healV);
-	            if (healV.canPerformAction()) {      // Healing -> true
-	                hasHealingEnd = true;
-	                break;
-	            }
-	        }
+			orphanAge++;                 // <<<  minden körben NÖVELJÜK
 
-	        /* 3 kör után minden NEM-Healing ág leesik – akkor is, ha van Healing-vég */
-	        if (orphanAge >= ORPHAN_AGE_LIMIT) {
+			/* Healing-vég keresése visitorral */ //ninc használva semmire
+			boolean healingEnd = hasHealingEnd();
 
-	            connection.removeIf(t -> {
-	                KeepStringAliveVisitor healV = new KeepStringAliveVisitor();
-	                ((TectonAccept) t).accept(healV);
-	                return !healV.canPerformAction();      // true -> nem Healing, leesik
-	            });
+			/* 3 kör után minden NEM-Healing ág leesik – akkor is, ha van Healing-vég */
+			if (orphanAge >= ORPHAN_AGE_LIMIT) {
+				removeOrphans();
 
-	            if (connection.isEmpty()) {                // csak akkor hal meg, ha SEMMI nem maradt
-	                dead = true;
-	                return;
-	            }
-	            orphanAge = 0;                             // számláló újraindul
-	        }
+			} else {
+				orphanAge = 0;                                 // ismét van gyökér
+			}
 
-	    } else {
-	        orphanAge = 0;                                 // ismét van gyökér
-	    }
-
-	    /* 5) normál növekedés (változatlanul) */
-	    if (random) {
-	        if (new java.util.Random().nextInt(3) == 0) {
-	            lifeCycle = LifeCycle.Grown;
-	        }
-	    } else {
-	        lifeCycle = LifeCycle.Grown;
-	    }
+			/* 5) normál növekedés (változatlanul) */
+			if (random) {
+				if (new java.util.Random().nextInt(3) == 0) {
+					lifeCycle = LifeCycle.Grown;
+				}
+			} else {
+				lifeCycle = LifeCycle.Grown;
+			}
+		}
 	}
 	
 	/**

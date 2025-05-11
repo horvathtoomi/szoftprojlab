@@ -88,9 +88,9 @@ public class GamePanel extends JPanel {
 		if (currentPlayer != null) {
 			Color playerColor;
 			if (currentPlayer instanceof Shroomer) {
-				playerColor = new Color(100, 200, 100); // Green for Shroomer
+				playerColor = new Color(200, 100, 100); // Red for Shroomer
 			} else {
-				playerColor = new Color(200, 100, 100); // Red for Insecter
+				playerColor = new Color(255, 215, 0);   // Yellow for Insecter
 			}
 
 			g2.setColor(playerColor);
@@ -101,9 +101,33 @@ public class GamePanel extends JPanel {
 			g2.setFont(new Font("SansSerif", Font.PLAIN, 14));
 			String actionsText = "Actions left: " + currentPlayer.getActions();
 			g2.drawString(actionsText, statusX + padding, statusY + lineHeight * 3);
+			ArrayList<Player> winners = gameController.nextTurnCheck();
+			if (!winners.isEmpty()) {
+				gameEndsPopup(winners);
+			}
 		}
 	}
-	
+
+	private void gameEndsPopup(ArrayList<Player> winners) {
+        String message = "The winners are: " +
+                winners.get(0).getName() +
+                " and " +
+               // winners.get(1).getName() +
+                "!";
+
+		JOptionPane.showMessageDialog(this, message, "Game Over", JOptionPane.INFORMATION_MESSAGE);
+
+		JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+		frame.setJMenuBar(null);
+		frame.getContentPane().removeAll();
+		MainMenu menu = new MainMenu(frame);
+		menu.setBackground(new Color(6, 26, 14));
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		frame.add(menu);
+		frame.revalidate();
+		frame.repaint();
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
