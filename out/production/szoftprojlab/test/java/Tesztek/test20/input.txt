@@ -1,2 +1,0 @@
-Tecton t small
-Split t t1 t2

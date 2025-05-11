@@ -1,6 +1,7 @@
 package main.java.control;
 
 import main.java.GameController;
+import main.java.GamePanel;
 import main.java.insect.Insect;
 import main.java.mushroom.MushroomBody;
 import main.java.mushroom.MushroomString;
@@ -13,7 +14,6 @@ import main.java.tecton.Tecton;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -21,7 +21,7 @@ import java.util.Arrays;
  * A MouseHandler osztály felelős az egér események kezeléséért.
  * Kezeli a kattintásokat és az egér mozgását a felhasználói felületen.
  */
-public class MouseHandler implements MouseListener, MouseMotionListener {
+public class MouseHandler implements MouseListener {
 
     private final GameController gc;
     private boolean firstClick = true;
@@ -32,11 +32,13 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
     private final Runnable repaintCallback;
     private MushroomBody clickedMushroomBody = null;
     private MushroomString clickedMushroomString = null;
+    private final GamePanel gamePanel;
 
-    public MouseHandler(GameController gc, Runnable repaintCallback) {
+    public MouseHandler(GameController gc, Runnable repaintCallback, GamePanel gamePanel) {
         this.gc = gc;
         this.repaintCallback = repaintCallback;
-        this.keyHandler = new KeyHandler(gc, repaintCallback);
+        this.keyHandler = new KeyHandler(gc, repaintCallback, gamePanel);
+        this.gamePanel = gamePanel;
     }
 
     private void reset(){
@@ -46,6 +48,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
         clickedTecton = null;
         clickedMushroomBody = null;
         clickedMushroomString = null;
+        gamePanel.setShineOn(GamePanel.ShineOn.NONE);
     }
 
     /**
@@ -55,6 +58,9 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
      * @param searchForSpores Ha igaz, akkor csak az elégséges spórával rendelkező tektonokat vizsgálja - ha testet akarunk növeszteni
      */
     private void selectTecton(int x, int y, boolean searchForSpores) {
+        // Beállítjuk a kiemelést a tektonokra
+        gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
+        repaintCallback.run();
         for (Tecton t : gc.getPlanet().getTectons()) {
             int tx = t.getGeometry().getX();
             int ty = t.getGeometry().getY();
@@ -88,6 +94,9 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
      * @param y a kattintás y koordinátája
      */
     private void selectMushroomBody(int x, int y) {
+        // Beállítjuk a kiemelést a gombatestekre
+        gamePanel.setShineOn(GamePanel.ShineOn.MUSHBODY);
+        repaintCallback.run();
         for (MushroomBody mb : gc.getPlanet().getMushbodies()) {
             int tx = mb.getGeometry().getX();
             int ty = mb.getGeometry().getY();
@@ -107,6 +116,9 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
      * @param y a kattintás y koordinátája
      */
     private void selectInsect(int x, int y) {
+        // Beállítjuk a kiemelést a rovarokra
+        gamePanel.setShineOn(GamePanel.ShineOn.INSECT);
+        repaintCallback.run();
         for (Insect i : gc.getPlanet().getInsects()) {
             int tx = i.getGeometry().getX();
             int ty = i.getGeometry().getY();
@@ -126,6 +138,9 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
      * @param y a kattintás y koordinátája
      */
     private void selectSpore(int x, int y) {
+        // Beállítjuk a kiemelést a spórákra
+        gamePanel.setShineOn(GamePanel.ShineOn.SPORE);
+        repaintCallback.run();
         for (Spore s : gc.getPlanet().getSpores()) {
             int tx = s.getGeometry().getX();
             int ty = s.getGeometry().getY();
@@ -144,6 +159,9 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
      * @param y a kattintás y koordinátája
      */
     private void selectMushroomString(int x, int y) {
+        // Beállítjuk a kiemelést a gombafonalokra
+        gamePanel.setShineOn(GamePanel.ShineOn.MUSHSTRING);
+        repaintCallback.run();
         for (MushroomString ms : gc.getPlanet().getMushstrings()) {
             ArrayList<Tecton> connections = ms.getConnection();
 
@@ -385,14 +403,58 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
     public void mouseReleased(MouseEvent e) {}
 
     @Override
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {
+        // Ha a játék inicializáló fázisban van
+        if (gc.getInit()) {
+            Player p = gc.getCurrentPlayer();
+            if (p instanceof Shroomer) {
+                gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
+            } else if (p instanceof Insecter) {
+                gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
+            }
+        } else {
+            // Normál játékmenet esetén
+            Player p = gc.getCurrentPlayer();
+            int key = keyHandler.getKeyCode();
+
+            if (p instanceof Shroomer) {
+                if (firstClick) {
+                    // Első kattintás esetén a megfelelő kiemelés beállítása a billentyű alapján
+                    if (key == KeyHandler.KEY_GROW_BODY) {
+                        gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
+                    } else if (key == KeyHandler.KEY_MUSHROOM) {
+                        gamePanel.setShineOn(GamePanel.ShineOn.MUSHBODY);
+                    } else if (key == KeyHandler.KEY_BRANCH) {
+                        gamePanel.setShineOn(GamePanel.ShineOn.MUSHSTRING);
+                    }
+                } else {
+                    // Második kattintás esetén
+                    if (clickedMushroomBody != null && key == KeyHandler.KEY_SPREAD_SPORE) {
+                        gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
+                    } else if (clickedMushroomString != null) {
+                        gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
+                    }
+                }
+            } else if (p instanceof Insecter) {
+                if (firstClick) {
+                    gamePanel.setShineOn(GamePanel.ShineOn.INSECT);
+                } else {
+                    // Második kattintás esetén az insecter akcióinak megfelelő kiemelés
+                    if (key == KeyHandler.KEY_MOVE) {
+                        gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
+                    } else if (key == KeyHandler.KEY_EAT) {
+                        gamePanel.setShineOn(GamePanel.ShineOn.SPORE);
+                    } else if (key == KeyHandler.KEY_CUT) {
+                        gamePanel.setShineOn(GamePanel.ShineOn.MUSHSTRING);
+                    }
+                }
+            }
+        }
+        repaintCallback.run();
+    }
+
 
     @Override
     public void mouseExited(MouseEvent e) {}
 
-    @Override
-    public void mouseDragged(MouseEvent e) {}
-
-    @Override
-    public void mouseMoved(MouseEvent e) {}
 }

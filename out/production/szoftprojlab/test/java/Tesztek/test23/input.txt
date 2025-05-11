@@ -1,2 +1,0 @@
-Tecton t healing
-Split t t1 t2
