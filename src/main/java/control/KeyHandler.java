@@ -1,8 +1,8 @@
 package main.java.control;
 
 import main.java.GameController;
+import main.java.GamePanel;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ public class KeyHandler implements KeyListener {
     private final GameController game;
     private final Map<Integer, Boolean> keyMap = new HashMap<>();
     private final Runnable repaintCallback;
-
+    private final GamePanel gamePanel;
 
     public static final int KEY_PASS = KeyEvent.VK_P;
     public static final int KEY_GROW_BODY = KeyEvent.VK_G;
@@ -24,10 +24,12 @@ public class KeyHandler implements KeyListener {
     public static final int KEY_HYPHA = KeyEvent.VK_H;
     public static final int KEY_EAT = KeyEvent.VK_E;
     public static final int KEY_CUT = KeyEvent.VK_C;
+    public static final int KEY_MOVE = KeyEvent.VK_M;
 
-    public KeyHandler(GameController gc, Runnable repaintCallback) {
+    public KeyHandler(GameController gc, Runnable repaintCallback, GamePanel gamePanel) {
         game = gc;
         this.repaintCallback = repaintCallback;
+        this.gamePanel = gamePanel;
     }
 
     @Override
@@ -43,15 +45,47 @@ public class KeyHandler implements KeyListener {
         keyCode = e.getKeyCode();
         keyMap.put(keyCode, true);
 
-        System.out.println("Key pressed: " + keyCode);
+        System.out.println("Key pressed: " + (char)keyCode);
 
-        if (keyCode == KEY_PASS) {
-            if (game.getCurrentPlayer() != null) {
-                game.getCurrentPlayer().pass();
-                game.nextTurnCheck();
-                repaintCallback.run();
-            }
+        switch (keyCode) {
+            case KEY_PASS:
+                gamePanel.setShineOn(GamePanel.ShineOn.NONE);
+                if (game.getCurrentPlayer() != null) {
+                    game.getCurrentPlayer().pass();
+                    game.nextTurnCheck();
+                    repaintCallback.run();
+                }
+                break;
+            case KEY_GROW_BODY:
+                gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
+                //Implementalas
+                break;
+            case KEY_MUSHROOM:
+                gamePanel.setShineOn(GamePanel.ShineOn.MUSHBODY);
+                break;
+            case KEY_BRANCH:
+                gamePanel.setShineOn(GamePanel.ShineOn.MUSHSTRING);
+                break;
+            case KEY_SPREAD_SPORE:
+                gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
+                break;
+            case KEY_HYPHA:
+                gamePanel.setShineOn(GamePanel.ShineOn.MUSHBODY);
+                break;
+            //case KEY_MOVE:
+            //    gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
+            //    break;
+            case KEY_EAT:
+                gamePanel.setShineOn(GamePanel.ShineOn.SPORE);
+                break;
+            case KEY_CUT:
+                gamePanel.setShineOn(GamePanel.ShineOn.MUSHSTRING);
+                break;
+            default:
+                gamePanel.setShineOn(GamePanel.ShineOn.NONE);
+                break;
         }
+        repaintCallback.run();
     }
 
     @Override
@@ -65,14 +99,6 @@ public class KeyHandler implements KeyListener {
      */
     public int getKeyCode() {
         return keyCode;
-    }
-
-    public void setKeyCode(int keyCode) {
-        this.keyCode = keyCode;
-    }
-
-    public void resetKeyCode() {
-        keyCode = -1;
     }
 
 }

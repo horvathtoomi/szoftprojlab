@@ -15,12 +15,12 @@ public class Main {
 	public static void main(String[] args) {
 		frame = new JFrame();
 
-		//app logo
 		BufferedImage logo = uTool.load(MainMenu.prefix + "mb_big.png");
 		frame.setIconImage(logo);
 
 		menu = new MainMenu(frame);
 		menu.setBackground(new Color(6, 26, 14));
+
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.add(menu);
 		frame.setVisible(true);

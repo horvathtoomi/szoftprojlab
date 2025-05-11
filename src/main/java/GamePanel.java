@@ -12,6 +12,9 @@ import java.util.ArrayList;
 
 public class GamePanel extends JPanel {
 
+	public enum ShineOn {TECTON, MUSHBODY, MUSHSTRING, SPORE, INSECT, NONE};
+	private ShineOn shineOn = ShineOn.NONE;
+
 	private final GameController gameController;
 	private final DrawManager drawManager;
 	private final BufferedImage backgroundImage;
@@ -29,13 +32,22 @@ public class GamePanel extends JPanel {
 		setDoubleBuffered(true);
 		UtilityTool ut = new UtilityTool();
 		backgroundImage = ut.load(MainMenu.prefix + "Background_icon3.png");
-		mouseHandler = new MouseHandler(gameController, this::repaint);
-		keyHandler = new KeyHandler(gameController, this::repaint);
+		mouseHandler = new MouseHandler(gameController, this::repaint, this);
+		keyHandler = new KeyHandler(gameController, this::repaint, this);
 		this.addMouseListener(mouseHandler);
-		this.addMouseMotionListener(mouseHandler);
 		this.addKeyListener(keyHandler);
 		this.setFocusable(true);
 	}
+
+	//Getter és setter a kiemelés állításához
+	public void setShineOn(ShineOn shineOn) {
+		this.shineOn = shineOn;
+	}
+
+	public ShineOn getShineOn() {
+		return shineOn;
+	}
+
 	/**
 	 * Draws the game status information including player scores and current game state
  	 * @param g2 The Graphics2D context to draw on
@@ -136,7 +148,7 @@ public class GamePanel extends JPanel {
 		if (backgroundImage != null) {
 			g2.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 		}
-		drawManager.drawPlanet(g2, gameController.getPlanet());
+		drawManager.drawPlanet(g2, gameController.getPlanet(), shineOn);
 		drawGameStatus(g2);
 	}
 }
