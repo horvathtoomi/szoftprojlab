@@ -22,7 +22,7 @@ public class Terminal {
      * @param maxTurn A körök száma, mielőtt a játék befejeződik.
      */
     public Terminal(boolean testing, int maxTurn) {
-    	gc = new GameController(testing, maxTurn);
+    	//gc = new GameController(testing, maxTurn);
     }
 
     /**

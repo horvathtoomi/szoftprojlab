@@ -19,6 +19,7 @@ public class GameController {
     private final boolean testing;
     private final ArrayList<Player> players;
     private Player currentPlayer;
+    private final Runnable repaintCallback;
 
     private boolean init = true;
     
@@ -27,9 +28,10 @@ public class GameController {
      *
      * @param maxTurn a játék maximális körszámát adja meg
      */
-    public GameController(boolean testing, int maxTurn) {
+    public GameController(boolean testing, int maxTurn, Runnable repaintCallback) {
     	this.maxTurn = maxTurn;
         this.testing = testing;
+        this.repaintCallback = repaintCallback;
         planet = new Planet();
         players = new ArrayList<>();
         turnCounter = 1;
@@ -179,7 +181,7 @@ public class GameController {
             currentPlayer.update(testing);
             planet.update(!testing);
         }
-
+        repaintCallback.run();
         return new ArrayList<>();
     }
 

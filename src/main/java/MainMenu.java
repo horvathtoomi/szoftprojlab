@@ -134,7 +134,7 @@ public class MainMenu extends JPanel {
 		try {
 			String path = JOptionPane.showInputDialog(frame, "Enter load filepath:");
 
-			gc = new GameController(gc.getTesting(), gc.getMaxTurn());
+			//gc = new GameController(gc.getTesting(), gc.getMaxTurn(), ); kell a ctor-ba egy repaint
 			java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(path));
 			String line;
 

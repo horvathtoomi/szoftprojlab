@@ -19,7 +19,7 @@ public class GamePanel extends JPanel {
 	private final KeyHandler keyHandler;
 
 	public GamePanel(ArrayList<Player> players) {
-		gameController = new GameController(false, 20);
+		gameController = new GameController(false, 20, this::repaint);
 		gameController.setPlanet(gameController.buildPlanet());
         for (Player player : players) {
             gameController.addPlayer(player);
