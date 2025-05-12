@@ -1,5 +1,6 @@
 package main.java.insect;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import main.java.tecton.*;
 import main.java.mushroom.*;
@@ -13,7 +14,7 @@ import main.java.Updatable;
  * A Nameable leszármazottja, így nevet tárol, és különféle képességekkel rendelkezik:
  * mozgás, fonalvágás, spórák elfogyasztása és állapotváltozás.
  */
-public class Insect extends Nameable implements Updatable {
+public class Insect extends Nameable implements Updatable, Serializable {
 
 	private int collectedNutrients;
 	private Tecton location;

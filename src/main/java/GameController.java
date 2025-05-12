@@ -55,6 +55,10 @@ public class GameController {
         return g;
     }
 
+    public void setInit(boolean init) {
+        this.init = init;
+    }
+
     /**
      * Létrehozza a pályát - ez egyelőre placeholder, kell több tecton majd
      */

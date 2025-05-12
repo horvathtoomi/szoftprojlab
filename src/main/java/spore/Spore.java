@@ -6,6 +6,7 @@ import main.java.tecton.Tecton;
 import main.java.insect.Insect;
 import main.java.mushroom.Mushroom;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Random;
  * amely rendelkezik tápértékkel, elhelyezkedéssel, szülő gombával és "élet" státusszal.
  * Konkrét hatását az örökölt osztályok valósítják meg.
  */
-public abstract class Spore extends Nameable {
+public abstract class Spore extends Nameable implements Serializable{
 
     protected int nutrientValue;     // A spóra által biztosított tápanyagmennyiség
     protected Mushroom mushroom;     // A gomba, amelyből a spóra származik

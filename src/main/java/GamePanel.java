@@ -15,7 +15,7 @@ public class GamePanel extends JPanel {
 	public enum ShineOn {TECTON, MUSHBODY, MUSHSTRING, SPORE, INSECT, NONE};
 	private ShineOn shineOn = ShineOn.NONE;
 
-	private final GameController gameController;
+	private GameController gameController;
 	private final DrawManager drawManager;
 	private final BufferedImage backgroundImage;
 	private final MouseHandler mouseHandler;
@@ -39,13 +39,17 @@ public class GamePanel extends JPanel {
 		this.setFocusable(true);
 	}
 
+	public void setGameController(GameController gameController) {
+		this.gameController = gameController;
+	}
+
+	public GameController getGameController() {
+		return gameController;
+	}
+
 	//Getter és setter a kiemelés állításához
 	public void setShineOn(ShineOn shineOn) {
 		this.shineOn = shineOn;
-	}
-
-	public ShineOn getShineOn() {
-		return shineOn;
 	}
 
 	/**

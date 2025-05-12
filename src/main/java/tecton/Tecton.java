@@ -4,6 +4,7 @@ import main.java.Nameable;
 import main.java.Updatable;
 import main.java.mushroom.MushroomString;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -11,7 +12,7 @@ import java.util.Random;
  * Absztrakt Tecton osztály, amely a játék mezőit reprezentálja.
  * Egyedi névvel rendelkezik, ezért a Nameable leszármazottja, valamint vannak szomszédai és eltárolja, hogy mennyi fonal lehet rajta maximálisan
  */
-public abstract class Tecton extends Nameable implements Updatable {
+public abstract class Tecton extends Nameable implements Updatable, Serializable {
 
     private ArrayList<Tecton> neighbours;
     private final int maxStrings;

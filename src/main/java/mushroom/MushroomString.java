@@ -1,5 +1,6 @@
 package main.java.mushroom;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import main.java.Nameable;
 import main.java.Updatable;
@@ -10,7 +11,7 @@ import main.java.tecton.*;
  * A gombafonalat megvalósító osztály, melynek tulajdonsága az általa összekötött két tekton, a hozzá kapcsolódó
  * fonalak, a gombája, érettségi szintje, és az állapota, hogy életben van-e, vagy már elpusztult
  */
-public class MushroomString extends Nameable implements Updatable {
+public class MushroomString extends Nameable implements Updatable, Serializable {
 	
 	private static class CloneCounter {
 	    private static int counter = 1;

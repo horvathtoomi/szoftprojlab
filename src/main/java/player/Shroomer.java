@@ -2,6 +2,7 @@ package main.java.player;
 
 import main.java.mushroom.Mushroom;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -11,7 +12,7 @@ import java.util.Arrays;
  * A Shroomer meghatározott parancsokat hajthat végre, mint például:
  * GrowHypha, MushroomBody, SpreadSpore, valamint Pass.
  */
-public class Shroomer extends Player implements PlayerAccept {
+public class Shroomer extends Player implements PlayerAccept, Serializable {
 
     Mushroom mushroom;
 

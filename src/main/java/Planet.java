@@ -1,5 +1,6 @@
 package main.java;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import main.java.insect.*;
@@ -13,7 +14,8 @@ import main.java.spore.*;
  * A Planet osztály felelős a játék világának kezeléséért, amely magába foglalja a különböző objektumokat
  * (például tektonok, gombák, spórák, rovarok).
  */
-public class Planet implements Updatable{
+public class Planet implements Updatable, Serializable {
+    private static final long serialVersionUID = 1L;
 
     private final ArrayList<Tecton> tectons;
     private final ArrayList<Mushroom> mushrooms;

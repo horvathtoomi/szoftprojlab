@@ -11,11 +11,13 @@ import java.awt.image.BufferedImage;
  */
 public class GameMenu extends JMenuBar {
 
+        GameController gameController;
         JButton b1, b2, b3;
         JFrame frame;
 
-        public GameMenu(JFrame frame) {
+        public GameMenu(JFrame frame, GameController gameController) {
             this.frame = frame;
+            this.gameController = gameController;
             setBackground(Color.LIGHT_GRAY);
             UtilityTool uTool = new UtilityTool();
 
@@ -77,8 +79,16 @@ public class GameMenu extends JMenuBar {
                 }
             });
 
-            b1.addActionListener(e -> System.out.println("save"));
-            b2.addActionListener(e -> System.out.println("load"));
+            b1.addActionListener(e -> {
+                if (GameFileChooser.saveGame(frame, gameController)) {
+                    JOptionPane.showMessageDialog(frame, "Játékállapot sikeresen elmentve!", "Mentés sikeres", JOptionPane.INFORMATION_MESSAGE);
+                }
+            });
+            b2.addActionListener(e -> {
+                if (GameFileChooser.loadGame(frame, frame)) {
+                    JOptionPane.showMessageDialog(frame, "Játékállás sikeresen betöltve!", "Betöltés sikeres", JOptionPane.INFORMATION_MESSAGE);
+                }
+            });
             b3.addActionListener(e -> {
                 System.out.println("exit");
                 frame.setJMenuBar(null);

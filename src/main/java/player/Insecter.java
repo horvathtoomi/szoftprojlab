@@ -2,6 +2,7 @@ package main.java.player;
 
 import main.java.insect.Insect;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
  * Az Insecter osztály a játékos egy fajtáját reprezentálja,
  * aki rovarokat irányít a játék során.
  */
-public class Insecter extends Player implements PlayerAccept{
+public class Insecter extends Player implements PlayerAccept, Serializable {
 
     List<Insect> insects;
 

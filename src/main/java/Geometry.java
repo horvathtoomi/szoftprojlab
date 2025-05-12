@@ -1,8 +1,12 @@
 package main.java;
 
 
-public class Geometry {
-    
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Geometry implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private int x;
     private int y;
 
