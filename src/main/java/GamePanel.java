@@ -124,11 +124,7 @@ public class GamePanel extends JPanel {
 	}
 
 	private void gameEndsPopup(ArrayList<Player> winners) {
-        String message = "The winners are: " +
-                winners.get(0).getName() +
-                " and " +
-               // winners.get(1).getName() +
-                "!";
+        String message = "The winners are: " + winners.get(0).getName() + " and " + winners.get(1).getName() + "!";
 
 		JOptionPane.showMessageDialog(this, message, "Game Over", JOptionPane.INFORMATION_MESSAGE);
 

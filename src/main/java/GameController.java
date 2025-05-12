@@ -164,10 +164,6 @@ public class GameController {
         planet.deleteDeadObjects(turnCounter, players);
         planet.checkForBodyConnection();
 
-        if (currentPlayer.getActions() > 0) {
-            //currentPlayer.takeAction();
-        }
-
         if (currentPlayer.getActions() == 0) {
             if (turnCounter == maxTurn) {
                 return determineWinners();
@@ -195,10 +191,16 @@ public class GameController {
         for (Player player : players) {
             ((PlayerAccept) player).accept(visitor);
         }
-        if(visitor.getBestShroomer() != null)
+        if(visitor.getBestShroomer() != null) {
             winners.add(visitor.getBestShroomer());
-        if(visitor.getBestInsecter() != null)
+        } else {
+            winners.add(new Shroomer("DETERMINATION ERROR", false));
+        }
+        if(visitor.getBestInsecter() != null) {
             winners.add(visitor.getBestInsecter());
+        } else {
+            winners.add(new Insecter("DETERMINATION ERROR", false));
+        }
         return winners;
     }
 }

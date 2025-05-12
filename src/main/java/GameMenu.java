@@ -11,9 +11,9 @@ import java.awt.image.BufferedImage;
  */
 public class GameMenu extends JMenuBar {
 
-        GameController gameController;
-        JButton b1, b2, b3;
-        JFrame frame;
+        private GameController gameController;
+        private JButton b1, b2, b3, b4;
+        private JFrame frame;
 
         public GameMenu(JFrame frame, GameController gameController) {
             this.frame = frame;
@@ -25,6 +25,7 @@ public class GameMenu extends JMenuBar {
             BufferedImage b1Image = uTool.load(MainMenu.prefix + "b2.png");
 
             b1 = new JButton("");
+            b4 = new JButton("Save");
             b2 = new JButton("Load");
             b3 = new JButton("Exit");
             b1.setMargin(new Insets(0,0,0,0));
@@ -44,6 +45,12 @@ public class GameMenu extends JMenuBar {
             b2.setOpaque(true);
             b2.setForeground(Color.WHITE);
             b2.setBackground(baseColor);
+
+            b4.setContentAreaFilled(true);
+            b4.setBorderPainted(true);
+            b4.setOpaque(true);
+            b4.setForeground(Color.WHITE);
+            b4.setBackground(baseColor);
 
             b3.setContentAreaFilled(true);
             b3.setBorderPainted(true);
@@ -69,6 +76,15 @@ public class GameMenu extends JMenuBar {
                 }
             });
 
+            b4.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    b4.setBackground(hoverColor);
+                }
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    b4.setBackground(baseColor);
+                }
+            });
+
             b3.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseEntered(java.awt.event.MouseEvent evt) {
                     b3.setBackground(hoverColor);
@@ -87,6 +103,12 @@ public class GameMenu extends JMenuBar {
             b2.addActionListener(e -> {
                 if (GameFileChooser.loadGame(frame, frame)) {
                     JOptionPane.showMessageDialog(frame, "Játékállás sikeresen betöltve!", "Betöltés sikeres", JOptionPane.INFORMATION_MESSAGE);
+                }
+            });
+
+            b4.addActionListener(e -> {
+                if(GameFileChooser.saveGame(frame, new GameController(false, 20, frame::repaint))) {
+                    JOptionPane.showMessageDialog(frame, "Játékállás sikeresen elmentve!", "Mentés sikeres", JOptionPane.INFORMATION_MESSAGE);
                 }
             });
 
@@ -117,6 +139,10 @@ public class GameMenu extends JMenuBar {
             b2.setMinimumSize(size);
             b2.setMaximumSize(size);
 
+            b4.setPreferredSize(size);
+            b4.setMinimumSize(size);
+            b4.setMaximumSize(size);
+
             b3.setPreferredSize(size);
             b3.setMinimumSize(size);
             b3.setMaximumSize(size);
@@ -124,6 +150,7 @@ public class GameMenu extends JMenuBar {
             this.setPreferredSize(new Dimension(100, 20));
 
             menu.add(b1);
+            menu.add(b4);
             menu.add(b2);
             menu.add(b3);
 
