@@ -70,7 +70,7 @@ public class Terminal {
                 // Megkegkeressük, hogy melyik gombászhoz tartozik
                 for (Player player : gc.getPlayers()) {
                     if (player instanceof Shroomer && ((Shroomer) player).getMushroom() == mushroom) {
-                        writer.write("Mushroom " + mushroom.getName() + " " + player.getName() + "\n");
+                       // writer.write("Mushroom " + mushroom.getName() + " " + player.getName() + "\n");
                         break;
                     }
                 }
@@ -79,7 +79,7 @@ public class Terminal {
             // Mentjük a gombatesteket
             for (MushroomBody body : planet.getMushbodies()) {
                 String state = body.getState().toLowerCase();
-                writer.write("MushroomBody " + body.getName() + " " + body.getMushroom().getName() + " " + body.getLocation().getName() + " " + state + " ");
+                //writer.write("MushroomBody " + body.getName() + " " + body.getMushroom().getName() + " " + body.getLocation().getName() + " " + state + " ");
                 // Megkeressük meg a gombászát
                 for (Player player : gc.getPlayers()) {
                     if (player instanceof Shroomer && ((Shroomer) player).getMushroom() == body.getMushroom()) {
@@ -93,7 +93,7 @@ public class Terminal {
             for (MushroomString string : planet.getMushstrings()) {
                 if (string.getConnection().isEmpty()) continue;
                 Tecton firstTecton = string.getConnection().get(0);
-                writer.write("MushroomString " + string.getName() + " " + string.getMushroom().getName() + " " + firstTecton.getName() + " ");
+                //writer.write("MushroomString " + string.getName() + " " + string.getMushroom().getName() + " " + firstTecton.getName() + " ");
                 // Megkeressük meg a gombászát
                 for (Player player : gc.getPlayers()) {
                     if (player instanceof Shroomer && ((Shroomer) player).getMushroom() == string.getMushroom()) {
@@ -207,7 +207,7 @@ public class Terminal {
 
         idx = 1;
         for (Mushroom m : planet.getMushrooms()) {
-            lines.add(idx++ + ". Mushroom " + m.getName() + " {");
+            //lines.add(idx++ + ". Mushroom " + m.getName() + " {");
             lines.add("  is dead? " + (m.getDead() ? "yes" : "no"));
             lines.add("}");
         }
@@ -215,7 +215,7 @@ public class Terminal {
         idx = 1;
         for (MushroomBody mb : planet.getMushbodies()) {
             lines.add(idx++ + ". MushroomBody " + mb.getName() + " {");
-            lines.add("  Owner: " + mb.getMushroom().getName());
+            //lines.add("  Owner: " + mb.getMushroom().getName());
             lines.add("  Tecton: " + mb.getLocation().getName());
             lines.add("  state: " + mb.getState());
             lines.add("  spores available? " + (mb.canSpreadSpores() ? "yes" : "no"));
@@ -227,7 +227,7 @@ public class Terminal {
         idx = 1;
         for (MushroomString ms : planet.getMushstrings()) {
             lines.add(idx++ + ". MushroomString " + ms.getName() + " {");
-            lines.add("  Mushroom: " + ms.getMushroom().getName());
+            //lines.add("  Mushroom: " + ms.getMushroom().getName());
 
             String con = ms.getConnection().stream().map(Tecton::getName).collect(Collectors.joining(", "));
             lines.add("  Connections: {" + con + "}");
@@ -242,7 +242,7 @@ public class Terminal {
         idx = 1;
         for (Spore s : planet.getSpores()) {
             lines.add(idx++ + ". Spore " + s.getName() + " {");
-            lines.add("  Mushroom: " + s.getMushroom().getName());
+            //lines.add("  Mushroom: " + s.getMushroom().getName());
             lines.add("  Tecton: " + s.getLocation().getName());
             lines.add("  Nutrient value: " + s.getNutrientValue());
             lines.add("  is dead? " + (s.getDead() ? "yes" : "no"));

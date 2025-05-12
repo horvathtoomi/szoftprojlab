@@ -8,7 +8,6 @@ import main.java.tecton.Tecton;
  * egy név, valamint lehet élő vagy halott állapotban.
  */
 public class Mushroom {
-	String name;
 	boolean dead;
 	boolean testing;
 	
@@ -18,15 +17,9 @@ public class Mushroom {
      * @param name A gomba neve.
      * @param testing Tesztelési mód jelzője. Ha igaz, a gomba tesztelési üzemmódban jött létre.
      */
-	public Mushroom(String name, boolean testing) {
-		this.name = name;
+	public Mushroom(boolean testing) {
 		dead = false;
 		this.testing = testing;
-	}
-
-	//Getterek
-	public String getName() {
-		return name;
 	}
 
 	public boolean getDead() {

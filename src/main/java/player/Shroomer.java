@@ -24,8 +24,9 @@ public class Shroomer extends Player implements PlayerAccept, Serializable {
      * @param name     a játékos neve.
      * @param infinite ha true, akkor végtelen számú akcióval rendelkezik. Teszteléshez szükséges.
      */
-    public Shroomer(String name, boolean infinite) {
+    public Shroomer(String name, boolean infinite, Mushroom mushroom) {
         super(name, infinite);
+        this.mushroom = mushroom;
     }
     
     /**

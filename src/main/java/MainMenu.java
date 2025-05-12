@@ -2,6 +2,7 @@ package main.java;
 
 import javax.swing.*;
 
+import main.java.mushroom.Mushroom;
 import main.java.player.Insecter;
 import main.java.player.Player;
 import main.java.player.Shroomer;
@@ -107,8 +108,8 @@ public class MainMenu extends JPanel {
 		ArrayList<Player> players = new ArrayList<>();
 		players.add(new Insecter(insecterName1, false));
 		players.add(new Insecter(insecterName2, false));
-		players.add(new Shroomer(shroomerName1, false));
-		players.add(new Shroomer(shroomerName2, false));
+		players.add(new Shroomer(shroomerName1, false, new Mushroom( false)));
+		players.add(new Shroomer(shroomerName2, false, new Mushroom( false)));
 		return players;
 	}
 

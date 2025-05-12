@@ -54,6 +54,7 @@ public class KeyHandler implements KeyListener {
                     game.getCurrentPlayer().pass();
                     game.nextTurnCheck();
                     repaintCallback.run();
+                    resetKeyCode();
                 }
                 break;
             case KEY_GROW_BODY:
@@ -85,7 +86,7 @@ public class KeyHandler implements KeyListener {
                 gamePanel.setShineOn(GamePanel.ShineOn.NONE);
                 break;
         }
-        repaintCallback.run();
+        //repaintCallback.run();
     }
 
     @Override
@@ -99,6 +100,9 @@ public class KeyHandler implements KeyListener {
      */
     public int getKeyCode() {
         return keyCode;
+    }
+    public void resetKeyCode() {
+        this.keyCode = -1;
     }
 
 }

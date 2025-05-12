@@ -43,7 +43,7 @@ public class PlayerListVisitor implements PlayerVisitor {
         lines.add("Type: Shroomer");
         lines.add("Name: " + playerName);
         lines.add("Score: " + shroomer.getScore());
-        lines.add("Mushroom: " + shroomer.getMushroom().getName());
+       // lines.add("Mushroom: " + shroomer.getMushroom().getName());
     }
 
     /**

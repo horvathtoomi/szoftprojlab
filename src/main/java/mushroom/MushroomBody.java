@@ -43,7 +43,10 @@ public class MushroomBody extends Nameable implements Updatable, Serializable {
 		this.location = location;
 		this.mushroom = mushroom;
 		setName(name);
-		availableSpores = testing;
+		if(state == 2)
+			availableSpores = true;
+		else
+			availableSpores = testing;
 		this.testing = testing;
 		this.state = state;
 		remainingSporulations = 3;
@@ -228,7 +231,7 @@ default -> null;
 	public boolean hasEnoughSpores(ArrayList<Spore> spores, Tecton tecton) {
 		int counter = 0;
         for (Spore spore : spores)
-            if (spore.getLocation() == tecton && spore.getMushroom() == mushroom) counter++;
+            if (spore.getLocation() == tecton) counter++;
         return counter > 2;
 	}
 	
@@ -254,6 +257,7 @@ default -> null;
                 break;
             }
 		}
+		hasString = true;
         return hasEnoughSpores(spores, tecton) && v.canPerformAction() && hasString;
     }
 	
@@ -263,15 +267,16 @@ default -> null;
      * @param spores Az összes spóra listája.
      * @param tecton A tekton, amelyen kinő.
      */
-	public boolean giveBirth(ArrayList<Spore> spores, Tecton tecton, ArrayList<MushroomBody> bodies, ArrayList<MushroomString> strings, Shroomer shroomer) {
+	public MushroomBody giveBirth(ArrayList<Spore> spores, Tecton tecton, ArrayList<MushroomBody> bodies, ArrayList<MushroomString> strings, Shroomer shroomer) {
 		if(!validTarget(tecton, spores, bodies, strings))
-			return false;
+			return null;
 		
 		tecton.markBodyGrown();
         for (Spore spore : spores)
             if (spore.getLocation() == tecton) spore.die();
         shroomer.score++;
-        return true;
+        MushroomBody mb = new MushroomBody(tecton, this.mushroom, 0, "sdds", false);
+		return mb;
 	}
 	
 	public String getState() 

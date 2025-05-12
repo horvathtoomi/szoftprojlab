@@ -32,8 +32,8 @@ public class GamePanel extends JPanel {
 		setDoubleBuffered(true);
 		UtilityTool ut = new UtilityTool();
 		backgroundImage = ut.load(MainMenu.prefix + "Background_icon3.png");
-		mouseHandler = new MouseHandler(gameController, this::repaint, this);
 		keyHandler = new KeyHandler(gameController, this::repaint, this);
+		mouseHandler = new MouseHandler(gameController, this::repaint, this, keyHandler);
 		this.addMouseListener(mouseHandler);
 		this.addKeyListener(keyHandler);
 		this.setFocusable(true);
@@ -131,7 +131,7 @@ public class GamePanel extends JPanel {
         String message = "The winners are: " +
                 winners.get(0).getName() +
                 " and " +
-               // winners.get(1).getName() +
+                winners.get(1).getName() +
                 "!";
 
 		JOptionPane.showMessageDialog(this, message, "Game Over", JOptionPane.INFORMATION_MESSAGE);
