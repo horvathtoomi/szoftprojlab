@@ -117,9 +117,12 @@ public class GamePanel extends JPanel {
 			g2.setFont(new Font("SansSerif", Font.PLAIN, 14));
 			String actionsText = "Actions left: " + currentPlayer.getActions();
 			g2.drawString(actionsText, statusX + padding, statusY + lineHeight * 3);
-			ArrayList<Player> winners = gameController.nextTurnCheck();
-			if (!winners.isEmpty()) {
-				gameEndsPopup(winners);
+			if(gameController.getTurnCounter() == gameController.getMaxTurn())
+			{
+				ArrayList<Player> winners = gameController.nextTurnCheck();
+				if (!winners.isEmpty()) {
+					gameEndsPopup(winners);
+				}
 			}
 		}
 	}
