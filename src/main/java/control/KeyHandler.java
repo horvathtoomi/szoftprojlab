@@ -50,7 +50,7 @@ public class KeyHandler implements KeyListener {
         switch (keyCode) {
             case KEY_PASS:
                 gamePanel.setShineOn(GamePanel.ShineOn.NONE);
-                if (game.getCurrentPlayer() != null) {
+                if (game.getCurrentPlayer() != null && !game.getInit()) {
                     game.getCurrentPlayer().pass();
                     game.nextTurnCheck();
                     repaintCallback.run();
