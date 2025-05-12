@@ -25,10 +25,10 @@ public class GameMenu extends JMenuBar {
             BufferedImage b1Image = uTool.load(MainMenu.prefix + "b2.png");
 
             b1 = new JButton("");
-            b1.setMargin(new Insets(0,0,0,0));
-            b1.setIcon(new ImageIcon(b1Image));
             b2 = new JButton("Load");
             b3 = new JButton("Exit");
+            b1.setMargin(new Insets(0,0,0,0));
+            b1.setIcon(new ImageIcon(b1Image));
 
             Color baseColor = new Color(47, 84, 39);
             Color hoverColor = new Color(75, 125, 64);
@@ -55,25 +55,24 @@ public class GameMenu extends JMenuBar {
                 public void mouseEntered(java.awt.event.MouseEvent evt) {
                     b1.setBackground(hoverColor);
                 }
-
                 public void mouseExited(java.awt.event.MouseEvent evt) {
                     b1.setBackground(baseColor);
                 }
             });
+
             b2.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseEntered(java.awt.event.MouseEvent evt) {
                     b2.setBackground(hoverColor);
                 }
-
                 public void mouseExited(java.awt.event.MouseEvent evt) {
                     b2.setBackground(baseColor);
                 }
             });
+
             b3.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseEntered(java.awt.event.MouseEvent evt) {
                     b3.setBackground(hoverColor);
                 }
-
                 public void mouseExited(java.awt.event.MouseEvent evt) {
                     b3.setBackground(baseColor);
                 }
@@ -84,11 +83,13 @@ public class GameMenu extends JMenuBar {
                     JOptionPane.showMessageDialog(frame, "Játékállapot sikeresen elmentve!", "Mentés sikeres", JOptionPane.INFORMATION_MESSAGE);
                 }
             });
+
             b2.addActionListener(e -> {
                 if (GameFileChooser.loadGame(frame, frame)) {
                     JOptionPane.showMessageDialog(frame, "Játékállás sikeresen betöltve!", "Betöltés sikeres", JOptionPane.INFORMATION_MESSAGE);
                 }
             });
+
             b3.addActionListener(e -> {
                 System.out.println("exit");
                 frame.setJMenuBar(null);
@@ -107,12 +108,15 @@ public class GameMenu extends JMenuBar {
             JMenu menu = new JMenu("Menu");
 
             Dimension size = new Dimension(150, 25);
+
             b1.setPreferredSize(size);
             b1.setMinimumSize(size);
             b1.setMaximumSize(size);
+
             b2.setPreferredSize(size);
             b2.setMinimumSize(size);
             b2.setMaximumSize(size);
+
             b3.setPreferredSize(size);
             b3.setMinimumSize(size);
             b3.setMaximumSize(size);
@@ -122,6 +126,7 @@ public class GameMenu extends JMenuBar {
             menu.add(b1);
             menu.add(b2);
             menu.add(b3);
+
             this.add(menu);
         }
 }

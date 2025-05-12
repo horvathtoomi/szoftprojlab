@@ -1,5 +1,6 @@
 package main.java;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +16,7 @@ import main.java.spore.*;
  * (például tektonok, gombák, spórák, rovarok).
  */
 public class Planet implements Updatable, Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final ArrayList<Tecton> tectons;
@@ -264,6 +266,7 @@ public class Planet implements Updatable, Serializable {
     			st.add(s);
     	return st;
     }
+
     /**
      * Visszaadja a megadott tektonon található spórák listáját.
      *
@@ -276,6 +279,7 @@ public class Planet implements Updatable, Serializable {
             if (spore.getLocation() == tecton)sp.add(spore);
     	return sp;
     }
+
     /**
      * Visszaadja a megadott tektonon található gombatestek listáját.
      *
@@ -292,70 +296,10 @@ public class Planet implements Updatable, Serializable {
     
     /**
      * Megkeresi a dead állapotó gombatesteket, és dead-re állítja a hozzá kapcsolódó MString-eket is.
-     *
      */
     public void checkForDeadShrooms(){
     	for(MushroomBody b : mushbodies)
         	if(b.getRemainingSporulation() == 0) b.die(mushstrings);
     }
 
-    /**
-     * Megnézi, hogy létezik-e a megadott nevű tekton a bolygón.
-     *
-     * @param name a keresett név
-     * @return true, ha van ilyen nevű tekton, különben false
-     */
-    public boolean hasTecton(String name) {
-        return tectons.stream().anyMatch(t->t.getName().equalsIgnoreCase(name));
-    }
-
-    /**
-     * Megnézi, hogy létezik-e a megadott nevű gomba a bolygón.
-     *
-     * @param name a keresett név
-     * @return true, ha van ilyen nevű gomba, különben false
-     */
-    public boolean hasMushroom(String name) {
-        return mushrooms.stream().anyMatch(m->m.getName().equalsIgnoreCase(name));
-    }
-    
-    /**
-     * Megnézi, hogy létezik-e a megadott nevű gombatest a bolygón.
-     *
-     * @param name a keresett név
-     * @return true, ha van ilyen nevű gombatest, különben false
-     */
-    public boolean hasMushbody(String name) {
-        return mushbodies.stream().anyMatch(m->m.getName().equalsIgnoreCase(name));
-    }
-    
-    /**
-     * Megnézi, hogy létezik-e a megadott nevű rovar a bolygón.
-     *
-     * @param name a keresett név
-     * @return true, ha van ilyen nevű rovar, különben false
-     */
-    public boolean hasInsect(String name) {
-        return insects.stream().anyMatch(i->i.getName().equalsIgnoreCase(name));
-    }
-
-    /**
-     * Megnézi, hogy létezik-e a megadott nevű fonal a bolygón.
-     *
-     * @param name a keresett név
-     * @return true, ha van ilyen nevű fonal, különben false
-     */
-    public boolean hasHypha(String name) {
-        return mushstrings.stream().anyMatch(m -> m.getName().equalsIgnoreCase(name));
-    }
-
-    /**
-     * Megnézi, hogy létezik-e a megadott nevű spóra a bolygón.
-     *
-     * @param name a keresett név
-     * @return true, ha van ilyen nevű spóra, különben false
-     */
-    public boolean hasSpore(String name) {
-        return spores.stream().anyMatch(s -> s.getName().equalsIgnoreCase(name));
-    }
 }

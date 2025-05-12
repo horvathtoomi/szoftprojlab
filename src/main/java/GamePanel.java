@@ -57,7 +57,6 @@ public class GamePanel extends JPanel {
  	 * @param g2 The Graphics2D context to draw on
  	*/
 	private void drawGameStatus(Graphics2D g2) {
-		// Draw player scores
 		ArrayList<Player> players = gameController.getPlayers();
 		Font regularFont = new Font("SansSerif", Font.BOLD, 14);
 		g2.setFont(regularFont);

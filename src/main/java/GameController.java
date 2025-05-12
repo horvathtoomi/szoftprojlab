@@ -62,7 +62,7 @@ public class GameController {
     /**
      * Létrehozza a pályát - ez egyelőre placeholder, kell több tecton majd
      */
-    public Planet buildPlanet(){
+    public Planet buildPlanet() {
     	Planet planet = new Planet();
     	
     	BigTecton t1 = new BigTecton("T1", 3);
@@ -85,17 +85,19 @@ public class GameController {
     	planet.addTecton(t3);
     	planet.addTecton(t4);
     	planet.addTecton(t5);
+
         planet.recalcNeighbours();
     	
     	return planet;
     }
+
     /**
      * Megvizsgálja, hogy minden játékos letette-e már a kezdő objektumát. Ha igen, akkor innentől kezdve éles a játék.
      */
-    public void setInitCheck()
-    {
-        if(planet.getInsects().size() == 2 && planet.getMushbodies().size() == 2)
+    public void setInitCheck() {
+        if(planet.getInsects().size() == 2 && planet.getMushbodies().size() == 2) {
             init = false;
+        }
     }
 
     //getterek, setterek
@@ -103,7 +105,9 @@ public class GameController {
     	return turnCounter;
     }
 
-    public Planet getPlanet() {return planet;}
+    public Planet getPlanet() {
+        return planet;
+    }
 
     public void setTurnCounter(int turnCounter) {
         this.turnCounter = turnCounter;
@@ -112,11 +116,7 @@ public class GameController {
     public int getMaxTurn() {
     	return maxTurn;
     }
-    
-    public boolean getTesting() {
-		return testing;
-	}
-    
+
     public void setPlanet(Planet newPlanet) {
         this.planet = newPlanet;
     }
@@ -132,24 +132,17 @@ public class GameController {
     public void setCurrentPlayer(Player player) {
         this.currentPlayer = player;
     }
+
     public void setCurrentPlayerToNextPlayer() {
         int index = players.indexOf(currentPlayer);
         index = (index + 1) % players.size();
         currentPlayer = players.get(index);
     }
-    public boolean getInit() {return init;}
-    
 
-    /**
-     * Megnézi, hogy létezik-e a megadott nevű játékos a játékban.
-     *
-     * @param name a keresett név
-     * @return true, ha van ilyen nevű játékos, különben false
-     */
-    public boolean hasPlayer(String name) {
-        return players.stream().anyMatch(p -> p.getName().equalsIgnoreCase(name));
+    public boolean getInit() {
+        return init;
     }
-    
+
     /**
      * Ezzel a metódussal lehet játékosokat hozzáadni a listához. Ha ez az első eleme, beállítja kezdőjátékosnak.
      *
@@ -171,8 +164,9 @@ public class GameController {
         planet.deleteDeadObjects(turnCounter, players);
         planet.checkForBodyConnection();
 
-        if (currentPlayer.getActions() > 0)
-            currentPlayer.takeAction();
+        if (currentPlayer.getActions() > 0) {
+            //currentPlayer.takeAction();
+        }
 
         if (currentPlayer.getActions() == 0) {
             if (turnCounter == maxTurn) {
