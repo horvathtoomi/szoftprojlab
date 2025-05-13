@@ -171,19 +171,17 @@ public class Planet implements Updatable, Serializable {
         for (MushroomString ms : mushstrings) {
             boolean shouldUpdateRandomly = (ms.getLifeCycle() != MushroomString.LifeCycle.Child) || !checkForSpores(ms);
             ms.update(shouldUpdateRandomly);
-
-            for (Tecton t : tectons) {
-                if(random){
-                    Random rng = new Random();
-                    int n = rng.nextInt(5);
-                    System.out.println("generált tekton szám: " + n);
-                    if(n == 0){
-                        System.out.println("Tecton split!");
-                        t.createSplitTectons(tectons);
-                        t.setDead(true);
-                        removeObjectFromSplitTectons(t);
-                    }
-
+        }
+        for (Tecton t : tectons) {
+            if(random){
+                Random rng = new Random();
+                int n = rng.nextInt(10);
+                System.out.println("generált tekton szám: " + n);
+                if(n == 0){
+                    System.out.println("Tecton split!");
+                    //t.createSplitTectons(tectons);
+                    t.setDead(true);
+                    removeObjectFromSplitTectons(t);
                 }
             }
         }

@@ -169,6 +169,7 @@ public class GameController {
             turnCounter++;
             currentPlayer.update(testing);
             planet.update(!testing);
+            planet.deleteDeadObjects(turnCounter, players);
         }
         repaintCallback.run();
         return new ArrayList<>();
