@@ -21,7 +21,6 @@ public class MainMenu extends JPanel {
 	public MainMenu(JFrame frame) {
 		this.frame = frame;
 
-
 		UtilityTool uTool = new UtilityTool();
 		BufferedImage bgImage = uTool.load(prefix + "menu_bg6.png");
 
@@ -35,14 +34,20 @@ public class MainMenu extends JPanel {
 
 		Font buttonFont = new Font("SansSerif", Font.BOLD, 18);
 
-        JButton newGameButton = new JButton("NEW GAME");
-		styleButton(newGameButton, buttonFont);
+        JButton newGameButton = new JButton("");
+		BufferedImage b1Image = uTool.load(MainMenu.prefix + "bNewGame3.png");
+		BufferedImage b1ImageHovered = uTool.load(MainMenu.prefix + "bNewGame3h.png");
+		styleButton(newGameButton, buttonFont, b1Image, b1ImageHovered);
 
-        JButton loadGameButton = new JButton("LOAD GAME");
-		styleButton(loadGameButton, buttonFont);
+        JButton loadGameButton = new JButton("");
+		BufferedImage b2Image = uTool.load(MainMenu.prefix + "bLoad3.png");
+		BufferedImage b2ImageHovered = uTool.load(MainMenu.prefix + "bLoad3h.png");
+		styleButton(loadGameButton, buttonFont, b2Image, b2ImageHovered);
 
-        JButton exitButton = new JButton("EXIT");
-		styleButton(exitButton, buttonFont);
+        JButton exitButton = new JButton("");
+		BufferedImage b3Image = uTool.load(MainMenu.prefix + "bExit3.png");
+		BufferedImage b3ImageHovered = uTool.load(MainMenu.prefix + "bExit3h.png");
+		styleButton(exitButton, buttonFont, b3Image, b3ImageHovered);
 
 		newGameButton.addActionListener(e -> startGame());
 		loadGameButton.addActionListener(e -> {
@@ -66,15 +71,18 @@ public class MainMenu extends JPanel {
 		backgroundLabel.add(exitButton, c);
 	}
 
-	private void styleButton(JButton button, Font font) {
+	/**
+	 * A játékbeli gombok stílusát állítja be.
+	 */
+	private void styleButton(JButton button, Font font, BufferedImage image, BufferedImage hovered) {
 		button.setFont(font);
 		button.setFocusable(false);
-        int BUTTON_WIDTH = 200;
-        int BUTTON_HEIGHT = 50;
+        int BUTTON_WIDTH = 210;
+        int BUTTON_HEIGHT = 95;
         button.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
-		button.setContentAreaFilled(true);
-		button.setBorderPainted(true);
-		button.setOpaque(true);
+		button.setContentAreaFilled(false);
+		button.setBorderPainted(false);
+		button.setOpaque(false);
 		button.setForeground(Color.WHITE);
 
 		Color baseColor = new Color(47, 84, 39);
@@ -82,17 +90,21 @@ public class MainMenu extends JPanel {
 
 		button.setBackground(baseColor);
 
+		button.setIcon(new ImageIcon(image));
+		button.setMargin(new Insets(0,20,0,0));
+
 		button.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				button.setBackground(hoverColor);
-			}
+			public void mouseEntered(java.awt.event.MouseEvent evt) {button.setIcon(new ImageIcon(hovered));}
 
 			public void mouseExited(java.awt.event.MouseEvent evt) {
-				button.setBackground(baseColor);
+				button.setIcon(new ImageIcon(image));
 			}
 		});
 	}
 
+	/**
+	 * A játékosok felvételéért felel.
+	 */
 	private ArrayList<Player> addPlayers()	{
 		String insecterName1 = JOptionPane.showInputDialog(frame, "Enter name for Insecter 1:");
 		String insecterName2 = JOptionPane.showInputDialog(frame, "Enter name for Insecter 2:");
@@ -115,6 +127,9 @@ public class MainMenu extends JPanel {
 
 	GamePanel gamePanel;
 
+	/**
+	 * Az új játék elindításáért felel.
+	 */
 	private void startGame() {
 		ArrayList<Player> players = addPlayers();
 		if(players != null) {
