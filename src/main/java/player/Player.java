@@ -61,14 +61,6 @@ public abstract class Player extends Nameable implements Updatable {
     public void setActions(int actions){
         this.remainingActions = actions;
     }
-    
-    /**
-     * Meghatározza, hogy a játékos végrehajthatja-e az adott parancsot.
-     *
-     * @param cmd a parancs szövege
-     * @return true, ha a játékos végrehajthatja a parancsot, különben false.
-     */
-    public abstract boolean canExecuteCommand(String cmd);
 
     /**
      * Csökkenti a hátralévő akciók számát eggyel.

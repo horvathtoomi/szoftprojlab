@@ -163,16 +163,16 @@ public class GameFileChooser {
             // Létrehozzuk az új GameController-t
             // A frame::repaint callback biztosítja, hogy a grafikus felület frissüljön
             GameController controller = new GameController(false, 20, frame::repaint);
-            controller.setPlanet(state.getPlanet());
+            controller.setPlanet(state.planet());
 
             // Beállítjuk a játékosokat
-            for (Player player : state.getPlayers()) {
+            for (Player player : state.players()) {
                 controller.addPlayer(player);
             }
 
             // Beállítjuk a kör számlálót és az aktuális játékost
-            controller.setTurnCounter(state.getTurnCounter());
-            controller.setCurrentPlayer(state.getCurrentPlayer());
+            controller.setTurnCounter(state.turnCounter());
+            controller.setCurrentPlayer(state.currentPlayer());
             controller.setInit(state.isInit());
 
             return controller;

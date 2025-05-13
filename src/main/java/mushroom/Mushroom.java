@@ -1,7 +1,6 @@
 package main.java.mushroom;
 
 import java.util.ArrayList;
-import main.java.tecton.Tecton;
 
 /**
  * A Mushroom osztály egy gombát reprezentál a játékban, amelyhez tartozik egy gombász (shroomer),
@@ -14,7 +13,6 @@ public class Mushroom {
 	/**
      * Konstruktor, amely inicializál egy új Mushroom példányt.
      *
-     * @param name A gomba neve.
      * @param testing Tesztelési mód jelzője. Ha igaz, a gomba tesztelési üzemmódban jött létre.
      */
 	public Mushroom(boolean testing) {
@@ -40,15 +38,5 @@ public class Mushroom {
             }
         }
 		dead = true;
-	}
-	/**
-     * Létrehoz és visszaad egy teljesen kifejlett MushroomBody példányt a megadott tektonra helyezve.
-     *
-     * @param tecton A tekton, amelyre a gombatestet helyezzük.
-     * @param name Az új gombatest neve.
-     * @return A létrehozott MushroomBody példány.
-     */
-	public MushroomBody placeGrownMushroom(Tecton tecton, String name) {
-        return new MushroomBody(tecton, this, 2, name, testing);
 	}
 }

@@ -1,32 +1,28 @@
 package main.java.tecton;
 
-import main.java.Nameable;
-import main.java.Updatable;
 import main.java.mushroom.MushroomString;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Absztrakt Tecton osztály, amely a játék mezőit reprezentálja.
  * Egyedi névvel rendelkezik, ezért a Nameable leszármazottja, valamint vannak szomszédai és eltárolja, hogy mennyi fonal lehet rajta maximálisan
  */
-public abstract class Tecton extends Nameable implements Updatable, Serializable {
+public abstract class Tecton implements Serializable{
 
     private ArrayList<Tecton> neighbours;
     private final int maxStrings;
     private boolean bodyGrown = false;
     private GeometryTecton geometry;
+    boolean dead = false;
 
     /**
      * Konstruktor: létrehoz egy új Tecton példányt megadott névvel és maximális fonalszámmal.
      *
-     * @param name       A tecton neve.
      * @param maxStrings A maximálisan tárolható gombafonalak száma.
      */
-    Tecton(String name, int maxStrings) {
-        setName(name);
+    public Tecton(int maxStrings) {
         this.maxStrings = maxStrings;
         neighbours = new ArrayList<>();
     }
@@ -47,14 +43,12 @@ public abstract class Tecton extends Nameable implements Updatable, Serializable
     public void setGeometry(GeometryTecton geometry) {
         this.geometry = geometry;
     }
-    
-    public void addNeighbour(Tecton tecton) {
-        this.neighbours.add(tecton);
-    }
 
     public int getMaxStrings() {
         return maxStrings;
     }
+    public boolean getDead() {return dead;}
+    public void setDead(boolean dead) {this.dead = dead;}
     
     /** @return true, ha már nőtt rajta egy MushroomBody. */
     public boolean hasSpace() {
@@ -80,20 +74,6 @@ public abstract class Tecton extends Nameable implements Updatable, Serializable
             }
         }
         return result;
-    }
-
-    /**
-     * Az updatable interfész megvalósítása. Ha a randomitás igaz, akkor 1/5-öd eséllyel eltörik a tekton a körben.
-     *
-     * @param random A randomitás kapcsolója
-     */
-    public void update(boolean random){
-    	if(random){
-			Random rng = new Random();
-			int n = rng.nextInt(5); 
-			if(n == 0)
-				createSplitTectons(this.getName() + "_1", this.getName() + "_2");
-    	}
     }
 
     /**
@@ -131,5 +111,5 @@ public abstract class Tecton extends Nameable implements Updatable, Serializable
      * A split logikáját konkrét leszármazottak valósítják meg.
      * Két új példányt ad vissza.
      */
-    public abstract Tecton[] createSplitTectons(String newName1, String newName2);
+    public abstract void createSplitTectons(ArrayList<Tecton> tectons);
 }

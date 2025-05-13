@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class GamePanel extends JPanel {
 
-	public enum ShineOn {TECTON, MUSHBODY, MUSHSTRING, SPORE, INSECT, NONE};
+	public enum ShineOn {TECTON, MUSHBODY, MUSHSTRING, SPORE, INSECT, NONE}
 	private ShineOn shineOn = ShineOn.NONE;
 
 	private GameController gameController;

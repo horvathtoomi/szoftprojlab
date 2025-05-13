@@ -61,26 +61,20 @@ public class KeyHandler implements KeyListener {
                 gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
                 //Implementalas
                 break;
-            case KEY_MUSHROOM:
+            case KEY_MUSHROOM, KEY_HYPHA:
                 gamePanel.setShineOn(GamePanel.ShineOn.MUSHBODY);
                 break;
-            case KEY_BRANCH:
+            case KEY_BRANCH, KEY_CUT:
                 gamePanel.setShineOn(GamePanel.ShineOn.MUSHSTRING);
                 break;
             case KEY_SPREAD_SPORE:
                 gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
-                break;
-            case KEY_HYPHA:
-                gamePanel.setShineOn(GamePanel.ShineOn.MUSHBODY);
                 break;
             //case KEY_MOVE:
             //    gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
             //    break;
             case KEY_EAT:
                 gamePanel.setShineOn(GamePanel.ShineOn.SPORE);
-                break;
-            case KEY_CUT:
-                gamePanel.setShineOn(GamePanel.ShineOn.MUSHSTRING);
                 break;
             default:
                 gamePanel.setShineOn(GamePanel.ShineOn.NONE);

@@ -51,19 +51,6 @@ public class Insecter extends Player implements PlayerAccept, Serializable {
      * @param insects az új rovarlista
      */
     public void setInsects(List<Insect> insects) {this.insects = insects;}
-
-    /**
-     * Meghatározza, hogy a játékos végrehajthatja-e az adott parancsot.
-     * Az Insecter az alábbi parancsokat használhatja: Move, Consume, Cut, Pass.
-     *
-     * @param cmd a parancs szövege
-     * @return true, ha a parancs engedélyezett, különben false
-     */
-    @Override
-    public boolean canExecuteCommand(String cmd){
-        ArrayList<String> allowed = new ArrayList<>(Arrays.asList("Move", "Consume", "Cut", "Pass", "move", "consume", "cut", "pass"));
-        return allowed.contains(cmd);
-    }
     
     /**
      * Meghívja a látogatót a Visitor tervezési minta alapján.

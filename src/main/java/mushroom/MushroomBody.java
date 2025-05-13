@@ -1,7 +1,6 @@
 package main.java.mushroom;
 
 import main.java.Geometry;
-import main.java.Nameable;
 import main.java.Updatable;
 import main.java.tecton.*;
 import main.java.spore.*;
@@ -15,7 +14,7 @@ import java.util.Random;
  * A MushroomBody osztály a gombatest viselkedését modellezi, beleértve a spórák terjesztését, 
  * a növekedést és a halált. Ezen kívül kezeli a gomba elhelyezkedését és annak állapotát.
  */
-public class MushroomBody extends Nameable implements Updatable, Serializable {
+public class MushroomBody implements Updatable, Serializable {
 	private final Tecton location;
 	private final Mushroom mushroom;
 	private int remainingSporulations;
@@ -25,24 +24,17 @@ public class MushroomBody extends Nameable implements Updatable, Serializable {
 	boolean testing;
 	Geometry geometry;
 	
-	private static int counter = 1;
-	public static synchronized String nextBodyName(String base) {
-	    return base + "_body" + counter++;
-	}
-	
 	/**
      * Konstruktor, amely inicializálja a gombatest helyét, gombáját, állapotát, nevét, és tesztelési állapotát.
      *
      * @param location A gombatest tektonja, amin elhelyezkedik.
      * @param mushroom A gomba, amelyhez a gombatest tartozik.
      * @param state A gombatest állapota (0 - Kicsi, 1 - Közepes, 2 - Kifejlett).
-     * @param name A gombatest neve.
      * @param testing Tesztelési jelző.
      */
-	public MushroomBody(Tecton location, Mushroom mushroom, int state, String name, boolean testing) { //ctor
+	public MushroomBody(Tecton location, Mushroom mushroom, int state, boolean testing) { //ctor
 		this.location = location;
 		this.mushroom = mushroom;
-		setName(name);
 		if(state == 2)
 			availableSpores = true;
 		else
@@ -69,10 +61,6 @@ public class MushroomBody extends Nameable implements Updatable, Serializable {
 		public boolean getDead() {
 			return dead;
 		}
-
-		public boolean canSpreadSpores() {
-			return availableSpores;
-		}
 		
 		public Geometry getGeometry() {
 			return geometry;
@@ -91,16 +79,17 @@ public class MushroomBody extends Nameable implements Updatable, Serializable {
 	public void update(boolean random){
 		if(random){
 			Random rng = new Random();
-			int n = rng.nextInt(3); 
+			int n = rng.nextInt(3);
+			System.out.println("generált gombatest növekvős szám: " + n);
 			if(n == 0)
 				grow();
-			n = rng.nextInt(3); 
+			n = rng.nextInt(4);
+			System.out.println("generált spóratermelős szám: " + n);
 			if(n == 0)
 				produceSpores();
 		}
 		else
 			grow();
-		produceSpores();
 	}
 	
 	/**
@@ -275,8 +264,7 @@ default -> null;
         for (Spore spore : spores)
             if (spore.getLocation() == tecton) spore.die();
         shroomer.score++;
-        MushroomBody mb = new MushroomBody(tecton, this.mushroom, 0, "sdds", false);
-		return mb;
+        return new MushroomBody(tecton, this.mushroom, 0, false);
 	}
 	
 	public String getState() 

@@ -10,12 +10,6 @@ import main.java.mushroom.Mushroom;
  */
 public class MultiplierSpore extends Spore implements SporeAccept
 {
-	
-	private static class CloneCounter {
-	    private static int counter = 1;
-	    static synchronized int next() { return counter++; }
-	}
-	
 	/**
      * Konstruktor, amely inicializálja a sokszorozó spórát.
      * 
@@ -59,6 +53,6 @@ public class MultiplierSpore extends Spore implements SporeAccept
     public Insect makeNewInsect(Insect insect)
     {
         Tecton location = insect.getLocation();
-        return new Insect(location, insect.getName() + "_clone" + CloneCounter.next());
+        return new Insect(location);
     }
 }

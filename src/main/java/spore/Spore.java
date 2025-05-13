@@ -53,10 +53,6 @@ public abstract class Spore extends Nameable implements Serializable{
         return location;
     }
 
-    public int getNutrientValue() {
-        return nutrientValue;
-    }
-
     public Mushroom getMushroom() {
         return mushroom;
     }

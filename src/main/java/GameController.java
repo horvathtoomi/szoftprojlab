@@ -65,19 +65,19 @@ public class GameController {
     public Planet buildPlanet(){
     	Planet planet = new Planet();
     	
-    	BigTecton t1 = new BigTecton("T1", 3);
+    	BigTecton t1 = new BigTecton(3);
     	t1.setGeometry(new GeometryTecton(600, 200, 110));
 
-    	SmallTecton t2 = new SmallTecton("T2", 3);
+    	SmallTecton t2 = new SmallTecton(3);
     	t2.setGeometry(new GeometryTecton(900, 400, 55));
     	
-    	HealingTecton t3 = new HealingTecton("T3", 3);
+    	HealingTecton t3 = new HealingTecton(3);
     	t3.setGeometry(new GeometryTecton(250, 250, 85));
     	
-    	CoarseTecton t4 = new CoarseTecton("T4", 3);
+    	CoarseTecton t4 = new CoarseTecton(3);
     	t4.setGeometry(new GeometryTecton(400, 400, 90));
     	
-    	ToxicTecton t5 = new ToxicTecton("T5", 3);
+    	ToxicTecton t5 = new ToxicTecton(3);
     	t5.setGeometry(new GeometryTecton(600, 600, 95));
     	
     	planet.addTecton(t1);
@@ -113,10 +113,6 @@ public class GameController {
     	return maxTurn;
     }
     
-    public boolean getTesting() {
-		return testing;
-	}
-    
     public void setPlanet(Planet newPlanet) {
         this.planet = newPlanet;
     }
@@ -138,17 +134,6 @@ public class GameController {
         currentPlayer = players.get(index);
     }
     public boolean getInit() {return init;}
-    
-
-    /**
-     * Megnézi, hogy létezik-e a megadott nevű játékos a játékban.
-     *
-     * @param name a keresett név
-     * @return true, ha van ilyen nevű játékos, különben false
-     */
-    public boolean hasPlayer(String name) {
-        return players.stream().anyMatch(p -> p.getName().equalsIgnoreCase(name));
-    }
     
     /**
      * Ezzel a metódussal lehet játékosokat hozzáadni a listához. Ha ez az első eleme, beállítja kezdőjátékosnak.

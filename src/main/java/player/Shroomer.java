@@ -16,8 +16,6 @@ public class Shroomer extends Player implements PlayerAccept, Serializable {
 
     Mushroom mushroom;
 
-    private boolean placedGrownMushBody = false;
-
     /**
      * Egy új Shroomer példányt hoz létre megadott névvel, gombával és akciószámmal.
 	 *
@@ -45,33 +43,6 @@ public class Shroomer extends Player implements PlayerAccept, Serializable {
      */
     public void setMushroom(Mushroom mushroom) {
         this.mushroom = mushroom;
-    }
-    
-    /**
-     * Visszaadja a játékos játék eleji kifejlett gombáját.
-     */
-    public boolean havePlacedGrownMushBody() {
-        return placedGrownMushBody;
-    }
-    
-    /**
-     * Ha már a játékos tett le kifejlett gombát, akkor a placedGrownMushBody igaz lesz.
-     *
-     */
-    public void placedGrownMushBody() {
-        placedGrownMushBody = true;
-    }
-
-    /**
-     * Meghatározza, hogy a játékos végrehajthatja-e az adott parancsot.
-     *
-     * @param cmd a parancs neve.
-     * @return true, ha a parancs engedélyezett, különben false.
-     */
-    @Override
-    public boolean canExecuteCommand(String cmd){
-        ArrayList<String> allowed = new ArrayList<>(Arrays.asList("MushroomString", "Branch", "MushroomBody", "SpreadSpore", "Pass", "mushroomstring", "branch", "mushroombody", "spreadspore", "pass"));
-        return allowed.contains(cmd);
     }
 
     /**

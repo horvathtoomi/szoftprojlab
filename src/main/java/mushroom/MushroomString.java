@@ -237,7 +237,7 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
 
 			orphanAge++;                 // <<<  minden körben NÖVELJÜK
 
-			/* Healing-vég keresése visitorral */ //ninc használva semmire
+			/* Healing-vég keresése visitorral */ //nincs használva semmire
 			boolean healingEnd = hasHealingEnd();
 
 			/* 3 kör után minden NEM-Healing ág leesik – akkor is, ha van Healing-vég */

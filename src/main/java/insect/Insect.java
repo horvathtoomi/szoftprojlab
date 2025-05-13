@@ -6,7 +6,6 @@ import main.java.tecton.*;
 import main.java.mushroom.*;
 import main.java.spore.Spore;
 import main.java.Geometry;
-import main.java.Nameable;
 import main.java.Updatable;
 
 /**
@@ -14,7 +13,7 @@ import main.java.Updatable;
  * A Nameable leszármazottja, így nevet tárol, és különféle képességekkel rendelkezik:
  * mozgás, fonalvágás, spórák elfogyasztása és állapotváltozás.
  */
-public class Insect extends Nameable implements Updatable, Serializable {
+public class Insect implements Updatable, Serializable {
 
 	private int collectedNutrients;
 	private Tecton location;
@@ -25,7 +24,6 @@ public class Insect extends Nameable implements Updatable, Serializable {
      */
 	public enum Speed { SLOW, NORMAL, FAST }
 	private Speed speed;
-	private final String name;
 	private boolean dead;
 	private Geometry geometry;
 
@@ -33,15 +31,13 @@ public class Insect extends Nameable implements Updatable, Serializable {
      * Konstruktor – új rovar létrehozása.
      *
      * @param location A rovar kezdeti helye.
-     * @param name     A rovar neve.
      */
-	public Insect(Tecton location, String name) {
+	public Insect(Tecton location) {
 		canCutString = true;
 		canMove = true;
 		speed = Speed.NORMAL;
 		collectedNutrients = 0;
 		this.location = location;
-		this.name = name;
 		dead = false;
 	}
 
@@ -58,17 +54,13 @@ public class Insect extends Nameable implements Updatable, Serializable {
 	}
 
 	//Getterek, Setterek
-	public String getName()
-	{
-		return name;
-	}
 	public boolean getCanCutString() 
 	{
 		return canCutString;
 	}
 	public boolean getCanMove()
 	{
-		return canMove;
+		return !canMove;
 	}
 	public boolean getDead()
 	{
@@ -80,13 +72,6 @@ public class Insect extends Nameable implements Updatable, Serializable {
 	}
 	public int getNutrients(){
 		return collectedNutrients;
-	}
-	public String getEffect(){
-		if(!canCutString) return "GENTLE";
-		if(!canMove) return "PARALYZED";
-		if(speed == Speed.FAST) return "FAST";
-		else if(speed == Speed.NORMAL && canCutString && canMove) return "NO EFFECT";
-		else return "SLOW";
 	}
 	
 	public Geometry getGeometry() {

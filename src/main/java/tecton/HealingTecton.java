@@ -1,5 +1,7 @@
 package main.java.tecton;
 
+import java.util.ArrayList;
+
 /**
  * HealingTecton a Tecton egyik típusa, melyen a fonalak nem halnak el.
  * Implementálja a TectonAccept interfészt a visitor minta miatt.
@@ -9,27 +11,25 @@ public class HealingTecton extends Tecton implements TectonAccept{
 	/**
      * Konstruktor: létrehoz egy új HealingTecton példányt a megadott névvel és a maximális gombafonal számával, ami rajta lehet.
      *
-     * @param name       A tecton neve.
      * @param maxStrings A maximálisan tárolható gombafonalak száma.
      */
-    public HealingTecton(String name, int maxStrings){
-    	super(name, maxStrings);
+    public HealingTecton(int maxStrings){
+    	super(maxStrings);
     }
 
     /**
      * A Tecton széttöréséhez két új HealingTecton példányt hoz létre.
      *
-     * @param newName1 Az első új tecton neve.
-     * @param newName2 A második új tecton neve.
-     * @return Egy tömb, amely két új HealingTecton példányt tartalmaz.
      */
 	@Override
-    public Tecton[] createSplitTectons(String newName1, String newName2) {
-        Tecton t1 = new HealingTecton(newName1, getMaxStrings());
-        Tecton t2 = new HealingTecton(newName2, getMaxStrings());
-        return new Tecton[] { t1, t2 };
+    public void createSplitTectons(ArrayList<Tecton> tectons) {
+        Tecton t1 = new HealingTecton(getMaxStrings());
+        Tecton t2 = new HealingTecton(getMaxStrings());
+        t1.setGeometry(this.getGeometry());
+        t2.setGeometry(this.getGeometry());
+        tectons.add(t1);
+        tectons.add(t2);
     }
-
     /**
      * Visitor minta accept metódusa: elfogadja a látogatót.
      *
