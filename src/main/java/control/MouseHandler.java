@@ -9,6 +9,8 @@ import main.java.player.Insecter;
 import main.java.player.Player;
 import main.java.player.Shroomer;
 import main.java.spore.Spore;
+import main.java.spore.SporeAccept;
+import main.java.spore.SporeConsumptionVisitor;
 import main.java.tecton.GeometryTecton;
 import main.java.tecton.Tecton;
 
@@ -352,8 +354,11 @@ public class MouseHandler implements MouseListener {
                 gc.nextTurnCheck();
             }
             else if(clickedSpore != null) {
-                clickedInsect.eatSpore(clickedSpore);
-                gc.nextTurnCheck();
+                if (clickedInsect.getLocation() == clickedSpore.getLocation()) {
+                    SporeConsumptionVisitor v = new SporeConsumptionVisitor(clickedInsect, gc);
+                    ((SporeAccept) clickedSpore).accept(v);
+                    gc.nextTurnCheck();
+                }
             }
             else if(clickedMushroomString != null) {
                 clickedInsect.cutHypha(clickedMushroomString, gc.getPlanet().getMushstrings());

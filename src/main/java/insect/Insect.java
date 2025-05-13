@@ -181,18 +181,6 @@ public class Insect implements Updatable, Serializable {
 
 	    // 4) NEM ölünk meg semmit azonnal – a MushroomString.update végzi az öregedést
 	}
-
-	 /**
-     * A rovar elfogyaszt egy spórát, megnövelve tápanyagkészletét,
-     * majd alkalmazza a spóra hatását.
-     *
-     * @param spore A fogyasztandó spóra.
-     */
-	public void eatSpore(Spore spore)
-	{
-		//collectedNutrients += spore.getNutrientValue();
-		spore.applyEffect(this);
-	}
 	
 	/**
      * A rovar elpusztul – halott állapotba kerül.
