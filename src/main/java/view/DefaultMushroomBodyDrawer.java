@@ -37,11 +37,11 @@ public class DefaultMushroomBodyDrawer extends UtilityTool implements MushroomBo
         }
 
         int width = 50;
-        int drawX = mb.getGeometry().getX() - width /2;
+        float drawX = mb.getGeometry().getX() - (float) width /2;
         int height = 50;
-        int drawY = mb.getGeometry().getY() - height /2;
+        float drawY = mb.getGeometry().getY() - (float) height /2;
 
-        g2.drawImage(image, drawX, drawY, width, height, null);
+        g2.drawImage(image, (int) drawX, (int) drawY, width, height, null);
     }
 
 }

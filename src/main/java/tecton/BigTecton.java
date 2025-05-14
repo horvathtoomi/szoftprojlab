@@ -1,6 +1,7 @@
 package main.java.tecton;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * BigTecton a Tecton egyik típusa, melyen 5 különböző fonal is lehet.
@@ -17,18 +18,9 @@ public class BigTecton extends Tecton implements TectonAccept  {
         super(maxStrings);
     }
 
-    /**
-     * A Tecton széttöréséhez két új BigTecton példányt hoz létre.
-     *
-     */
     @Override
-    public void createSplitTectons(ArrayList<Tecton> tectons) {
-        Tecton t1 = new BigTecton(getMaxStrings());
-        Tecton t2 = new BigTecton(getMaxStrings());
-        t1.setGeometry(this.getGeometry());
-        t2.setGeometry(this.getGeometry());
-        tectons.add(t1);
-        tectons.add(t2);
+    public void createSplitTectons(ArrayList<Tecton> tectons, ArrayList<Tecton> newTectons) {
+        createSplitTectonsWithFactory(() -> new BigTecton(getMaxStrings()), newTectons);
     }
     
     /**

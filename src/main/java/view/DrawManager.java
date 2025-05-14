@@ -31,21 +31,21 @@ public class DrawManager {
 
     public void drawTecton(Graphics2D g, Tecton t, boolean shining){
         if(shining){
-            drawShineEffect(g, t.getGeometry().getX(), t.getGeometry().getY(), t.getGeometry().getRadius() + 10);
+            drawShineEffect(g, (int) t.getGeometry().getX(), (int) t.getGeometry().getY(), (int) (t.getGeometry().getRadius() + 10));
         }
         tectonDrawer.draw(g, t);
     }
 
     public void drawSpore(Graphics2D g, Spore spore, boolean shining) {
         if(shining){
-            drawShineEffect(g, spore.getGeometry().getX(), spore.getGeometry().getY(), 25);
+            drawShineEffect(g, (int) spore.getGeometry().getX(), (int) spore.getGeometry().getY(), 25);
         }
         sporeDrawer.draw(g, spore);
     }
 
     public void drawMushroomBody(Graphics2D g, MushroomBody mushroomBody, boolean shining) {
         if(shining) {
-            drawShineEffect(g, mushroomBody.getGeometry().getX(), mushroomBody.getGeometry().getY(), 35);
+            drawShineEffect(g, (int) mushroomBody.getGeometry().getX(), (int) mushroomBody.getGeometry().getY(), 35);
         }
         mushroomBodyDrawer.draw(g, mushroomBody);
     }
@@ -61,7 +61,7 @@ public class DrawManager {
 
     public void drawInsect(Graphics2D g, Insect insect, boolean shining) {
         if(shining) {
-            drawShineEffect(g, insect.getGeometry().getX() + 20, insect.getGeometry().getY() + 20, 30);
+            drawShineEffect(g, (int) (insect.getGeometry().getX() + 20), (int) (insect.getGeometry().getY() + 20), 30);
         }
         insectDrawer.draw(g, insect);
     }
@@ -80,8 +80,8 @@ public class DrawManager {
                 Tecton t1 = ms.getConnection().get(0);
                 Tecton t2 = ms.getConnection().get(1);
                 drawMushroomString(g, ms,
-                        t1.getGeometry().getX(), t1.getGeometry().getY(),
-                        t2.getGeometry().getX(), t2.getGeometry().getY(),
+                        (int) t1.getGeometry().getX(), (int) t1.getGeometry().getY(),
+                        (int) t2.getGeometry().getX(), (int) t2.getGeometry().getY(),
                         shining == GamePanel.ShineOn.MUSHSTRING);
             }
         }

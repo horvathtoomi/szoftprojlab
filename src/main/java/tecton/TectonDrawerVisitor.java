@@ -17,20 +17,20 @@ public class TectonDrawerVisitor implements TectonVisitor<Void> {
 
 	public Void visit(BigTecton big) {
 		BufferedImage image = uTool.load(MainMenu.prefix + "bt.png");
-		int r = big.getGeometry().getRadius();
-		g2.drawImage(image, big.getGeometry().getX() - r,
-				big.getGeometry().getY() - r,
-				r * 2, r * 2, null);
+		float r = big.getGeometry().getRadius();
+		g2.drawImage(image, (int) ((int)big.getGeometry().getX() - r),
+                (int) (big.getGeometry().getY() - r),
+				(int)r * 2, (int)r * 2, null);
 
 		return null;
 	}
 
 	public Void visit(SmallTecton small) {
 		BufferedImage image = uTool.load(MainMenu.prefix + "st.png");
-		int r = small.getGeometry().getRadius();
-		g2.drawImage(image, small.getGeometry().getX() - r,
-				small.getGeometry().getY() - r,
-				r * 2, r * 2, null);
+		float r = small.getGeometry().getRadius();
+		g2.drawImage(image, (int) (small.getGeometry().getX() - r),
+                (int) (small.getGeometry().getY() - r),
+                (int) (r * 2), (int) (r * 2), null);
 
 		return null;
 	}
@@ -38,30 +38,30 @@ public class TectonDrawerVisitor implements TectonVisitor<Void> {
 
 	public Void visit(ToxicTecton toxic) {
 		BufferedImage image = uTool.load(MainMenu.prefix + "tt.png");
-		int r = toxic.getGeometry().getRadius();
-		g2.drawImage(image, toxic.getGeometry().getX() - r,
-				toxic.getGeometry().getY() - r,
-				r * 2, r * 2, null);
+		float r = toxic.getGeometry().getRadius();
+		g2.drawImage(image, (int) (toxic.getGeometry().getX() - r),
+                (int) (toxic.getGeometry().getY() - r),
+                (int) (r * 2), (int) (r * 2), null);
 
 		return null;
 	}
 
 	public Void visit(HealingTecton healing) {
 		BufferedImage image = uTool.load(MainMenu.prefix + "ht.png");
-		int r = healing.getGeometry().getRadius();
-		g2.drawImage(image, healing.getGeometry().getX() - r,
-				healing.getGeometry().getY() - r,
-				r * 2, r * 2, null);
+		float r = healing.getGeometry().getRadius();
+		g2.drawImage(image, (int) (healing.getGeometry().getX() - r),
+                (int) (healing.getGeometry().getY() - r),
+                (int) (r * 2), (int) (r * 2), null);
 
 		return null;
 	}
 
 	public Void visit(CoarseTecton coarse) {
 		BufferedImage image = uTool.load(MainMenu.prefix + "ct.png");
-		int r = coarse.getGeometry().getRadius();
-		g2.drawImage(image, coarse.getGeometry().getX() - r,
-				coarse.getGeometry().getY() - r,
-				r * 2, r * 2, null);
+		float r = coarse.getGeometry().getRadius();
+		g2.drawImage(image, (int) (coarse.getGeometry().getX() - r),
+                (int) (coarse.getGeometry().getY() - r),
+                (int) (r * 2), (int) (r * 2), null);
 
 		return null;
 	}

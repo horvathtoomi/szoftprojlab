@@ -17,18 +17,9 @@ public class HealingTecton extends Tecton implements TectonAccept{
     	super(maxStrings);
     }
 
-    /**
-     * A Tecton széttöréséhez két új HealingTecton példányt hoz létre.
-     *
-     */
-	@Override
-    public void createSplitTectons(ArrayList<Tecton> tectons) {
-        Tecton t1 = new HealingTecton(getMaxStrings());
-        Tecton t2 = new HealingTecton(getMaxStrings());
-        t1.setGeometry(this.getGeometry());
-        t2.setGeometry(this.getGeometry());
-        tectons.add(t1);
-        tectons.add(t2);
+    @Override
+    public void createSplitTectons(ArrayList<Tecton> tectons, ArrayList<Tecton> newTectons) {
+        createSplitTectonsWithFactory(() -> new HealingTecton(getMaxStrings()), newTectons);
     }
     /**
      * Visitor minta accept metódusa: elfogadja a látogatót.

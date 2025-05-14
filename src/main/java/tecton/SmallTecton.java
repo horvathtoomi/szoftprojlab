@@ -17,18 +17,9 @@ public class SmallTecton extends Tecton implements TectonAccept {
     	super(maxStrings);
     }
 
-    /**
-     * A Tecton széttöréséhez két új SmallTecton példányt hoz létre.
-      *
-     */
-	@Override
-    public void createSplitTectons(ArrayList<Tecton> tectons) {
-        Tecton t1 = new SmallTecton(getMaxStrings());
-        Tecton t2 = new SmallTecton(getMaxStrings());
-        t1.setGeometry(this.getGeometry());
-        t2.setGeometry(this.getGeometry());
-        tectons.add(t1);
-        tectons.add(t2);
+    @Override
+    public void createSplitTectons(ArrayList<Tecton> tectons, ArrayList<Tecton> newTectons) {
+        createSplitTectonsWithFactory(() -> new SmallTecton(getMaxStrings()), newTectons);
     }
 
     /**

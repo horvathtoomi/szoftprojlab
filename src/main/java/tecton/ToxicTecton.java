@@ -1,6 +1,7 @@
 package main.java.tecton;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * ToxicTecton a Tecton egyik típusa, melyen a gombák egy idő után elpusztulnak.
@@ -17,20 +18,10 @@ public class ToxicTecton extends Tecton implements TectonAccept {
     	super(maxStrings);
     }
 
-    /**
-     * A Tecton széttöréséhez két új ToxicTecton példányt hoz létre.
-     *
-     */
-	@Override
-    public void createSplitTectons(ArrayList<Tecton> tectons) {
-        Tecton t1 = new ToxicTecton(getMaxStrings());
-        Tecton t2 = new ToxicTecton(getMaxStrings());
-        t1.setGeometry(this.getGeometry());
-        t2.setGeometry(this.getGeometry());
-        tectons.add(t1);
-        tectons.add(t2);
+    @Override
+    public void createSplitTectons(ArrayList<Tecton> tectons, ArrayList<Tecton> newTectons) {
+        createSplitTectonsWithFactory(() -> new ToxicTecton(getMaxStrings()), newTectons);
     }
-
     /**
      * Visitor minta accept metódusa: elfogadja a látogatót.
      *

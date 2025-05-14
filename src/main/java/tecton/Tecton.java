@@ -4,6 +4,8 @@ import main.java.mushroom.MushroomString;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.function.Supplier;
 
 /**
  * Absztrakt Tecton osztály, amely a játék mezőit reprezentálja.
@@ -12,7 +14,7 @@ import java.util.ArrayList;
 public abstract class Tecton implements Serializable{
 
     private ArrayList<Tecton> neighbours;
-    private final int maxStrings;
+    private int maxStrings;
     private boolean bodyGrown = false;
     private GeometryTecton geometry;
     boolean dead = false;
@@ -47,6 +49,7 @@ public abstract class Tecton implements Serializable{
     public int getMaxStrings() {
         return maxStrings;
     }
+    public void setMaxStrings(int maxStrings) {this.maxStrings = maxStrings;}
     public boolean getDead() {return dead;}
     public void setDead(boolean dead) {this.dead = dead;}
     
@@ -111,5 +114,35 @@ public abstract class Tecton implements Serializable{
      * A split logikáját konkrét leszármazottak valósítják meg.
      * Két új példányt ad vissza.
      */
-    public abstract void createSplitTectons(ArrayList<Tecton> tectons);
+    public abstract void createSplitTectons(ArrayList<Tecton> tectons, ArrayList<Tecton> newTectons);
+    protected void createSplitTectonsWithFactory(Supplier<Tecton> factory, ArrayList<Tecton> newTectons) {
+        if (this.getMaxStrings() == 1) return;
+
+        int cx = this.getGeometry().getX();
+        int cy = this.getGeometry().getY();
+        int newRadius = this.getGeometry().getRadius() / 2;
+        if(newRadius < 40)
+            return;
+
+        Random rng = new Random();
+        double angle = rng.nextDouble() * 2 * Math.PI;
+
+        float dx = (float) (Math.cos(angle) * this.getGeometry().getRadius() / 2);
+        float dy = (float) (Math.sin(angle) * this.getGeometry().getRadius() / 2);
+
+        GeometryTecton g1 = new GeometryTecton((int) (cx + dx), cy + (int)dy, newRadius);
+        GeometryTecton g2 = new GeometryTecton((int) (cx - dx), cy - (int)dy, newRadius);
+
+        Tecton t1 = factory.get();
+        Tecton t2 = factory.get();
+
+        t1.setMaxStrings(this.getMaxStrings() - 1);
+        t2.setMaxStrings(this.getMaxStrings() - 1);
+        t1.setGeometry(g1);
+        t2.setGeometry(g2);
+
+        newTectons.add(t1);
+        newTectons.add(t2);
+    }
 }
+

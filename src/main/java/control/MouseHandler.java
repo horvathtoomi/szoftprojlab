@@ -63,9 +63,9 @@ public class MouseHandler implements MouseListener {
         gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
         repaintCallback.run();
         for (Tecton t : gc.getPlanet().getTectons()) {
-            int tx = t.getGeometry().getX();
-            int ty = t.getGeometry().getY();
-            int radius = t.getGeometry().getRadius();
+            float tx = t.getGeometry().getX();
+            float ty = t.getGeometry().getY();
+            float radius = t.getGeometry().getRadius();
             if ((x <= (tx + radius) && x >= (tx - radius)) && (y <= (ty + radius) && y >= (ty - radius))) {
                 clickedTecton = t;
                 //System.out.println("selected tecton: " + clickedTecton.getName());
@@ -84,8 +84,8 @@ public class MouseHandler implements MouseListener {
         gamePanel.setShineOn(GamePanel.ShineOn.MUSHBODY);
         repaintCallback.run();
         for (MushroomBody mb : gc.getPlanet().getMushbodies()) {
-            int tx = mb.getGeometry().getX();
-            int ty = mb.getGeometry().getY();
+            float tx = mb.getGeometry().getX();
+            float ty = mb.getGeometry().getY();
             int radius = 45;
             if ((x <= (tx + radius) && x >= (tx - radius)) && (y <= (ty + radius) && y >= (ty - radius))
                     && ((Shroomer) gc.getCurrentPlayer()).getMushroom().equals(mb.getMushroom())) {
@@ -106,8 +106,8 @@ public class MouseHandler implements MouseListener {
         gamePanel.setShineOn(GamePanel.ShineOn.INSECT);
         repaintCallback.run();
         for (Insect i : gc.getPlanet().getInsects()) {
-            int tx = i.getGeometry().getX();
-            int ty = i.getGeometry().getY();
+            float tx = i.getGeometry().getX();
+            float ty = i.getGeometry().getY();
             int radius = 45;
             if ((x <= (tx + radius) && x >= (tx - radius)) && (y <= (ty + radius) && y >= (ty - radius))
                     && ((Insecter) gc.getCurrentPlayer()).getInsects().contains(i)) {
@@ -128,8 +128,8 @@ public class MouseHandler implements MouseListener {
         gamePanel.setShineOn(GamePanel.ShineOn.SPORE);
         repaintCallback.run();
         for (Spore s : gc.getPlanet().getSpores()) {
-            int tx = s.getGeometry().getX();
-            int ty = s.getGeometry().getY();
+            float tx = s.getGeometry().getX();
+            float ty = s.getGeometry().getY();
             int radius = 35;
             if ((x <= (tx + radius) && x >= (tx - radius)) && (y <= (ty + radius) && y >= (ty - radius))) {
                 clickedSpore = s;
@@ -194,7 +194,7 @@ public class MouseHandler implements MouseListener {
      * @param y2 Y koordinátája a fonal végének
      * @return igaz, ha a kattintás eléggé közel esik a fonalhoz
      */
-    private boolean isClickNearLine(int clickX, int clickY, int x1, int y1, int x2, int y2) {
+    private boolean isClickNearLine(int clickX, int clickY, float x1, float y1, float x2, float y2) {
         final int THRESHOLD = 10;
 
         double lineLength = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));

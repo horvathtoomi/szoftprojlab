@@ -19,7 +19,7 @@ public class DefaultInsectDrawer extends UtilityTool implements InsectDrawer {
     public void draw(Graphics2D g2, Insect insect) {
         int width = 40;
         int height = 40;
-        g2.drawImage(image, insect.getGeometry().getX(), insect.getGeometry().getY(), width, height, null);
+        g2.drawImage(image, (int)insect.getGeometry().getX(), (int)insect.getGeometry().getY(), width, height, null);
     }
 
 }

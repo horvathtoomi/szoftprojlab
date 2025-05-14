@@ -17,19 +17,9 @@ public class CoarseTecton extends Tecton implements TectonAccept {
         super(maxStrings);
     }
 
-    /**
-     * A Tecton széttöréséhez két új CoarseTecton példányt hoz létre.
-     *
-     * @return Egy tömb, amely két új CoarseTecton példányt tartalmaz.
-     */
     @Override
-    public void createSplitTectons(ArrayList<Tecton> tectons) {
-        Tecton t1 = new CoarseTecton(getMaxStrings());
-        Tecton t2 = new CoarseTecton(getMaxStrings());
-        t1.setGeometry(this.getGeometry());
-        t2.setGeometry(this.getGeometry());
-        tectons.add(t1);
-        tectons.add(t2);
+    public void createSplitTectons(ArrayList<Tecton> tectons, ArrayList<Tecton> newTectons) {
+        createSplitTectonsWithFactory(() -> new CoarseTecton(getMaxStrings()), newTectons);
     }
 
     /**

@@ -14,5 +14,4 @@ public class GeometryString extends Geometry implements Serializable {
         super(x,y);
         this.width = width;
     }
-
 }
