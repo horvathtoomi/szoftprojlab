@@ -1,7 +1,6 @@
 package main.java.tecton;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * ToxicTecton a Tecton egyik típusa, melyen a gombák egy idő után elpusztulnak.

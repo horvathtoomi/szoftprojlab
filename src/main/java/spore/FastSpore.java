@@ -8,8 +8,7 @@ import main.java.mushroom.Mushroom;
  * A FastSpore osztály egy gyorsító hatású spórát reprezentál, amely egy rovarral 
  * történő találkozás esetén megnöveli annak sebességét.
  */
-public class FastSpore extends Spore implements SporeAccept
-{
+public class FastSpore extends Spore implements SporeAccept {
 	/**
      * Konstruktor, amely inicializálja a gyorsító spórát.
      * 
@@ -35,8 +34,7 @@ public class FastSpore extends Spore implements SporeAccept
      * 
      * @param insect A rovar, amelyre a spóra hatása alkalmazódik.
      */
-	public void applyEffect(Insect insect)
-	{
+	public void applyEffect(Insect insect) {
 		insect.setSpeed(Insect.Speed.FAST);
 		insect.setCollectedNutrients(nutrientValue);
 		this.die();

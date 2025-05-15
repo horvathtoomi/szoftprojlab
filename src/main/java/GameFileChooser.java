@@ -36,7 +36,6 @@ public class GameFileChooser {
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             try {
-                // Fájl betöltése
                 GameController loadedGame = loadGameFromFile(selectedFile, frame);
                 if (loadedGame != null) {
                     System.out.println("Játékállapot sikeresen betöltve: " + selectedFile.getName());
@@ -55,9 +54,9 @@ public class GameFileChooser {
 
                     return true;
                 }
-            } catch(Exception ex){
-                    System.err.println("Hiba a játékállás betöltése közben: " + ex.getMessage());
-                    JOptionPane.showMessageDialog(parentComponent, "Hiba a játékállás betöltése közben: " + ex.getMessage(), "Hiba", JOptionPane.ERROR_MESSAGE);
+            } catch(Exception exc){
+                    System.err.println("Hiba a játékállás betöltése közben: " + exc.getMessage());
+                    JOptionPane.showMessageDialog(parentComponent, "Hiba a játékállás betöltése közben: " + exc.getMessage(), "Hiba", JOptionPane.ERROR_MESSAGE);
             }
         }
         return false;
@@ -110,9 +109,9 @@ public class GameFileChooser {
 
             try {
                 return saveGameToFile(gameController, selectedFile);
-            } catch (Exception ex) {
-                System.err.println("Hiba a játékállás mentése közben: " + ex.getMessage());
-                JOptionPane.showMessageDialog(parentComponent, "Hiba a játékállás mentése közben: " + ex.getMessage(), "Hiba", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception exc) {
+                System.err.println("Hiba a játékállás mentése közben: " + exc.getMessage());
+                JOptionPane.showMessageDialog(parentComponent, "Hiba a játékállás mentése közben: " + exc.getMessage(), "Hiba", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
         }

@@ -42,11 +42,13 @@ public class GameMenu extends JMenuBar {
                     JOptionPane.showMessageDialog(frame, "Játékállapot sikeresen elmentve!", "Mentés sikeres", JOptionPane.INFORMATION_MESSAGE);
                 }
             });
+
             b2.addActionListener(e -> {
                 if (GameFileChooser.loadGame(frame, frame)) {
                     JOptionPane.showMessageDialog(frame, "Játékállás sikeresen betöltve!", "Betöltés sikeres", JOptionPane.INFORMATION_MESSAGE);
                 }
             });
+
             b3.addActionListener(e -> {
                 System.out.println("exit");
                 frame.setJMenuBar(null);

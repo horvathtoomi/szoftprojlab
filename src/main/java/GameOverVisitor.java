@@ -21,7 +21,7 @@ public class GameOverVisitor implements PlayerVisitor {
      * @param shroomer a meglátogatott Shroomer típusú játékos
      */
     @Override
-    public void visit(Shroomer shroomer){
+    public void visit(Shroomer shroomer) {
         if (bestShroomer == null || shroomer.getScore() > bestShroomer.getScore()){
             bestShroomer = shroomer;
         }
@@ -35,7 +35,7 @@ public class GameOverVisitor implements PlayerVisitor {
      */
     @Override
     public void visit(Insecter insecter){
-        if (bestInsecter == null || insecter.getScore() > bestInsecter.getScore()){
+        if (bestInsecter == null || insecter.getScore() > bestInsecter.getScore()) {
             bestInsecter = insecter;
         }
     }
@@ -45,7 +45,7 @@ public class GameOverVisitor implements PlayerVisitor {
      *
      * @return a legjobb Shroomer példány.
      */
-    public Shroomer getBestShroomer(){
+    public Shroomer getBestShroomer() {
         return bestShroomer;
     }
 

@@ -57,7 +57,6 @@ public class GamePanel extends JPanel {
  	 * @param g2 The Graphics2D context to draw on
  	*/
 	private void drawGameStatus(Graphics2D g2) {
-		// Draw player scores
 		ArrayList<Player> players = gameController.getPlayers();
 		Font regularFont = new Font("SansSerif", Font.BOLD, 14);
 		g2.setFont(regularFont);
@@ -68,18 +67,16 @@ public class GamePanel extends JPanel {
 		int startX = getWidth() - 150;
 		int startY = padding + lineHeight;
 
-		// Draw player list with scores
 		for (int i = 0; i < players.size(); i++) {
 			Player p = players.get(i);
 			String text = p.getName() + " - " + p.getScore();
 			g2.drawString(text, startX, startY + i * lineHeight);
 		}
 
-		// Draw current player and remaining rounds at bottom right
 		Font statusFont = new Font("SansSerif", Font.BOLD, 16);
 		g2.setFont(statusFont);
 
-		// Create a semi-transparent background for better readability
+		// Create a transparent background for better readability
 		int statusHeight = lineHeight * 2 + padding * 2;
 		int statusWidth = 250;
 		int statusX = getWidth() - statusWidth - padding;
@@ -129,10 +126,8 @@ public class GamePanel extends JPanel {
 
 	private void gameEndsPopup(ArrayList<Player> winners) {
         String message = "The winners are: " +
-                winners.get(0).getName() +
-                " and " +
-                winners.get(1).getName() +
-                "!";
+                winners.get(0).getName() + " and " +
+                winners.get(1).getName() + "!";
 
 		JOptionPane.showMessageDialog(this, message, "Game Over", JOptionPane.INFORMATION_MESSAGE);
 

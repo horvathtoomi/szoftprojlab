@@ -20,6 +20,7 @@ public class GeometryString extends Geometry implements Serializable {
     public int getX2() {
         return x2;
     }
+
     public int getY2() {
         return y2;
     }

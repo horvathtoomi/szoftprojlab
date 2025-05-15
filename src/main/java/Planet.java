@@ -78,7 +78,9 @@ public class Planet implements Updatable, Serializable {
      * @param ms A vizsgált MString
      */
     private boolean checkForSpores(MushroomString ms) {
-	    if (ms.getConnection().isEmpty()) return false;
+	    if (ms.getConnection().isEmpty()) {
+            return false;
+        }
 	    Tecton location = ms.getConnection().get(0);
 	    return spores.stream().anyMatch(spore -> spore.getLocation() == location);
 	}
@@ -87,10 +89,10 @@ public class Planet implements Updatable, Serializable {
     	for (MushroomString ms : mushstrings) {
     	    ms.setConnectedToBody(false);
     	}
-
     	for (MushroomBody mb : mushbodies) {
-    	    if (mb.getDead()) continue;
-
+    	    if (mb.getDead()) {
+                continue;
+            }
     	    ArrayList<MushroomString> q = new ArrayList<>();
     	    for (MushroomString s : mushstrings) {
     	        if (!s.getDead() && s.getConnection().contains(mb.getLocation())) {
@@ -98,15 +100,19 @@ public class Planet implements Updatable, Serializable {
     	        }
     	    }
 
-    	 while (!q.isEmpty()) {
-    	     MushroomString cur = q.remove(0);
-    	     if (cur.isConnectedToBody()) continue;
-    	     cur.setConnectedToBody(true);
-    	     for (MushroomString n : cur.getNeighbours()) {
-    	         if (n != null && !n.getDead()) q.add(n);
-    	     }
-    	 }
-    	}
+            while (!q.isEmpty()) {
+                MushroomString cur = q.remove(0);
+    	        if (cur.isConnectedToBody()) {
+                    continue;
+                }
+    	        cur.setConnectedToBody(true);
+    	        for (MushroomString n : cur.getNeighbours()) {
+                    if (n != null && !n.getDead()) {
+                        q.add(n);
+                    }
+    	        }
+    	    }
+        }
     }
     
     /**
@@ -119,21 +125,26 @@ public class Planet implements Updatable, Serializable {
 
         // végigmegyünk az összes Tectonon
         for (Tecton t : tectons) {
-
             // 1) van-e bénult (canMove == false) élő rovar?
-            boolean hasParalyzed = insects.stream()
-                    .anyMatch(in -> !in.getDead() && in.getLocation() == t && in.getCanMove());
-            if (!hasParalyzed) continue;
+            boolean hasParalyzed = insects.stream().anyMatch(in -> !in.getDead() && in.getLocation() == t && in.getCanMove());
+            if (!hasParalyzed) {
+                continue;
+            }
 
             // 2) élő fonal a Tectonon?
             for (MushroomString ms : mushstrings) {
-                if (ms.getDead()) continue;
-                if (!ms.getConnection().contains(t)) continue;
+                if (ms.getDead()) {
+                    continue;
+                }
+                if (!ms.getConnection().contains(t)) {
+                    continue;
+                }
 
                 // 3) nincs-e már ott gombatest?
-                boolean bodyAlreadyHere = mushbodies.stream()
-                        .anyMatch(mb -> !mb.getDead() && mb.getLocation() == t);
-                if (bodyAlreadyHere) break;
+                boolean bodyAlreadyHere = mushbodies.stream().anyMatch(mb -> !mb.getDead() && mb.getLocation() == t);
+                if (bodyAlreadyHere) {
+                    break;
+                }
 
                 // 4) létrehozzuk az új testet
                 MushroomBody nb = new MushroomBody(
@@ -154,7 +165,6 @@ public class Planet implements Updatable, Serializable {
                         in.die();
                     }
                 }
-                
                 // csak egy testet csíráztatunk fonalonként
                 break;
             }
@@ -178,10 +188,10 @@ public class Planet implements Updatable, Serializable {
         }
         ArrayList<Tecton> newTectons = new ArrayList<>();
         for (Tecton t : tectons) {
-            if(random){
+            if(random) {
                 Random rng = new Random();
                 int n = rng.nextInt(10000);
-                if(n == 0){
+                if(n == 0) {
                     t.createSplitTectons(tectons, newTectons);
                     t.setDead(true);
                     removeObjectFromSplitTectons(t);
@@ -192,8 +202,8 @@ public class Planet implements Updatable, Serializable {
         System.out.println("Tectonok száma: " + tectons.size());
         for(Tecton t : tectons) {
             t.determineNeighbours(tectons);
-            for(Tecton t2 : t.getNeighbours()){
-                System.out.println("buzi" + " -> " + "buzi");
+            for(Tecton t2 : t.getNeighbours()) {
+                //System.out.println();
             }
         }
     }
@@ -204,10 +214,9 @@ public class Planet implements Updatable, Serializable {
      */
     public void deleteDeadObjects(int currentTurn, ArrayList<Player> players) {
     	mushbodies.removeIf(MushroomBody::getDead);
-    	mushstrings.removeIf(ms ->
-        ms.getDead() &&
-        ((ms.getLifeCycle() == MushroomString.LifeCycle.Child && currentTurn - ms.getLifeLine() >= 1) ||
-         (ms.getLifeCycle() == MushroomString.LifeCycle.Grown && currentTurn - ms.getLifeLine() >= 2)));
+    	mushstrings.removeIf(ms -> ms.getDead() &&
+            ((ms.getLifeCycle() == MushroomString.LifeCycle.Child && currentTurn - ms.getLifeLine() >= 1) ||
+            (ms.getLifeCycle() == MushroomString.LifeCycle.Grown && currentTurn - ms.getLifeLine() >= 2)));
     	insects.removeIf(Insect::getDead);
     	spores.removeIf(Spore::getDead);
     	RemoveInsectVisitor v = new RemoveInsectVisitor();
@@ -240,7 +249,10 @@ public class Planet implements Updatable, Serializable {
      *
      */
     public void checkForDeadShrooms(){
-    	for(MushroomBody b : mushbodies)
-        	if(b.getRemainingSporulation() == 0) b.die(mushstrings);
+    	for(MushroomBody b : mushbodies) {
+            if (b.getRemainingSporulation() == 0) {
+                b.die(mushstrings);
+            }
+        }
     }
 }

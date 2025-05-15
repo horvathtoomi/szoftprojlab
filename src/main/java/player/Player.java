@@ -9,7 +9,6 @@ import main.java.Updatable;
  * és hátralévő akciói. Kétféle játékos származhat belőle: Shroomer és Insecter.
  */
 public abstract class Player extends Nameable implements Updatable {
-	
 
     public int score;
     public int remainingActions;
@@ -49,7 +48,7 @@ public abstract class Player extends Nameable implements Updatable {
      *
      * @return a hátralévő akciók száma
      */
-    public int getActions(){
+    public int getActions() {
         return remainingActions;
     }
 
@@ -58,7 +57,7 @@ public abstract class Player extends Nameable implements Updatable {
      *
      * @param actions az új akciószám
      */
-    public void setActions(int actions){
+    public void setActions(int actions) {
         this.remainingActions = actions;
     }
 

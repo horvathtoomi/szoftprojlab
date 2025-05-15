@@ -34,8 +34,7 @@ public class GentleSpore extends Spore implements SporeAccept
      * 
      * @param insect A rovar, amelyre a spóra hatása alkalmazódik.
      */
-	public void applyEffect(Insect insect)
-	{
+	public void applyEffect(Insect insect) {
 		insect.setCanCutString(false);
 		insect.setCollectedNutrients(nutrientValue);
 		this.die();

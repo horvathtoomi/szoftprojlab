@@ -79,8 +79,7 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
 		return dead;
 	}
 
-	public int getLifeLine()
-	{
+	public int getLifeLine() {
 		return lifeLine;
 	}
 	
@@ -100,8 +99,7 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
 	/**
 	 * Megnöveli a fonal aktuális "életszámlálóját" 1-gyel
 	 */
-	public void incrementAge()
-	{
+	public void incrementAge() {
 		lifeLine++;
 		age++;
 	}
@@ -113,11 +111,10 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
 	**/
 	
 	public boolean branch(Tecton target, ArrayList<MushroomString> allStrings) {
-
 	    // Nem tudunk nőni, ha:
-	    if (dead || !connection.get(0).getNeighbours().contains(target))
-	        return false;
-
+	    if (dead || !connection.get(0).getNeighbours().contains(target)) {
+			return false;
+		}
 	    /* ------------------------------------------------------------------
 	     * B) Már összeköt két Tectont → új fonalat kell létrehozni,
 	     *    amely a második Tectonról (connection.get(1)) indul tovább.
@@ -159,7 +156,7 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
 		return hasHealingEnd;
 	}
 
-	private void removeOrphans(){
+	private void removeOrphans() {
 		connection.removeIf(t -> {
 			KeepStringAliveVisitor healV = new KeepStringAliveVisitor();
 			((TectonAccept) t).accept(healV);
@@ -181,7 +178,6 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
      */
 	@Override
 	public void update(boolean random) {
-
 		/* 1) öregszünk */
 		if (!dead) {
 			incrementAge();
@@ -227,7 +223,6 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
 
 		/* 4/b) – árva-e?  (nincs gyökér-kapcsolat) */
 		if (!connectedToBody) {
-
 			orphanAge++;                 // <<<  minden körben NÖVELJÜK
 
 			/* Healing-vég keresése visitorral */ //nincs használva semmire
@@ -236,7 +231,6 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
 			/* 3 kör után minden NEM-Healing ág leesik – akkor is, ha van Healing-vég */
 			if (orphanAge >= ORPHAN_AGE_LIMIT) {
 				removeOrphans();
-
 			} else {
 				orphanAge = 0;                                 // ismét van gyökér
 			}

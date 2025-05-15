@@ -5,9 +5,16 @@ package main.java;
  * Az osztály egy String name mezőt tartalmaz, valamint getter és setter metódusokat
  * a név eléréséhez és módosításához.
  */ 
-public abstract class Nameable 
-{
+public abstract class Nameable {
+
 	private String name;
-	public String getName(){return name;}
-	public void setName(String name){this.name = name;}
+
+	public String getName(){
+		return name;
+	}
+
+	public void setName(String name){
+		this.name = name;
+	}
+
 }

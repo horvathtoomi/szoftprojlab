@@ -56,7 +56,6 @@ public class MainMenu extends JPanel {
 				JOptionPane.showMessageDialog(frame, "Játékállapot sikeresen betöltve!", "Betöltés sikeres", JOptionPane.INFORMATION_MESSAGE);
 				GameState state = null; //TODO
 				startGameFromLoad(state);
-
 			}
 		});
 

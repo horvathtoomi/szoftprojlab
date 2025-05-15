@@ -8,8 +8,7 @@ import main.java.mushroom.Mushroom;
  * A SlowSpore osztály egy lassító hatású spórát reprezentál, amely egy rovarral 
  * történő találkozás esetén csökkenti annak sebességét.
  */
-public class SlowSpore extends Spore implements SporeAccept
-{
+public class SlowSpore extends Spore implements SporeAccept {
 
 	/**
      * Konstruktor, amely inicializálja a lassító spórát.

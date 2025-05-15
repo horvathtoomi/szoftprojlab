@@ -3,8 +3,6 @@ package main.java.player;
 import main.java.mushroom.Mushroom;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * A Shroomer osztály egy játékos típust reprezentál, amely egyetlen
@@ -52,8 +50,9 @@ public class Shroomer extends Player implements PlayerAccept, Serializable {
      */
     @Override
     public void accept(PlayerVisitor visitor) {
-    	if(mushroom != null)
-    		visitor.visit(this);
+    	if(mushroom != null) {
+            visitor.visit(this);
+        }
     }
 }
 

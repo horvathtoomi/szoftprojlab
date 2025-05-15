@@ -8,8 +8,7 @@ import main.java.mushroom.Mushroom;
  * A MultiplierSpore egy olyan spóra, amely nemcsak tápanyagot ad a rovarnak, 
  * hanem klónozza is azt – egy új rovar jön létre ugyanazon a helyen, módosított névvel.
  */
-public class MultiplierSpore extends Spore implements SporeAccept
-{
+public class MultiplierSpore extends Spore implements SporeAccept {
 	/**
      * Konstruktor, amely inicializálja a sokszorozó spórát.
      * 
@@ -18,8 +17,7 @@ public class MultiplierSpore extends Spore implements SporeAccept
      * @param location        A Tecton, ahol a spóra található.
      * @param name            A spóra neve.
      */
-    public MultiplierSpore(int nutrientValue, Mushroom mushroom, Tecton location, String name)
-    {
+    public MultiplierSpore(int nutrientValue, Mushroom mushroom, Tecton location, String name) {
         super(nutrientValue, mushroom, location, name);
     }
     
@@ -35,10 +33,8 @@ public class MultiplierSpore extends Spore implements SporeAccept
      * 
      * @param insect A rovar, amelyre a spóra hatása alkalmazódik.
      */
-    public void applyEffect(Insect insect)
-    {
+    public void applyEffect(Insect insect) {
         insect.setCollectedNutrients(nutrientValue);
-        
         this.die();
     }
     
@@ -50,8 +46,7 @@ public class MultiplierSpore extends Spore implements SporeAccept
      * @param insect Az eredeti rovar
      * @return Az új, klónozott rovar
      */
-    public Insect makeNewInsect(Insect insect)
-    {
+    public Insect makeNewInsect(Insect insect) {
         Tecton location = insect.getLocation();
         return new Insect(location);
     }

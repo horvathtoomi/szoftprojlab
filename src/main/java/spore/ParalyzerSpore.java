@@ -7,8 +7,7 @@ import main.java.mushroom.Mushroom;
 /**
  *A ParalyzerSpore osztály egy mozgást megtiltó hatású spórát reprezentál.
  */
-public class ParalyzerSpore extends Spore implements SporeAccept
-{
+public class ParalyzerSpore extends Spore implements SporeAccept {
 	/**
      * Konstruktor, amely inicializálja a bénító spórát.
      * 

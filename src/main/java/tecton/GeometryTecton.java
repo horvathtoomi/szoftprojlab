@@ -15,5 +15,7 @@ public class GeometryTecton extends Geometry implements Serializable {
 		this.radius = radius;
 	}
 	
-    public int getRadius() { return radius; }
+    public int getRadius() {
+		return radius;
+	}
 }

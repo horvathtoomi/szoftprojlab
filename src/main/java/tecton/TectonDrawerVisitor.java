@@ -18,10 +18,9 @@ public class TectonDrawerVisitor implements TectonVisitor<Void> {
 	public Void visit(BigTecton big) {
 		BufferedImage image = uTool.load(MainMenu.prefix + "bt.png");
 		float r = big.getGeometry().getRadius();
-		g2.drawImage(image, (int) ((int)big.getGeometry().getX() - r),
-                (int) (big.getGeometry().getY() - r),
+		g2.drawImage(image, (int) (big.getGeometry().getX() - r),
+				(int) (big.getGeometry().getY() - r),
 				(int)r * 2, (int)r * 2, null);
-
 		return null;
 	}
 

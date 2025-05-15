@@ -22,7 +22,7 @@ public class MushroomBody implements Updatable, Serializable {
 	private int state;
 	boolean dead;
 	boolean testing;
-	Geometry geometry;
+	private Geometry geometry;
 	
 	/**
      * Konstruktor, amely inicializálja a gombatest helyét, gombáját, állapotát, nevét, és tesztelési állapotát.
@@ -35,10 +35,12 @@ public class MushroomBody implements Updatable, Serializable {
 	public MushroomBody(Tecton location, Mushroom mushroom, int state, boolean testing) { //ctor
 		this.location = location;
 		this.mushroom = mushroom;
-		if(state == 2)
+		if(state == 2) {
 			availableSpores = true;
-		else
+		}
+		else {
 			availableSpores = testing;
+		}
 		this.testing = testing;
 		this.state = state;
 		remainingSporulations = 3;
@@ -46,29 +48,29 @@ public class MushroomBody implements Updatable, Serializable {
 	}
 
 	//Getterek
-		public Tecton getLocation() {
-			return location;
-		}
+	public Tecton getLocation() {
+		return location;
+	}
 
-		public int getRemainingSporulation() {
-			return remainingSporulations;
-		}
+	public int getRemainingSporulation() {
+		return remainingSporulations;
+	}
 
-		public Mushroom getMushroom() {
-			return mushroom;
-		}
+	public Mushroom getMushroom() {
+		return mushroom;
+	}
 
-		public boolean getDead() {
-			return dead;
-		}
+	public boolean getDead() {
+		return dead;
+	}
 		
-		public Geometry getGeometry() {
-			return geometry;
-		}
+	public Geometry getGeometry() {
+		return geometry;
+	}
 		
-		public void setGeometry(Geometry geometry) {
-			this.geometry = geometry;
-		}
+	public void setGeometry(Geometry geometry) {
+		this.geometry = geometry;
+	}
 	
 	/**
      * Az Updatable interfész felüldefiniált update függvénye. 
@@ -109,7 +111,9 @@ public class MushroomBody implements Updatable, Serializable {
 	private boolean isTargetInRange(Tecton target) {
 		 ArrayList<Tecton> neighbours;
 		 neighbours = location.getNeighbours();
-		 if (state == 1) return neighbours.contains(target);
+		 if (state == 1) {
+			 return neighbours.contains(target);
+		 }
 		 if (state == 2) {
 		    for (Tecton neighbour : neighbours) {
 		    	if (neighbour == target || neighbour.getNeighbours().contains(target))
@@ -129,14 +133,28 @@ public class MushroomBody implements Updatable, Serializable {
 	private Spore createRandomSpore(Tecton target, String newName) {
 	    Random rand = new Random();
 	    int type = rand.nextInt(5);
-        return switch (type) {
-case 0 -> new FastSpore(Spore.randomNutrientValue(), mushroom, target, newName);
-case 1 -> new SlowSpore(Spore.randomNutrientValue(), mushroom, target, newName);
-case 2 -> new GentleSpore(Spore.randomNutrientValue(), mushroom, target, newName);
-case 3 -> new ParalyzerSpore(Spore.randomNutrientValue(), mushroom, target, newName);
-case 4 -> new MultiplierSpore(Spore.randomNutrientValue(), mushroom, target, newName);
-default -> null;
-};
+		Spore spore;
+        switch (type) {
+			case 0 :
+				spore = new FastSpore(Spore.randomNutrientValue(), mushroom, target, newName);
+				break;
+			case 1 :
+				spore = new SlowSpore(Spore.randomNutrientValue(), mushroom, target, newName);
+				break;
+			case 2 :
+				spore = new GentleSpore(Spore.randomNutrientValue(), mushroom, target, newName);
+				break;
+			case 3 :
+				spore = new ParalyzerSpore(Spore.randomNutrientValue(), mushroom, target, newName);
+				break;
+			case 4 :
+				spore = new MultiplierSpore(Spore.randomNutrientValue(), mushroom, target, newName);
+				break;
+			default :
+				spore = new FastSpore(Spore.randomNutrientValue(), mushroom, target, newName);
+				break;
+		};
+		return spore;
     }
 	
 	/**
@@ -207,7 +225,9 @@ default -> null;
      * Növeszti a gombát, ha a gombatest állapota még nem kifejlett.
      */
 	void grow() {
-		if(state != 2) state++;
+		if(state != 2) {
+			state++;
+		}
 	}
 	
 	/**
@@ -219,8 +239,11 @@ default -> null;
      */
 	public boolean hasEnoughSpores(ArrayList<Spore> spores, Tecton tecton) {
 		int counter = 0;
-        for (Spore spore : spores)
-            if (spore.getLocation() == tecton) counter++;
+        for (Spore spore : spores) {
+			if (spore.getLocation() == tecton) {
+				counter++;
+			}
+		}
         return counter > 2;
 	}
 	
@@ -237,8 +260,11 @@ default -> null;
 		CanGrowBodyVisitor v = new CanGrowBodyVisitor();
 		TectonAccept acceptor = (TectonAccept) tecton;
 		acceptor.accept(v);
-		for (MushroomBody body : bodies)
-			if (body.getLocation() == tecton)return false;
+		for (MushroomBody body : bodies) {
+			if (body.getLocation() == tecton) {
+				return false;
+			}
+		}
 		boolean hasString = false;
 		for (MushroomString string : strings) {
             if (string.getConnection().contains(tecton)) {
@@ -246,7 +272,7 @@ default -> null;
                 break;
             }
 		}
-		hasString = true;
+		//hasString = true;
         return hasEnoughSpores(spores, tecton) && v.canPerformAction() && hasString;
     }
 	
@@ -267,15 +293,16 @@ default -> null;
         return new MushroomBody(tecton, this.mushroom, 0, false);
 	}
 	
-	public String getState() 
-	{
-		if(state == 0)
+	public String getState() {
+		if(state == 0) {
 			return "SMALL";
-		
-		if(state == 1)
+		}
+		else if(state == 1) {
 			return "MEDIUM";
-		
-		return "BIG";
+		}
+		else {
+			return "BIG";
+		}
 	}
 	
 	/**
@@ -284,9 +311,11 @@ default -> null;
      * @param strings A gombafonalak listája.
      */
 	public void die(ArrayList<MushroomString> strings) {
-		for(int i = 0; i < strings.size(); i++)
-			if(strings.get(i).getNeighbours().get(0) == null)
+		for(int i = 0; i < strings.size(); i++) {
+			if (strings.get(i).getNeighbours().get(0) == null) {
 				strings.get(i).die(strings);
+			}
+		}
 		dead = true;
 	}
 }

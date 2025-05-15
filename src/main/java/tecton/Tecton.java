@@ -11,7 +11,7 @@ import java.util.function.Supplier;
  * Absztrakt Tecton osztály, amely a játék mezőit reprezentálja.
  * Egyedi névvel rendelkezik, ezért a Nameable leszármazottja, valamint vannak szomszédai és eltárolja, hogy mennyi fonal lehet rajta maximálisan
  */
-public abstract class Tecton implements Serializable{
+public abstract class Tecton implements Serializable {
 
     private ArrayList<Tecton> neighbours;
     private int maxStrings;
@@ -49,9 +49,18 @@ public abstract class Tecton implements Serializable{
     public int getMaxStrings() {
         return maxStrings;
     }
-    public void setMaxStrings(int maxStrings) {this.maxStrings = maxStrings;}
-    public boolean getDead() {return dead;}
-    public void setDead(boolean dead) {this.dead = dead;}
+
+    public void setMaxStrings(int maxStrings) {
+        this.maxStrings = maxStrings;
+    }
+
+    public boolean getDead() {
+        return dead;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
+    }
     
     /** @return true, ha már nőtt rajta egy MushroomBody. */
     public boolean hasSpace() {
@@ -83,8 +92,9 @@ public abstract class Tecton implements Serializable{
      * Meghatározza, hogy egy másik Tecton szomszédja-e az aktuálisnak. Ez akkor igaz, ha 400-nál kisebb a kettő távolsága
      */
     public boolean isNeighbour(Tecton t) {
-        if (this.geometry == null || t.geometry == null) return false;
-
+        if (this.geometry == null || t.geometry == null) {
+            return false;
+        }
         double dx = this.geometry.getX() - t.geometry.getX();
         double dy = this.geometry.getY() - t.geometry.getY();
         double distance = Math.sqrt(dx * dx + dy * dy);
@@ -115,15 +125,17 @@ public abstract class Tecton implements Serializable{
      * Két új példányt ad vissza.
      */
     public abstract void createSplitTectons(ArrayList<Tecton> tectons, ArrayList<Tecton> newTectons);
-    protected void createSplitTectonsWithFactory(Supplier<Tecton> factory, ArrayList<Tecton> newTectons) {
-        if (this.getMaxStrings() == 1) return;
 
+    protected void createSplitTectonsWithFactory(Supplier<Tecton> factory, ArrayList<Tecton> newTectons) {
+        if (this.getMaxStrings() == 1) {
+            return;
+        }
         int cx = this.getGeometry().getX();
         int cy = this.getGeometry().getY();
         int newRadius = this.getGeometry().getRadius() / 2;
-        if(newRadius < 40)
+        if(newRadius < 40) {
             return;
-
+        }
         Random rng = new Random();
         double angle = rng.nextDouble() * 2 * Math.PI;
 

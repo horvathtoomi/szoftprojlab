@@ -13,6 +13,7 @@ import main.java.view.DefaultSporeDrawer;
  * és a győztesek meghatározásáért. Egy Planet példányhoz kapcsolódik.
  */
 public class GameController {
+
     private Planet planet;
     private int turnCounter;
     private final int maxTurn;
@@ -62,7 +63,7 @@ public class GameController {
     /**
      * Létrehozza a pályát - ez egyelőre placeholder, kell több tecton majd
      */
-    public Planet buildPlanet(){
+    public Planet buildPlanet() {
     	Planet planet = new Planet();
     	
     	BigTecton t1 = new BigTecton(3);
@@ -93,13 +94,15 @@ public class GameController {
     	
     	return planet;
     }
+
     /**
      * Megvizsgálja, hogy minden játékos letette-e már a kezdő objektumát. Ha igen, akkor innentől kezdve éles a játék.
      */
     public void setInitCheck()
     {
-        if(planet.getInsects().size() == 2 && planet.getMushbodies().size() == 2)
+        if(planet.getInsects().size() == 2 && planet.getMushbodies().size() == 2) {
             init = false;
+        }
     }
 
     //getterek, setterek
@@ -107,7 +110,9 @@ public class GameController {
     	return turnCounter;
     }
 
-    public Planet getPlanet() {return planet;}
+    public Planet getPlanet() {
+        return planet;
+    }
 
     public void setTurnCounter(int turnCounter) {
         this.turnCounter = turnCounter;
@@ -132,12 +137,16 @@ public class GameController {
     public void setCurrentPlayer(Player player) {
         this.currentPlayer = player;
     }
+
     public void setCurrentPlayerToNextPlayer() {
         int index = players.indexOf(currentPlayer);
         index = (index + 1) % players.size();
         currentPlayer = players.get(index);
     }
-    public boolean getInit() {return init;}
+
+    public boolean getInit() {
+        return init;
+    }
     
     /**
      * Ezzel a metódussal lehet játékosokat hozzáadni a listához. Ha ez az első eleme, beállítja kezdőjátékosnak.
@@ -160,8 +169,9 @@ public class GameController {
         planet.deleteDeadObjects(turnCounter, players);
         planet.checkForBodyConnection();
 
-        if (currentPlayer.getActions() > 0)
+        if (currentPlayer.getActions() > 0) {
             currentPlayer.takeAction();
+        }
 
         if (currentPlayer.getActions() == 0) {
             if (turnCounter == maxTurn) {
@@ -191,10 +201,12 @@ public class GameController {
         for (Player player : players) {
             ((PlayerAccept) player).accept(visitor);
         }
-        if(visitor.getBestShroomer() != null)
+        if(visitor.getBestShroomer() != null) {
             winners.add(visitor.getBestShroomer());
-        if(visitor.getBestInsecter() != null)
+        }
+        if(visitor.getBestInsecter() != null) {
             winners.add(visitor.getBestInsecter());
+        }
         return winners;
     }
 }

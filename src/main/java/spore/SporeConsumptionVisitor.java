@@ -11,6 +11,7 @@ import main.java.player.PlayerAccept;
  * így típusonként eltérő logikát tudunk futtatni.
  */
 public class SporeConsumptionVisitor implements SporeVisitor {
+
     private final Insect insect;
     private final GameController gameController;
 

@@ -4,7 +4,6 @@ import main.java.insect.Insect;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -41,7 +40,7 @@ public class Insecter extends Player implements PlayerAccept, Serializable {
      *
      * @param i a hozzáadandó rovar
      */
-    public void addInsect(Insect i){
+    public void addInsect(Insect i) {
     	insects.add(i);
     }
     
@@ -50,7 +49,9 @@ public class Insecter extends Player implements PlayerAccept, Serializable {
      *
      * @param insects az új rovarlista
      */
-    public void setInsects(List<Insect> insects) {this.insects = insects;}
+    public void setInsects(List<Insect> insects) {
+        this.insects = insects;
+    }
     
     /**
      * Meghívja a látogatót a Visitor tervezési minta alapján.
