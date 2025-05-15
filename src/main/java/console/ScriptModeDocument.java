@@ -11,13 +11,13 @@ import java.awt.*;
  * Kezeli a script szerkesztés speciális megjelenítését.
  */
 public class ScriptModeDocument extends DefaultStyledDocument {
+
     private int lineNumber = 1;
     private final Style promptStyle;
     private final Style numberStyle;
     private final Style textStyle;
     private final Style scriptModeStyle;
     private final Style systemStyle;
-    private static final String LOG_CONTEXT = "[SCRIPT MODE DOC]";
 
     public ScriptModeDocument() {
         promptStyle = addStyle("prompt", null);

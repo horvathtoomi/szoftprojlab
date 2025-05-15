@@ -1,5 +1,6 @@
 package main.java;
 
+import main.java.console.ConsoleHandler;
 import main.java.view.UtilityTool;
 
 import javax.swing.*;
@@ -12,7 +13,7 @@ import java.awt.image.BufferedImage;
 public class GameMenu extends JMenuBar {
 
         GameController gameController;
-        JButton b1, b2, b3;
+        JButton b1, b2, b3, b4;
         JFrame frame;
 
         Color baseColor = new Color(47, 84, 39);
@@ -33,9 +34,12 @@ public class GameMenu extends JMenuBar {
 
             b2 = new JButton("Load");
             styleButton(b2);
+
             b3 = new JButton("Exit");
             styleButton(b3);
 
+            b4 = new JButton("Developer Console");
+            styleButton(b4);
 
             b1.addActionListener(e -> {
                 if (GameFileChooser.saveGame(frame, gameController)) {
@@ -47,6 +51,11 @@ public class GameMenu extends JMenuBar {
                 if (GameFileChooser.loadGame(frame, frame)) {
                     JOptionPane.showMessageDialog(frame, "Játékállás sikeresen betöltve!", "Betöltés sikeres", JOptionPane.INFORMATION_MESSAGE);
                 }
+            });
+
+            b4.addActionListener(e -> {
+                ConsoleHandler consoleHandler = new ConsoleHandler();
+                consoleHandler.startConsoleInput();
             });
 
             b3.addActionListener(e -> {
@@ -67,6 +76,7 @@ public class GameMenu extends JMenuBar {
             JMenu menu = new JMenu("Menu");
             menu.add(b1);
             menu.add(b2);
+            menu.add(b4);
             menu.add(b3);
 
             this.setPreferredSize(new Dimension(100, 20));

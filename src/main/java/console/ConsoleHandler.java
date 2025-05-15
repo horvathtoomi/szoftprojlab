@@ -8,10 +8,11 @@ import java.util.Map;
  * Összeköti a felhasználói felületet a parancsok végrehajtásával.
  */
 public class ConsoleHandler {
-    private final Commands commands;
+
     public boolean abortProcess;
-    private final Map<String, Command> commandMap;
     private ConsoleGUI consoleGUI;
+    private final Commands commands;
+    private final Map<String, Command> commandMap;
 
     public ConsoleHandler() {
         this.commands = new Commands(this);
@@ -165,13 +166,13 @@ public class ConsoleHandler {
             -------------------------------------------------------
             | help [command] : Show help for a specific command   |
             | reset          : Reset the game                     |
-            | exit           : Exit console mode                  |
-            | exit_game      : Exit the game                      |
             | remove         : Remove entities                    |
             | save/load      : Save/Load game state               |
             | add            : Add entities or objects            |
             | script         : Run a script file                  |
             | make           : Create a new script file           |
+            | exit           : Exit console mode                  |
+            | exit_game      : Exit the game                      |
             -------------------------------------------------------
             Type 'help <command>' for detailed usage information.""";
     }

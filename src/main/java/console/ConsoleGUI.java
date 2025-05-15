@@ -29,7 +29,7 @@ public class ConsoleGUI extends JFrame {
 
 
     public ConsoleGUI(ConsoleHandler consoleHandler) {
-        super("Game Console");
+        super("Developer Console");
         this.consoleHandler = consoleHandler;
         this.commandHistory = new CommandHistory();
         this.inputQueue = new LinkedBlockingQueue<>();
@@ -80,13 +80,19 @@ public class ConsoleGUI extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
-                    case KeyEvent.VK_UP -> inputField.setText(commandHistory.getPrevious());
-                    case KeyEvent.VK_DOWN -> inputField.setText(commandHistory.getNext());
-                    case KeyEvent.VK_ESCAPE -> dispose();
-                    case KeyEvent.VK_TAB -> {
+                    case KeyEvent.VK_UP :
+                        inputField.setText(commandHistory.getPrevious());
+                        break;
+                    case KeyEvent.VK_DOWN :
+                        inputField.setText(commandHistory.getNext());
+                        break;
+                    case KeyEvent.VK_ESCAPE :
+                        dispose();
+                        break;
+                    case KeyEvent.VK_TAB :
                         e.consume();
                         handleTabCompletion();
-                    }
+                        break;
                 }
             }
         });
@@ -114,15 +120,21 @@ public class ConsoleGUI extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
-                    case KeyEvent.VK_UP -> inputField.setText(commandHistory.getPrevious());
-                    case KeyEvent.VK_DOWN -> inputField.setText(commandHistory.getNext());
-                    case KeyEvent.VK_ESCAPE -> dispose();
+                    case KeyEvent.VK_UP :
+                        inputField.setText(commandHistory.getPrevious());
+                        break;
+                    case KeyEvent.VK_DOWN :
+                        inputField.setText(commandHistory.getNext());
+                        break;
+                    case KeyEvent.VK_ESCAPE :
+                        dispose();
+                        break;
                 }
             }
         });
     }
 
-    private void resetMakeEndNum(){
+    private void resetMakeEndNum() {
         numOfMakeEnd = 0;
     }
 

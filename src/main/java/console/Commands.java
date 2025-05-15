@@ -1,5 +1,7 @@
 package main.java.console;
 
+import main.java.GameFileChooser;
+
 import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,18 +13,11 @@ import java.util.Set;
 public class Commands {
     private static int numMakeEnd = 0;
     private final ConsoleHandler consoleHandler;
-    private static final String RES_SAVE_PATH = "PATH";
-    private static final String RES_SCRIPTS_PATH = "PATH";
+    private static final String SAVE_PATH = "src/save/";
+    private static final String SCRIPTS_PATH = "src/scripts/";
 
     public Commands(ConsoleHandler consoleHandler) {
         this.consoleHandler = consoleHandler;
-    }
-
-    /**
-     * Eltávolítja a megadott típusú entitásokat a játékból.
-     */
-    public void removeEntities() {
-    
     }
 
     /**
@@ -32,17 +27,25 @@ public class Commands {
 
     }
 
-
     public void saveFile(String filename) {
-
+        if(GameFileChooser.saveGame(null,null)) {
+            consoleHandler.printToConsole("Game saved to " + filename);
+        } else {
+            consoleHandler.printToConsole("Game couldn't be saved to " + filename);
+        }
     }
 
     public void loadFile(String filename) {
+        if(GameFileChooser.loadGame(null,null)) {
+            consoleHandler.printToConsole("Game loaded from " + filename);
+        } else {
+            consoleHandler.printToConsole("Game couldn't be loaded from " + filename);
+        }
     }
 
     public void createFile(String filename, ConsoleGUI gui) {
         new Thread(() -> {
-            File saveFile = new File(RES_SCRIPTS_PATH + filename + ".txt");
+            File saveFile = new File(SCRIPTS_PATH + filename + ".txt");
             try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter(saveFile))) {
                 consoleHandler.printToConsole("Enter commands for the script (type 'end' to finish):");
                 while (true) {
@@ -54,7 +57,7 @@ public class Commands {
                         if(numMakeEnd <= 0) {
                             consoleHandler.printToConsole(filename + " created and saved successfully.");
                             break;
-                        } else{
+                        } else {
                             numMakeEnd--;
                         }
                     }
@@ -76,7 +79,8 @@ public class Commands {
      * @param filename a script fájl neve
      */
     private void runScript(String filename, Set<String> visitedScripts) {
-        String normalizedFilename = RES_SCRIPTS_PATH + filename + ".txt";
+        String normalizedFilename = SCRIPTS_PATH + filename + ".txt";
+
         if (visitedScripts.contains(normalizedFilename)) {
             consoleHandler.printToConsole(
             "\n----------------------------------------------------------\n" +
@@ -104,7 +108,7 @@ public class Commands {
                 } else if(line.startsWith("make")){
                     String[] parts = line.split("\\s+");
                     String newFileName = parts[1];
-                    File saveFile = new File(RES_SCRIPTS_PATH + newFileName + ".txt");
+                    File saveFile = new File(SCRIPTS_PATH + newFileName + ".txt");
                     try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter(saveFile))) {
                         consoleHandler.printToConsole("|Entering make mode: " + newFileName + "|");
                         while (true) {
