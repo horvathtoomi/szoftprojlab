@@ -4,13 +4,9 @@ package main.java;
 import java.util.ArrayList;
 import java.util.Random;
 
-import main.java.mushroom.GeometryString;
-import main.java.mushroom.Mushroom;
-import main.java.mushroom.MushroomString;
 import main.java.player.*;
 import main.java.tecton.*;
 import main.java.view.DefaultSporeDrawer;
-import main.java.view.MushroomStringDrawer;
 
 /**
  * A GameController osztály felel a játék menetért, körváltásért, 

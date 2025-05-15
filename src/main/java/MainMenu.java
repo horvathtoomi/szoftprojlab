@@ -50,11 +50,16 @@ public class MainMenu extends JPanel {
 		styleButton(exitButton, buttonFont, b3Image, b3ImageHovered);
 
 		newGameButton.addActionListener(e -> startGame());
+
 		loadGameButton.addActionListener(e -> {
 			if (GameFileChooser.loadGame(frame, frame)) {
 				JOptionPane.showMessageDialog(frame, "Játékállapot sikeresen betöltve!", "Betöltés sikeres", JOptionPane.INFORMATION_MESSAGE);
+				GameState state = null; //TODO
+				startGameFromLoad(state);
+
 			}
 		});
+
 		exitButton.addActionListener(e -> exit());
 
 		GridBagConstraints c = new GridBagConstraints();
@@ -86,7 +91,6 @@ public class MainMenu extends JPanel {
 		button.setForeground(Color.WHITE);
 
 		Color baseColor = new Color(47, 84, 39);
-		Color hoverColor = new Color(75, 125, 64);
 
 		button.setBackground(baseColor);
 
@@ -94,7 +98,9 @@ public class MainMenu extends JPanel {
 		button.setMargin(new Insets(0,20,0,0));
 
 		button.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseEntered(java.awt.event.MouseEvent evt) {button.setIcon(new ImageIcon(hovered));}
+			public void mouseEntered(java.awt.event.MouseEvent evt) {
+				button.setIcon(new ImageIcon(hovered));
+			}
 
 			public void mouseExited(java.awt.event.MouseEvent evt) {
 				button.setIcon(new ImageIcon(image));
@@ -137,7 +143,19 @@ public class MainMenu extends JPanel {
         } else {
 			return;
 		}
-		// Teljes képernyő mód
+		frame.dispose();
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		frame.setVisible(true);
+		frame.setLayout(new BorderLayout());
+		frame.getContentPane().removeAll();
+		frame.setJMenuBar(new GameMenu(frame, gamePanel.getGameController()));
+		frame.add(gamePanel, BorderLayout.CENTER);
+		frame.revalidate();
+		frame.repaint();
+		gamePanel.requestFocusInWindow();
+	}
+
+	private void startGameFromLoad(GameState state){
 		frame.dispose();
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setVisible(true);

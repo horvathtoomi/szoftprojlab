@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import main.java.tecton.*;
 import main.java.mushroom.*;
-import main.java.spore.Spore;
 import main.java.Geometry;
 import main.java.Updatable;
 

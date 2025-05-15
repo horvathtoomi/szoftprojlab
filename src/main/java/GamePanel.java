@@ -104,7 +104,7 @@ public class GamePanel extends JPanel {
 		if (currentPlayer != null) {
 			Color playerColor;
 			if (currentPlayer instanceof Shroomer) {
-				playerColor = new Color(200, 100, 100); // Red for Shroomer
+				playerColor = new Color(243, 3, 3); // Red for Shroomer
 			} else {
 				playerColor = new Color(255, 215, 0);   // Yellow for Insecter
 			}
