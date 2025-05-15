@@ -168,7 +168,8 @@ public class Insect implements Updatable, Serializable {
 	            ms.getMushroom(),
 	            newConn,
 	            new ArrayList<>(java.util.Arrays.asList(null, null)),
-	            ms.getLifeLine()
+	            ms.getLifeLine(),
+				ms.getGeometry()
 	        );
 
 	        // 2.c  Szomszédlista frissítése

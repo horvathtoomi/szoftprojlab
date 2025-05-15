@@ -6,7 +6,7 @@ import main.java.mushroom.*;
 public class DefaultMushroomStringDrawer implements MushroomStringDrawer {
 
     @Override
-    public void draw(Graphics2D g2, MushroomString ms, int x1, int y1, int x2, int y2) {
+    public void draw(Graphics2D g2, MushroomString ms) {
 
         Stroke originalStroke = g2.getStroke();
 
@@ -20,7 +20,8 @@ public class DefaultMushroomStringDrawer implements MushroomStringDrawer {
 
         float thickness = ms.getLifeCycle() == MushroomString.LifeCycle.Grown ? 3.0f : 1.5f;
         g2.setStroke(new BasicStroke(thickness));
-        g2.drawLine(x1, y1, x2, y2);
+        g2.drawLine(ms.getGeometry().getX(), ms.getGeometry().getY(),
+                ms.getGeometry().getX2(), ms.getGeometry().getY2());
         g2.setStroke(originalStroke);
     }
 }

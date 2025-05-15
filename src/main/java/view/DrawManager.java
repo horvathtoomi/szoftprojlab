@@ -50,13 +50,13 @@ public class DrawManager {
         mushroomBodyDrawer.draw(g, mushroomBody);
     }
 
-    public void drawMushroomString(Graphics2D g, MushroomString mushroomString, int x1, int x2, int y1, int y2, boolean shining){
+    public void drawMushroomString(Graphics2D g, MushroomString mushroomString,boolean shining){
         if(shining) {
-            int midX = (x1 + x2) / 2;
-            int midY = (y1 + y2) / 2;
+            int midX = (mushroomString.getGeometry().getX() +mushroomString.getGeometry().getX2() ) / 2;
+            int midY = (mushroomString.getGeometry().getY() +mushroomString.getGeometry().getY2()) / 2;
             drawShineEffect(g, midX, midY, 30);
         }
-        mushroomStringDrawer.draw(g, mushroomString, x1, y1, x2, y2);
+        mushroomStringDrawer.draw(g, mushroomString);
     }
 
     public void drawInsect(Graphics2D g, Insect insect, boolean shining) {
@@ -80,8 +80,6 @@ public class DrawManager {
                 Tecton t1 = ms.getConnection().get(0);
                 Tecton t2 = ms.getConnection().get(1);
                 drawMushroomString(g, ms,
-                        (int) t1.getGeometry().getX(), (int) t1.getGeometry().getY(),
-                        (int) t2.getGeometry().getX(), (int) t2.getGeometry().getY(),
                         shining == GamePanel.ShineOn.MUSHSTRING);
             }
         }

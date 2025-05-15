@@ -2,7 +2,9 @@ package main.java.control;
 
 import main.java.GameController;
 import main.java.GamePanel;
+import main.java.Geometry;
 import main.java.insect.Insect;
+import main.java.mushroom.GeometryString;
 import main.java.mushroom.MushroomBody;
 import main.java.mushroom.MushroomString;
 import main.java.player.Insecter;
@@ -151,21 +153,23 @@ public class MouseHandler implements MouseListener {
         for (MushroomString ms : gc.getPlanet().getMushstrings()) {
             ArrayList<Tecton> connections = ms.getConnection();
 
-            // Ha kevesebb mint egy csatlakozás van, megyünk tovább
-            if (connections.size() < 2) {
-                continue;
-            }
-
+            Geometry geom1;
+            Geometry geom2;
             // Az összekötött tektonok geometriáját lekérjük
-            GeometryTecton geom1 = connections.get(0).getGeometry();
-            GeometryTecton geom2 = connections.get(1).getGeometry();
-
-            if (geom1 == null || geom2 == null) {
-                continue;
+            if(connections.get(1) != null){
+                 geom1 = connections.get(0).getGeometry();
+                 geom2 = connections.get(1).getGeometry();
+                 System.out.println("Büdös kurva anyád");
+            }
+            else{
+                geom1 = new Geometry(ms.getGeometry().getX(), ms.getGeometry().getY());
+                geom2 = connections.get(0).getGeometry();
+                System.out.println("Buzi románok");
             }
 
             // Csak akkor folytatjuk, ha elég közel van a klikk a fonalhoz
             if (isClickNearLine(x, y, geom1.getX(), geom1.getY(), geom2.getX(), geom2.getY())) {
+                System.out.println("Clicked on a mushroom string");
                 // Ha a current player Shroomer, akkor megnézzük, hogy az ő gombájának fonala-e
                 if (gc.getCurrentPlayer() instanceof Shroomer shroomer) {
                     if (ms.getMushroom() == shroomer.getMushroom() && !ms.getDead()) {
@@ -198,12 +202,15 @@ public class MouseHandler implements MouseListener {
         final int THRESHOLD = 10;
 
         double lineLength = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+        System.out.println("Line length: " + lineLength);
         if (lineLength == 0) return false;
 
         double distance = Math.abs((x2 - x1) * (y1 - clickY) - (x1 - clickX) * (y2 - y1)) / lineLength;
+        System.out.println("Distance: " + distance);
         if (distance > THRESHOLD) return false;
 
         double dotProduct = ((clickX - x1) * (x2 - x1) + (clickY - y1) * (y2 - y1)) / (lineLength * lineLength);
+        System.out.println("Dot product: " + dotProduct);
         return dotProduct >= 0 && dotProduct <= 1;
     }
 
@@ -320,15 +327,16 @@ public class MouseHandler implements MouseListener {
                 }
                 else if(clickedTecton.canGrowHypha(gc.getPlanet().getMushstrings())){
                     if(clickedMushroomString != null){
-                        clickedMushroomString.branch(clickedTecton, gc.getPlanet().getMushstrings());
-                        gc.nextTurnCheck();
+                        if(clickedMushroomString.branch(clickedTecton, gc.getPlanet().getMushstrings()))
+                            gc.nextTurnCheck();
                     }
                     else if(clickedMushroomBody != null && keyHandler.getKeyCode() == KeyHandler.KEY_HYPHA){ // H = hypha
                             if(clickedMushroomBody.getLocation().equals(clickedTecton)){
                                 ArrayList<Tecton> connection = new ArrayList<>();
                                 connection.add(clickedTecton);
                                 connection.add(null);
-                                gc.getPlanet().getMushstrings().add(new MushroomString("hypha", ((Shroomer) gc.getCurrentPlayer()).getMushroom(), connection, new ArrayList<>(Arrays.asList(null, null)), gc.getTurnCounter()));
+                                GeometryString geom = new GeometryString(clickedMushroomBody.getGeometry().getX(), clickedMushroomBody.getGeometry().getY(), clickedTecton.getGeometry().getX(), clickedTecton.getGeometry().getY());
+                                gc.getPlanet().getMushstrings().add(new MushroomString("hypha", ((Shroomer) gc.getCurrentPlayer()).getMushroom(), connection, new ArrayList<>(Arrays.asList(null, null)), gc.getTurnCounter(), geom));
                                 gc.nextTurnCheck();
                             }
                     }

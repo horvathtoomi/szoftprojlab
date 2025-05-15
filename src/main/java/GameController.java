@@ -4,9 +4,13 @@ package main.java;
 import java.util.ArrayList;
 import java.util.Random;
 
+import main.java.mushroom.GeometryString;
+import main.java.mushroom.Mushroom;
+import main.java.mushroom.MushroomString;
 import main.java.player.*;
 import main.java.tecton.*;
 import main.java.view.DefaultSporeDrawer;
+import main.java.view.MushroomStringDrawer;
 
 /**
  * A GameController osztály felel a játék menetért, körváltásért, 
@@ -79,12 +83,16 @@ public class GameController {
     	
     	ToxicTecton t5 = new ToxicTecton(3);
     	t5.setGeometry(new GeometryTecton(600, 600, 95));
+
+        //Mushroom m = new Mushroom(false);
+        //MushroomString ms1 = new MushroomString("hypha", m, new ArrayList<>(), new ArrayList<>(), 0, new GeometryString(0, 0, 100, 100));
     	
     	planet.addTecton(t1);
     	planet.addTecton(t2);
     	planet.addTecton(t3);
     	planet.addTecton(t4);
     	planet.addTecton(t5);
+        //planet.addMushroomString(ms1);
         planet.recalcNeighbours();
     	
     	return planet;

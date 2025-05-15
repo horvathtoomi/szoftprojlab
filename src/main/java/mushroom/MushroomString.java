@@ -34,6 +34,8 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
 	private int orphanAge = 0;                // hány kör óta árva?
 	private static final int ORPHAN_AGE_LIMIT = 3;
 
+	GeometryString geometry;
+
 	/**
 	 * A MushroomString osztály konstruktora, amely inicializálja a fonal nevét, a hozzá tartozó gombát, 
 	 * a kapcsolódó tektonokat és a szomszédos fonalakat.
@@ -44,7 +46,7 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
 	 * @param neighbours A szomszédos fonalak listája, amelyek a fonal szomszédai.
 	 * @param lifeLine A születésének aktuális körszáma
 	 */
-	public MushroomString(String name, Mushroom mushroom, ArrayList<Tecton> connection, ArrayList<MushroomString> neighbours, int lifeLine) {
+	public MushroomString(String name, Mushroom mushroom, ArrayList<Tecton> connection, ArrayList<MushroomString> neighbours, int lifeLine, GeometryString geometry) {
 		this.mushroom = mushroom;
 		this.connection = connection;
 		this.neighbours  = (neighbours == null)
@@ -53,6 +55,7 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
 		dead = false;
 		setName(name);
 		this.lifeLine = lifeLine;
+		this.geometry = geometry;
 	}
 	
 	public static String nextCloneName(String base) {
@@ -112,17 +115,8 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
 	public boolean branch(Tecton target, ArrayList<MushroomString> allStrings) {
 
 	    // Nem tudunk nőni, ha:
-	    if (dead || !connection.get(connection.size()-1).getNeighbours().contains(target))
+	    if (dead || !connection.get(0).getNeighbours().contains(target))
 	        return false;
-
-	    /* ------------------------------------------------------------------
-	     * A) Ha ez még csak „félig” fonal (csak egy Tectont ismer), akkor
-	     *    egyszerűen ránőhetünk a második, szomszédos Tectonra.
-	     * ------------------------------------------------------------------ */
-	    if (connection.size() == 1) {
-	        connection.add(target);
-	        return true;
-	    }
 
 	    /* ------------------------------------------------------------------
 	     * B) Már összeköt két Tectont → új fonalat kell létrehozni,
@@ -142,13 +136,12 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
 	            mushroom,
 	            newConn,
 	            newNb,
-	            lifeLine                                   // a körszámot örökli
+	            lifeLine,// a körszámot örökli
+				new GeometryString(this.getGeometry().getX2(), this.getGeometry().getY2(), target.getGeometry().getX(),target.getGeometry().getY()) // új geometria
 	    );
 
 	    /* A régi fonal egyik szomszédjaként bejegyezzük az újat            */
-	    if (neighbours.get(0) == null) neighbours.set(0, child);
-	    else                           neighbours.set(1, child);
-
+		neighbours.set(1, child);
 	    allStrings.add(child);
 	    return true;
 	}
@@ -276,5 +269,9 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
                 }
             }
         }
+	}
+
+	public GeometryString getGeometry() {
+		return geometry;
 	}
 }

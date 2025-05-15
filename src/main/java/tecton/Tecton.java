@@ -90,7 +90,7 @@ public abstract class Tecton implements Serializable{
         double distance = Math.sqrt(dx * dx + dy * dy);
         System.out.println(distance);
 
-        return distance <= 300;
+        return distance <= 3000;
     }
 
     /**
@@ -144,5 +144,6 @@ public abstract class Tecton implements Serializable{
         newTectons.add(t1);
         newTectons.add(t2);
     }
+
 }
 

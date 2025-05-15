@@ -46,6 +46,10 @@ public class Planet implements Updatable, Serializable {
     public void addTecton(Tecton tecton) {
         tectons.add(tecton);
     }
+
+    public void addMushroomString(MushroomString ms) {
+        mushstrings.add(ms);
+    }
     
     //Getterek, Setterek
     public ArrayList<Tecton> getTectons() {
@@ -176,7 +180,7 @@ public class Planet implements Updatable, Serializable {
         for (Tecton t : tectons) {
             if(random){
                 Random rng = new Random();
-                int n = rng.nextInt(10);
+                int n = rng.nextInt(10000);
                 if(n == 0){
                     t.createSplitTectons(tectons, newTectons);
                     t.setDead(true);
@@ -185,7 +189,13 @@ public class Planet implements Updatable, Serializable {
             }
         }
         tectons.addAll(newTectons);
-        tectons.forEach(t -> t.determineNeighbours(tectons));
+        System.out.println("Tectonok száma: " + tectons.size());
+        for(Tecton t : tectons) {
+            t.determineNeighbours(tectons);
+            for(Tecton t2 : t.getNeighbours()){
+                System.out.println("buzi" + " -> " + "buzi");
+            }
+        }
     }
 
     /**
