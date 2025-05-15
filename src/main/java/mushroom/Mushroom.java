@@ -7,6 +7,7 @@ import java.util.ArrayList;
  * egy név, valamint lehet élő vagy halott állapotban.
  */
 public class Mushroom {
+
 	boolean dead;
 	boolean testing;
 	

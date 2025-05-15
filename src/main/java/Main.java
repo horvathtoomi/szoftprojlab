@@ -6,6 +6,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/*
+ * A Main osztály felelős a program kiindulási pontjáért, innen hívódik meg a main függvény.
+ *
+ */
 public class Main {
 
 	static JFrame frame;

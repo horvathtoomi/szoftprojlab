@@ -18,10 +18,8 @@ public class GamePanel extends JPanel {
 	private GameController gameController;
 	private final DrawManager drawManager;
 	private final BufferedImage backgroundImage;
-	private final MouseHandler mouseHandler;
-	private final KeyHandler keyHandler;
 
-	public GamePanel(ArrayList<Player> players) {
+    public GamePanel(ArrayList<Player> players) {
 		gameController = new GameController(false, 20, this::repaint);
 		gameController.setPlanet(gameController.buildPlanet());
         for (Player player : players) {
@@ -32,8 +30,8 @@ public class GamePanel extends JPanel {
 		setDoubleBuffered(true);
 		UtilityTool ut = new UtilityTool();
 		backgroundImage = ut.load(MainMenu.prefix + "Background_icon3.png");
-		keyHandler = new KeyHandler(gameController, this::repaint, this);
-		mouseHandler = new MouseHandler(gameController, this::repaint, this, keyHandler);
+        KeyHandler keyHandler = new KeyHandler(gameController, this::repaint, this);
+        MouseHandler mouseHandler = new MouseHandler(gameController, this::repaint, this, keyHandler);
 		this.addMouseListener(mouseHandler);
 		this.addKeyListener(keyHandler);
 		this.setFocusable(true);
