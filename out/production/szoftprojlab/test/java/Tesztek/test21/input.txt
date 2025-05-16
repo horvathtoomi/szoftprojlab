@@ -1,2 +1,0 @@
-Tecton t toxic
-Split t t1 t2

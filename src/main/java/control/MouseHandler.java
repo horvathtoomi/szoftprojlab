@@ -147,6 +147,7 @@ public class MouseHandler implements MouseListener {
      * @param y a kattintás y koordinátája
      */
     private void selectMushroomString(int x, int y) {
+        
         // Beállítjuk a kiemelést a gombafonalokra
         gamePanel.setShineOn(GamePanel.ShineOn.MUSHSTRING);
         repaintCallback.run();
