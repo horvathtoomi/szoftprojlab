@@ -131,7 +131,7 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
 	     * ------------------------------------------------------------------ */
 	    Tecton start = connection.get(1);          // a „híd” másik vége
 	    if(start == null)
-	    	System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+	    	System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 	    ArrayList<Tecton> newConn = new ArrayList<>();
 	    newConn.add(start);
 	    newConn.add(target);
