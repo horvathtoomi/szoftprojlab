@@ -111,8 +111,18 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
 	**/
 	
 	public boolean branch(Tecton target, ArrayList<MushroomString> allStrings) {
+		/* 0) Ha “félkész” fonalról van szó (connection[1] == null),
+        akkor most csak befejezzük – NEM hozunk létre új fonalat! */
+		  if (connection.get(1) == null) {
+		      connection.set(1, target);                         // cél beállít
+		      geometry.setX2(target.getGeometry().getX());       // új geometria
+		      geometry.setY2(target.getGeometry().getY());
+		      return true;                                       // kész is
+		  }
+		
 	    // Nem tudunk nőni, ha:
 	    if (dead || !connection.get(0).getNeighbours().contains(target)) {
+	    	System.out.println("Románok rosszabbak mint a cigányok.");
 			return false;
 		}
 	    /* ------------------------------------------------------------------
@@ -120,6 +130,8 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
 	     *    amely a második Tectonról (connection.get(1)) indul tovább.
 	     * ------------------------------------------------------------------ */
 	    Tecton start = connection.get(1);          // a „híd” másik vége
+	    if(start == null)
+	    	System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 	    ArrayList<Tecton> newConn = new ArrayList<>();
 	    newConn.add(start);
 	    newConn.add(target);

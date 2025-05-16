@@ -151,7 +151,12 @@ public class MouseHandler implements MouseListener {
         gamePanel.setShineOn(GamePanel.ShineOn.MUSHSTRING);
         repaintCallback.run();
         for (MushroomString ms : gc.getPlanet().getMushstrings()) {
-            ArrayList<Tecton> connections = ms.getConnection();
+        	if(ms.getConnection().get(0) == null ||  ms.getConnection().get(1) != null)
+        		System.out.println("dominik is román, és azok nem jók mint tudjuk!!!");
+        	if(ms.getConnection().get(0).getGeometry() == null
+        			&& ms.getConnection().get(1).getGeometry() == null)
+        		continue;
+        	ArrayList<Tecton> connections = ms.getConnection();
 
             Geometry geom1;
             Geometry geom2;
@@ -326,8 +331,11 @@ public class MouseHandler implements MouseListener {
                     }
                 }
                 else if(clickedTecton.canGrowHypha(gc.getPlanet().getMushstrings())){
+                	if(clickedTecton == null)
+                    	System.out.println("büdös románok!!!");
                     if(clickedMushroomString != null){
                         if(clickedMushroomString.branch(clickedTecton, gc.getPlanet().getMushstrings()))
+                        	System.out.println("büdös románok!!!");
                             gc.nextTurnCheck();
                     }
                     else if(clickedMushroomBody != null && keyHandler.getKeyCode() == KeyHandler.KEY_HYPHA){ // H = hypha

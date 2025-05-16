@@ -8,8 +8,8 @@ import java.io.Serializable;
 public class GeometryString extends Geometry implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-    private final int x2;
-    private final int y2;
+    private int x2;
+    private int y2;
 
     public GeometryString(int x, int y, int x2, int y2) {
         super(x,y);
@@ -24,5 +24,12 @@ public class GeometryString extends Geometry implements Serializable {
     public int getY2() {
         return y2;
     }
+    
+    public void setX2(int x2) {
+    	this.x2 = x2;
+    }
 
+    public void setY2(int y2) {
+    	this.y2 = y2;
+    }
 }
