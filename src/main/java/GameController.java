@@ -57,6 +57,7 @@ public class GameController {
     }
 
     public void setInit(boolean init) {
+        
         this.init = init;
     }
 
