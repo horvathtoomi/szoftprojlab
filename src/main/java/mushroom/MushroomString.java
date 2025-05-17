@@ -122,14 +122,13 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
 		
 	    // Nem tudunk nőni, ha:
 	    if (dead || !connection.get(0).getNeighbours().contains(target)) {
-	    	System.out.println("Románok rosszabbak mint a cigányok.");
 			return false;
 		}
 	    /* ------------------------------------------------------------------
 	     * B) Már összeköt két Tectont → új fonalat kell létrehozni,
 	     *    amely a második Tectonról (connection.get(1)) indul tovább.
 	     * ------------------------------------------------------------------ */
-	    Tecton start = connection.get(1);          // a „híd” másik vége
+	    Tecton start = connection.get(1);
 	    if(start == null)
 	    	System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 	    ArrayList<Tecton> newConn = new ArrayList<>();
@@ -141,11 +140,11 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
 	    newNb.add(null);
 
 	    MushroomString child = new MushroomString(
-	    		getName() + "_clone" + CloneCounter.next(), // valami egyedi név
+	    		getName() + "_clone" + CloneCounter.next(),
 	            mushroom,
 	            newConn,
 	            newNb,
-	            lifeLine,// a körszámot örökli
+	            lifeLine,
 				new GeometryString(this.getGeometry().getX2(), this.getGeometry().getY2(), target.getGeometry().getX(),target.getGeometry().getY()) // új geometria
 	    );
 

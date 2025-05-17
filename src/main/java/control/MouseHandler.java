@@ -252,7 +252,7 @@ public class MouseHandler implements MouseListener {
                 }
                 Insect i = new Insect(clickedTecton);
 
-                // THIS IS THE FIX - Set geometry for the insect
+
                 GeometryTecton tectonGeometry = clickedTecton.getGeometry();
                 i.setGeometry(gc.randomOffsetInsideCircle(tectonGeometry));
 
@@ -334,8 +334,6 @@ public class MouseHandler implements MouseListener {
                     if(clickedMushroomString != null){
                         if(clickedMushroomString.branch(clickedTecton, gc.getPlanet().getMushstrings())){
                             gc.nextTurnCheck();
-                            for(Tecton t : clickedMushroomString.getConnection())
-                                System.out.println(t);
                         }
                     }
                     else if(clickedMushroomBody != null && keyHandler.getKeyCode() == KeyHandler.KEY_HYPHA){ // H = hypha
@@ -366,10 +364,11 @@ public class MouseHandler implements MouseListener {
 
             if(clickedTecton != null && clickedInsect.getLocation() != clickedTecton && clickedTecton.isNeighbour(clickedInsect.getLocation()) && gc.getPlanet().getMushstrings().stream()
                     .anyMatch(ms -> ms.getConnection().contains(clickedInsect.getLocation()) && ms.getConnection().contains(clickedTecton))) {
-                if(clickedInsect.move(clickedTecton) != -3){
+                int actionNumber = clickedInsect.move(clickedTecton);
+                if(actionNumber != -3){
+                    clickedInsect.setGeometry(gc.randomOffsetInsideCircle(clickedTecton.getGeometry()));
                     gc.nextTurnCheck();
-                    p.setActions(p.getActions() + clickedInsect.move(clickedTecton));
-                    System.out.println("Moved");
+                    p.setActions(p.getActions() + actionNumber);
                 }
 
             }
