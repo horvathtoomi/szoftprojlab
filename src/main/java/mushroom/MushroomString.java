@@ -26,7 +26,7 @@ public class MushroomString implements Updatable, Serializable {
 	
 	private int orphanAge = 0;                // hány kör óta árva?
 	private static final int ORPHAN_AGE_LIMIT = 3;
-
+	private boolean connectedToMushroom;
 	GeometryString geometry;
 
 	/**
@@ -38,7 +38,7 @@ public class MushroomString implements Updatable, Serializable {
 	 * @param neighbours A szomszédos fonalak listája, amelyek a fonal szomszédai.
 	 * @param lifeLine A születésének aktuális körszáma
 	 */
-	public MushroomString(Mushroom mushroom, ArrayList<Tecton> connection, ArrayList<MushroomString> neighbours, int lifeLine, GeometryString geometry) {
+	public MushroomString(Mushroom mushroom, ArrayList<Tecton> connection, ArrayList<MushroomString> neighbours, int lifeLine, GeometryString geometry, boolean connectedToBody) {
 		this.mushroom = mushroom;
 		this.connection = connection;
 		this.neighbours  = (neighbours == null)
@@ -47,6 +47,7 @@ public class MushroomString implements Updatable, Serializable {
 		dead = false;
 		this.lifeLine = lifeLine;
 		this.geometry = geometry;
+		connectedToMushroom = connectedToBody;
 	}
 	
 	//Getterek, Setterek
@@ -117,7 +118,7 @@ public class MushroomString implements Updatable, Serializable {
 	    newConn.add(start);
 	    newConn.add(target);
 
-		//Szomszédja az eredeti, és null egyelőre
+		//Szomszédja az eredeti, és null
 	    ArrayList<MushroomString> newNb = new ArrayList<>();
 	    newNb.add(this);
 	    newNb.add(null);
@@ -127,7 +128,8 @@ public class MushroomString implements Updatable, Serializable {
 	            newConn,
 	            newNb,
 	            lifeLine,
-				new GeometryString(this.getGeometry().getX2(), this.getGeometry().getY2(), target.getGeometry().getX(),target.getGeometry().getY()) // új geometria
+				new GeometryString(this.getGeometry().getX2(), this.getGeometry().getY2(), target.getGeometry().getX(),target.getGeometry().getY()), // új geometria
+				false
 	    );
 
 	    // A régi fonal végén az új fonal lesz
@@ -148,6 +150,15 @@ public class MushroomString implements Updatable, Serializable {
 		//Csak ha nem halott, akkor öregszik
 		if (!dead) incrementAge();
 
+		//Ha nem kapcsolódik testhez, meg van nőve, és eltelt 3 kör, akkor meghal. Ha kicsi, egyből meghal
+		if (!connectedToMushroom && neighbours.get(0) == null) {
+			if(lifeCycle == LifeCycle.Child) die();
+			else{
+				orphanAge++;
+				if (orphanAge >= ORPHAN_AGE_LIMIT) die();
+			}
+		}
+
 		//Ha nem köt össze semmit, akkor meghal
 		if(connection.get(0) == null && connection.get(1) == null) die();
 
@@ -161,15 +172,6 @@ public class MushroomString implements Updatable, Serializable {
                 }
             }
         }
-
-		//Ha nem kapcsolódik testhez, meg van nőve, és eltelt 3 kör, akkor meghal. Ha kicsi, egyből meghal
-		if (neighbours.get(0) == null && neighbours.get(1) != null) {
-			if(lifeCycle == LifeCycle.Child) die();
-			else{
-				orphanAge++;
-				if (orphanAge >= ORPHAN_AGE_LIMIT) die();
-			}
-		}
 
 		//1/3-ad eséllyel megnő
 		if(lifeCycle == LifeCycle.Child) {
