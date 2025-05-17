@@ -13,9 +13,9 @@ public class DefaultMushroomStringDrawer implements MushroomStringDrawer {
         if(ms.getDead()){
             g2.setColor(Color.GRAY);
         } else if(ms.getLifeCycle() == MushroomString.LifeCycle.Child) {
-            g2.setColor(Color.WHITE);
+            g2.setColor(Color.GREEN);
         } else {
-            g2.setColor(Color.BLUE);
+            g2.setColor(Color.WHITE);
         }
 
         float thickness = ms.getLifeCycle() == MushroomString.LifeCycle.Grown ? 3.0f : 1.5f;
