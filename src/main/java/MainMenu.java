@@ -12,12 +12,19 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+/**
+ * A főmenüt megvalósító osztály
+ */
 public class MainMenu extends JPanel {
 	
 	public static String prefix = "resources/";  //Intellij-ben írjátok be a resources/-t, eclipseben legyen üres sztring
 
     private final JFrame frame;
-	
+
+	/**
+	 * Létrehoz egy új példányt, és elhelyezi a kapott frame-en
+	 * @param frame A kapott ablak
+	 */
 	public MainMenu(JFrame frame) {
 		this.frame = frame;
 
@@ -133,7 +140,7 @@ public class MainMenu extends JPanel {
 	GamePanel gamePanel;
 
 	/**
-	 * Az új játék elindításáért felel.
+	 * Az új játék elindításáért felelős gomb hatása
 	 */
 	private void startGame() {
 		ArrayList<Player> players = addPlayers();
@@ -142,19 +149,18 @@ public class MainMenu extends JPanel {
         } else {
 			return;
 		}
-		frame.dispose();
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		frame.setVisible(true);
-		frame.setLayout(new BorderLayout());
-		frame.getContentPane().removeAll();
-		frame.setJMenuBar(new GameMenu(frame, gamePanel.getGameController()));
-		frame.add(gamePanel, BorderLayout.CENTER);
-		frame.revalidate();
-		frame.repaint();
-		gamePanel.requestFocusInWindow();
+		makeFrame();
 	}
-
+	/**
+	 * A betöltött játék elindításáért felelős gomb hatása
+	 */
 	private void startGameFromLoad(GameState state){
+		makeFrame();
+	}
+	/**
+	 * Az új ablak létrehozását végző függvény
+	 */
+	private void makeFrame() {
 		frame.dispose();
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setVisible(true);
@@ -166,7 +172,9 @@ public class MainMenu extends JPanel {
 		frame.repaint();
 		gamePanel.requestFocusInWindow();
 	}
-
+	/**
+	 * A kilépés gomb hatása
+	 */
 	private void exit() {
 		System.exit(0);
 	}

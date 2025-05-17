@@ -71,6 +71,17 @@ public class MushroomBody implements Updatable, Serializable {
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
 	}
+	public String getState() {
+		if(state == 0) {
+			return "SMALL";
+		}
+		else if(state == 1) {
+			return "MEDIUM";
+		}
+		else {
+			return "BIG";
+		}
+	}
 	
 	/**
      * Az Updatable interfész felüldefiniált update függvénye. 
@@ -135,10 +146,7 @@ public class MushroomBody implements Updatable, Serializable {
 	    int type = rand.nextInt(5);
 		Spore spore;
         switch (type) {
-			case 0 :
-				spore = new FastSpore(Spore.randomNutrientValue(), mushroom, target, newName);
-				break;
-			case 1 :
+            case 1 :
 				spore = new SlowSpore(Spore.randomNutrientValue(), mushroom, target, newName);
 				break;
 			case 2 :
@@ -153,7 +161,7 @@ public class MushroomBody implements Updatable, Serializable {
 			default :
 				spore = new FastSpore(Spore.randomNutrientValue(), mushroom, target, newName);
 				break;
-		};
+		}
 		return spore;
     }
 	
@@ -291,18 +299,6 @@ public class MushroomBody implements Updatable, Serializable {
             if (spore.getLocation() == tecton) spore.die();
         shroomer.score++;
         return new MushroomBody(tecton, this.mushroom, 0, false);
-	}
-	
-	public String getState() {
-		if(state == 0) {
-			return "SMALL";
-		}
-		else if(state == 1) {
-			return "MEDIUM";
-		}
-		else {
-			return "BIG";
-		}
 	}
 	
 	/**

@@ -15,6 +15,11 @@ public class SporeConsumptionVisitor implements SporeVisitor {
     private final Insect insect;
     private final GameController gameController;
 
+    /**
+     * Létrehozz egy új példányt a megadott paraméterekkel
+     * @param insect A rovar, aki elfogyasztja a spórát
+     * @param gameController A gc példány, amin módosítást végzünk a MultiplierSpore esetén
+     */
     public SporeConsumptionVisitor(Insect insect, GameController gameController) {
         this.insect = insect;
         this.gameController = gameController;
@@ -40,6 +45,10 @@ public class SporeConsumptionVisitor implements SporeVisitor {
         s.applyEffect(insect);
     }
 
+    /**
+     * A spóra applyEffect metódusa mellett ebben az esetben egy új rovart is létre kell hozzunk
+     * @param s A spóra, amit elfogyasztunk
+     */
     @Override
     public void visit(MultiplierSpore s) {
         // 1) az eredeti hatás

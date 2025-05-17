@@ -56,43 +56,66 @@ public class GameController {
         return g;
     }
 
-    public void setInit(boolean init) {
-        
-        this.init = init;
-    }
-
     /**
-     * Létrehozza a pályát - ez egyelőre placeholder, kell több tecton majd
+     * Létrehozza a pályát, elhelyezi a tektonokat
      */
     public Planet buildPlanet() {
     	Planet planet = new Planet();
     	
-    	BigTecton t1 = new BigTecton(3);
-    	t1.setGeometry(new GeometryTecton(600, 200, 110));
+    	BigTecton bt1 = new BigTecton(4);
+    	bt1.setGeometry(new GeometryTecton(600, 200, 110));
+        BigTecton bt2 = new BigTecton(4);
+        bt2.setGeometry(new GeometryTecton(532, 830, 110));
+        BigTecton bt3 = new BigTecton(4);
+        bt3.setGeometry(new GeometryTecton(1734, 325, 110));
+        BigTecton bt4 = new BigTecton(4);
+        bt4.setGeometry(new GeometryTecton(1264, 267, 110));
+        BigTecton bt5 = new BigTecton(4);
+        bt5.setGeometry(new GeometryTecton(900, 800, 110));
 
-    	SmallTecton t2 = new SmallTecton(3);
-    	t2.setGeometry(new GeometryTecton(900, 400, 55));
+    	SmallTecton st1 = new SmallTecton(2);
+    	st1.setGeometry(new GeometryTecton(900, 400, 55));
+        SmallTecton st2 = new SmallTecton(2);
+        st2.setGeometry(new GeometryTecton(100, 731, 55));
+        SmallTecton st3 = new SmallTecton(2);
+        st3.setGeometry(new GeometryTecton(1510, 412, 55));
     	
-    	HealingTecton t3 = new HealingTecton(3);
-    	t3.setGeometry(new GeometryTecton(250, 250, 85));
+    	HealingTecton ht1 = new HealingTecton(3);
+    	ht1.setGeometry(new GeometryTecton(250, 250, 85));
+        HealingTecton ht2 = new HealingTecton(3);
+        ht2.setGeometry(new GeometryTecton(1123, 581, 85));
+        HealingTecton ht3 = new HealingTecton(3);
+        ht3.setGeometry(new GeometryTecton(310, 700, 85));
     	
-    	CoarseTecton t4 = new CoarseTecton(3);
-    	t4.setGeometry(new GeometryTecton(400, 400, 90));
+    	CoarseTecton ct1 = new CoarseTecton(3);
+    	ct1.setGeometry(new GeometryTecton(400, 400, 90));
+        CoarseTecton ct2 = new CoarseTecton(3);
+        ct2.setGeometry(new GeometryTecton(1564, 153, 90));
+        CoarseTecton ct3 = new CoarseTecton(3);
+        ct3.setGeometry(new GeometryTecton(700, 420, 90));
     	
-    	ToxicTecton t5 = new ToxicTecton(3);
-    	t5.setGeometry(new GeometryTecton(600, 600, 95));
+    	ToxicTecton tt1 = new ToxicTecton(3);
+    	tt1.setGeometry(new GeometryTecton(600, 600, 95));
+        ToxicTecton tt2 = new ToxicTecton(3);
+        tt2.setGeometry(new GeometryTecton(1400, 800, 95));
 
-        //Mushroom m = new Mushroom(false);
-        //MushroomString ms1 = new MushroomString("hypha", m, new ArrayList<>(), new ArrayList<>(), 0, new GeometryString(0, 0, 100, 100));
-    	
-    	planet.addTecton(t1);
-    	planet.addTecton(t2);
-    	planet.addTecton(t3);
-    	planet.addTecton(t4);
-    	planet.addTecton(t5);
-        //planet.addMushroomString(ms1);
+    	planet.addTecton(bt1);
+        planet.addTecton(bt2);
+        planet.addTecton(bt3);
+        planet.addTecton(bt4);
+        planet.addTecton(bt5);
+        planet.addTecton(st1);
+        planet.addTecton(st2);
+        planet.addTecton(st3);
+        planet.addTecton(ht1);
+        planet.addTecton(ht2);
+        planet.addTecton(ht3);
+        planet.addTecton(ct1);
+        planet.addTecton(ct2);
+        planet.addTecton(ct3);
+        planet.addTecton(tt1);
+        planet.addTecton(tt2);
         planet.recalcNeighbours();
-    	
     	return planet;
     }
 
@@ -147,6 +170,9 @@ public class GameController {
 
     public boolean getInit() {
         return init;
+    }
+    public void setInit(boolean init) {
+        this.init = init;
     }
     
     /**

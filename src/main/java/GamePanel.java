@@ -10,6 +10,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+/**
+ * A GamePanel osztály felelős a játék megjelenítéséért.
+ */
 public class GamePanel extends JPanel {
 
 	public enum ShineOn {TECTON, MUSHBODY, MUSHSTRING, SPORE, INSECT, NONE}
@@ -19,6 +22,10 @@ public class GamePanel extends JPanel {
 	private final DrawManager drawManager;
 	private final BufferedImage backgroundImage;
 
+	/**
+	 * Létrehozza magát a játékot, és minden paramétert beállít.
+	 * @param players A játékot játszó játékosok listája
+	 */
     public GamePanel(ArrayList<Player> players) {
 		gameController = new GameController(false, 20, this::repaint);
 		gameController.setPlanet(gameController.buildPlanet());
@@ -37,6 +44,7 @@ public class GamePanel extends JPanel {
 		this.setFocusable(true);
 	}
 
+	//Getterek, setterek
 	public void setGameController(GameController gameController) {
 		this.gameController = gameController;
 	}
@@ -45,14 +53,17 @@ public class GamePanel extends JPanel {
 		return gameController;
 	}
 
-	//Getter és setter a kiemelés állításához
+	/**
+	 * Kiemeli az interaktálható objektumokat
+	 * @param shineOn A kijelölendő objektum
+	 */
 	public void setShineOn(ShineOn shineOn) {
 		this.shineOn = shineOn;
 	}
 
 	/**
-	 * Draws the game status information including player scores and current game state
- 	 * @param g2 The Graphics2D context to draw on
+	 * Kirajzolja a játék követéséhez szükséges információkat
+ 	 * @param g2 A kirajzoló komponens
  	*/
 	private void drawGameStatus(Graphics2D g2) {
 		ArrayList<Player> players = gameController.getPlayers();
@@ -74,40 +85,34 @@ public class GamePanel extends JPanel {
 		Font statusFont = new Font("SansSerif", Font.BOLD, 16);
 		g2.setFont(statusFont);
 
-		// Create a transparent background for better readability
 		int statusHeight = lineHeight * 2 + padding * 2;
 		int statusWidth = 250;
 		int statusX = getWidth() - statusWidth - padding;
 		int statusY = getHeight() - statusHeight - padding;
 
-		// Draw status background
-		g2.setColor(new Color(0, 0, 0, 180)); // Semi-transparent black
+		g2.setColor(new Color(0, 0, 0, 180));
 		g2.fillRoundRect(statusX, statusY, statusWidth, statusHeight, 10, 10);
 
-		// Draw status text
 		g2.setColor(Color.WHITE);
 		Player currentPlayer = gameController.getCurrentPlayer();
 		int remainingRounds = gameController.getMaxTurn() - gameController.getTurnCounter();
 		String playerText = "Current Player: " + (currentPlayer != null ? currentPlayer.getName() : "None");
 		String roundText = "Remaining Rounds: " + remainingRounds;
 
-		// Draw the status text
 		g2.drawString(playerText, statusX + padding, statusY + lineHeight);
 		g2.drawString(roundText, statusX + padding, statusY + lineHeight * 2);
 
-		// If you want to highlight the current player's turn with a color
 		if (currentPlayer != null) {
 			Color playerColor;
 			if (currentPlayer instanceof Shroomer) {
-				playerColor = new Color(243, 3, 3); // Red for Shroomer
+				playerColor = new Color(243, 3, 3);
 			} else {
-				playerColor = new Color(255, 215, 0);   // Yellow for Insecter
+				playerColor = new Color(255, 215, 0);
 			}
 
 			g2.setColor(playerColor);
 			g2.fillRoundRect(statusX + 160, statusY + lineHeight - 12, 10, 10, 5, 5);
 
-			// Add player's remaining actions
 			g2.setColor(Color.WHITE);
 			g2.setFont(new Font("SansSerif", Font.PLAIN, 14));
 			String actionsText = "Actions left: " + currentPlayer.getActions();
@@ -122,6 +127,10 @@ public class GamePanel extends JPanel {
 		}
 	}
 
+	/**
+	 * A játék végét jelző pop-up ablak megvalósítása
+	 * @param winners A győztesek listája
+	 */
 	private void gameEndsPopup(ArrayList<Player> winners) {
         String message = "The winners are: " +
                 winners.get(0).getName() + " and " +
@@ -140,6 +149,10 @@ public class GamePanel extends JPanel {
 		frame.repaint();
 	}
 
+	/**
+	 * A játék megjelenítéséért felelős függvény
+	 * @param g A kirajzoló komponens
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);

@@ -84,7 +84,10 @@ public class Planet implements Updatable, Serializable {
 	    Tecton location = ms.getConnection().get(0);
 	    return spores.stream().anyMatch(spore -> spore.getLocation() == location);
 	}
-    
+
+    /**
+     * Megvizsgálja, hogy mely fonalak kapcsolódnak gombatesthez
+     */
     public void checkForBodyConnection() {
     	for (MushroomString ms : mushstrings) {
     	    ms.setConnectedToBody(false);

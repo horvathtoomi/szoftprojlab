@@ -8,6 +8,9 @@ import java.awt.event.KeyListener;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A KeyHandler osztály felelős a billentyűzeti input kezeléséért
+ */
 public class KeyHandler implements KeyListener {
 
     private int keyCode = -1; // alapértelmezett érték
@@ -26,6 +29,13 @@ public class KeyHandler implements KeyListener {
     public static final int KEY_CUT = KeyEvent.VK_C;
     public static final int KEY_MOVE = KeyEvent.VK_M;
 
+    /**
+     * Létrehozza a példányt a megfelelő komponensekkel
+     *
+     * @param gc A GameController példány, amihez tartozik
+     * @param repaintCallback A képernyő újrarajzolását végző metódus
+     * @param gamePanel A játék, amihez tartozik
+     */
     public KeyHandler(GameController gc, Runnable repaintCallback, GamePanel gamePanel) {
         game = gc;
         this.repaintCallback = repaintCallback;
@@ -82,7 +92,10 @@ public class KeyHandler implements KeyListener {
         }
         //repaintCallback.run();
     }
-
+    /**
+     * A billentyű felengedésekor lefutó függvény
+     * @param e a billentyű esemény
+     */
     @Override
     public void keyReleased(KeyEvent e) {
         keyMap.put(e.getKeyCode(), false);
@@ -95,6 +108,9 @@ public class KeyHandler implements KeyListener {
     public int getKeyCode() {
         return keyCode;
     }
+    /**
+     * Visszaállítja a lenyomott billentyűt alapértelmezettre
+     */
     public void resetKeyCode() {
         this.keyCode = -1;
     }

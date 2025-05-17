@@ -6,15 +6,26 @@ import java.awt.image.BufferedImage;
 import main.java.MainMenu;
 import main.java.view.UtilityTool;
 
+/**
+ * Ez a visitor dönti el a tektonok esetbében, hogy hogyan is kell azt megjeleníteni
+ */
 public class TectonDrawerVisitor implements TectonVisitor<Void> {
 
 	private final Graphics2D g2;
 	UtilityTool uTool = new UtilityTool();
 
+	/**
+	 * Létrehoz egy új példányt a megadott paraméterekkel.
+	 * @param g2 A kirajzolásért felelős példány
+	 */
 	public TectonDrawerVisitor(Graphics2D g2) {
 		this.g2 = g2;
 	}
 
+	/**
+	 * BigTecton esetén a megjelenítés
+	 * @param big a tekton, amit ki kell rajzolni
+	 */
 	public Void visit(BigTecton big) {
 		BufferedImage image = uTool.load(MainMenu.prefix + "bt.png");
 		float r = big.getGeometry().getRadius();
@@ -24,6 +35,10 @@ public class TectonDrawerVisitor implements TectonVisitor<Void> {
 		return null;
 	}
 
+	/**
+	 * SmallTecton esetén a megjelenítés
+	 * @param small a tekton, amit ki kell rajzolni
+	 */
 	public Void visit(SmallTecton small) {
 		BufferedImage image = uTool.load(MainMenu.prefix + "st.png");
 		float r = small.getGeometry().getRadius();
@@ -34,7 +49,10 @@ public class TectonDrawerVisitor implements TectonVisitor<Void> {
 		return null;
 	}
 
-
+	/**
+	 * ToxicTecton esetén a megjelenítés
+	 * @param toxic a tekton, amit ki kell rajzolni
+	 */
 	public Void visit(ToxicTecton toxic) {
 		BufferedImage image = uTool.load(MainMenu.prefix + "tt.png");
 		float r = toxic.getGeometry().getRadius();
@@ -45,6 +63,10 @@ public class TectonDrawerVisitor implements TectonVisitor<Void> {
 		return null;
 	}
 
+	/**
+	 * HealingTecton esetén a megjelenítés
+	 * @param healing a tekton, amit ki kell rajzolni
+	 */
 	public Void visit(HealingTecton healing) {
 		BufferedImage image = uTool.load(MainMenu.prefix + "ht.png");
 		float r = healing.getGeometry().getRadius();
@@ -55,6 +77,10 @@ public class TectonDrawerVisitor implements TectonVisitor<Void> {
 		return null;
 	}
 
+	/**
+	 * CoarseTecton esetén a megjelenítés
+	 * @param coarse a tekton, amit ki kell rajzolni
+	 */
 	public Void visit(CoarseTecton coarse) {
 		BufferedImage image = uTool.load(MainMenu.prefix + "ct.png");
 		float r = coarse.getGeometry().getRadius();

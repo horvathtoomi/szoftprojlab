@@ -118,10 +118,11 @@ public class Insect implements Updatable, Serializable {
 	 /**
      * A megadott gombafonal elvágása.
      *
-     * @param ms      Az elvágandó gombafonal.
+     * @param ms Az elvágandó gombafonal.
      */
 	public void cutHypha(MushroomString ms)
 	{
+		if(!canCutString){return;}
 	    // 1) ellenőrizzük, hogy azon a Tectonon állunk-e, ahol a fonal egyik vége van
 	    if (!ms.getConnection().contains(location)) return;
 

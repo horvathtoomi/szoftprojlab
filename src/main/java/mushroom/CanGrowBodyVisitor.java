@@ -13,7 +13,7 @@ public class CanGrowBodyVisitor implements TectonVisitor<Void> {
 	
 	/**
      * Eredmény lekérdezése: az utolsó meglátogatott Tecton típus alapján
-     * visszaadja, hogy azon lehet-e testet növeszteni.
+     * visszaadja, hogy azon lehet-e testet növeszteni. Ez akkor igaz, ha van a tektonon hely.
      */
     public boolean canPerformAction() { return canPerformAction; }
 

@@ -21,6 +21,11 @@ public class Mushroom {
 		this.testing = testing;
 	}
 
+	/**
+	 * Visszaadja, hogy egy gomba hallott-e
+	 *
+	 * @return i/h, állapotától függően
+	 */
 	public boolean getDead() {
 		return dead;
 	}

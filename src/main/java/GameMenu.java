@@ -19,6 +19,11 @@ public class GameMenu extends JMenuBar {
         Color baseColor = new Color(47, 84, 39);
         Color hoverColor = new Color(75, 125, 64);
 
+    /**
+     * Létrehoz egy új példányt a aparaméterek alapján
+     * @param gameController A gc, amihez tartozik
+     * @param frame Az ablak, ami tartalmazza
+     */
         public GameMenu(JFrame frame, GameController gameController) {
             this.frame = frame;
             this.gameController = gameController;
@@ -85,6 +90,7 @@ public class GameMenu extends JMenuBar {
 
         /**
          * A játékbeli gombok stílusát állítja be.
+         * @param button A gomb, amit beállít
          */
         private void styleButton(JButton button){
 

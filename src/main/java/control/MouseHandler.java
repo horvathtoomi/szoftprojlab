@@ -40,6 +40,13 @@ public class MouseHandler implements MouseListener {
     private MushroomString clickedMushroomString = null;
     private final GamePanel gamePanel;
 
+    /**
+     * Létrehozza az új példányt a megfelelő paraméterekkel
+     * @param gc A GameController példány, amihez tartozik
+     * @param repaintCallback A képernyő újrarajzolását végző metódus
+     * @param gamePanel A játék, amihez tartozik
+     * @param keyHandler A keyHandler pédlány, amely a játékhoz tartozik
+     */
     public MouseHandler(GameController gc, Runnable repaintCallback, GamePanel gamePanel, KeyHandler keyHandler) {
         this.gc = gc;
         this.repaintCallback = repaintCallback;
@@ -47,6 +54,9 @@ public class MouseHandler implements MouseListener {
         this.gamePanel = gamePanel;
     }
 
+    /**
+     * Visszaállítja a kijelölést, és a kiválasztott objektumokat semmire a második kattintás után.
+     */
     private void reset(){
         firstClick = true;
         clickedSpore = null;
@@ -424,6 +434,10 @@ public class MouseHandler implements MouseListener {
     @Override
     public void mouseReleased(MouseEvent e) {}
 
+    /**
+     * Az objektumok megfelelő módon történő kiemeléséért felelős függvény
+     * @param e A kattintás eseménye
+     */
     @Override
     public void mouseEntered(MouseEvent e) {
         // Ha a játék inicializáló fázisban van

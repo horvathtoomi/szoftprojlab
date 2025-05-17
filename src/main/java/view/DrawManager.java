@@ -10,6 +10,9 @@ import main.java.mushroom.*;
 import main.java.insect.Insect;
 import main.java.spore.Spore;
 
+/**
+ * A kirajzolást kezelő osztály. Tartalmaz kirajzoló objektumokat
+ */
 public class DrawManager {
     private DefaultTectonDrawer tectonDrawer;
     private DefaultSporeDrawer sporeDrawer;
@@ -17,10 +20,17 @@ public class DrawManager {
     private DefaultMushroomStringDrawer mushroomStringDrawer;
     private DefaultInsectDrawer insectDrawer;
 
+    /**
+     * ALétrehoz egy új példányt, és meghívja a setDrawers() metódust
+     */
     public DrawManager(){
         setDrawers(new DefaultDrawingFactory());
     }
 
+    /**
+     * A kapott factory segítségével létrehozza a kirajzolókat
+     * @param factory a Factory, amivel a létrehozást végzi
+     */
     public void setDrawers(DrawingFactory factory){
         this.tectonDrawer = factory.createTectonDrawer();
         this.insectDrawer = factory.createInsectDrawer();
@@ -29,6 +39,12 @@ public class DrawManager {
         this.mushroomBodyDrawer = factory.createMushroomBodyDrawer();
     }
 
+    /**
+     * A megfelelő drawer draw() metódusát meghívja
+     * @param g A Rajzoló objektum
+     * @param t A kirajzolandó objektum
+     * @param shining Ki kell-e emelni az objektumot
+     */
     public void drawTecton(Graphics2D g, Tecton t, boolean shining){
         if(shining){
             drawShineEffect(g, (int) t.getGeometry().getX(), (int) t.getGeometry().getY(), (int) (t.getGeometry().getRadius() + 10));
@@ -36,13 +52,24 @@ public class DrawManager {
         tectonDrawer.draw(g, t);
     }
 
+    /**
+     * A megfelelő drawer draw() metódusát meghívja
+     * @param g A Rajzoló objektum
+     * @param spore A kirajzolandó objektum
+     * @param shining Ki kell-e emelni az objektumot
+     */
     public void drawSpore(Graphics2D g, Spore spore, boolean shining) {
         if(shining){
             drawShineEffect(g, (int) spore.getGeometry().getX(), (int) spore.getGeometry().getY(), 25);
         }
         sporeDrawer.draw(g, spore);
     }
-
+    /**
+     * A megfelelő drawer draw() metódusát meghívja
+     * @param g A Rajzoló objektum
+     * @param mushroomBody A kirajzolandó objektum
+     * @param shining Ki kell-e emelni az objektumot
+     */
     public void drawMushroomBody(Graphics2D g, MushroomBody mushroomBody, boolean shining) {
         if(shining) {
             drawShineEffect(g, (int) mushroomBody.getGeometry().getX(), (int) mushroomBody.getGeometry().getY(), 35);
@@ -50,6 +77,12 @@ public class DrawManager {
         mushroomBodyDrawer.draw(g, mushroomBody);
     }
 
+    /**
+     * A megfelelő drawer draw() metódusát meghívja
+     * @param g A Rajzoló objektum
+     * @param mushroomString A kirajzolandó objektum
+     * @param shining Ki kell-e emelni az objektumot
+     */
     public void drawMushroomString(Graphics2D g, MushroomString mushroomString,boolean shining){
         if(shining) {
             int midX = (mushroomString.getGeometry().getX() +mushroomString.getGeometry().getX2() ) / 2;
@@ -59,6 +92,12 @@ public class DrawManager {
         mushroomStringDrawer.draw(g, mushroomString);
     }
 
+    /**
+     * A megfelelő drawer draw() metódusát meghívja
+     * @param g A Rajzoló objektum
+     * @param insect A kirajzolandó objektum
+     * @param shining Ki kell-e emelni az objektumot
+     */
     public void drawInsect(Graphics2D g, Insect insect, boolean shining) {
         if(shining) {
             drawShineEffect(g, (int) (insect.getGeometry().getX() + 20), (int) (insect.getGeometry().getY() + 20), 30);
@@ -66,6 +105,12 @@ public class DrawManager {
         insectDrawer.draw(g, insect);
     }
 
+    /**
+     * Kirajzolja a teljes bolygót
+     * @param g A Rajzoló objektum
+     * @param p A kirajzolandó objektumokat tartalmazó planet
+     * @param shining Ki kell-e emelni az objektumot
+     */
     public void drawPlanet(Graphics2D g, Planet p, GamePanel.ShineOn shining) {
     	for(Tecton t : p.getTectons()) {
     		drawTecton(g, t, shining == GamePanel.ShineOn.TECTON);
@@ -93,7 +138,13 @@ public class DrawManager {
     	}
     }
 
-    // Új metódus a kiemelő effekt rajzolásához
+    /**
+     * Megjeleníti a kiemelés effektet
+     * @param g A Rajzoló objektum
+     * @param x Az effekt x koordinátája
+     * @param y Az effekt Y koordinátája
+     * @param radius Az effekt sugara
+     */
     private void drawShineEffect(Graphics2D g, int x, int y, int radius) {
         // Mentjük az eredeti beállításokat
         Composite originalComposite = g.getComposite();

@@ -3,8 +3,16 @@ package main.java.view;
 import java.awt.*;
 import main.java.mushroom.*;
 
+/**
+ * A fonalakat kirajzoló osztály
+ */
 public class DefaultMushroomStringDrawer implements MushroomStringDrawer {
 
+    /**
+     * A kirajzoló függvény
+     * @param g2 A kirajzoló objektum
+     * @param ms A kirajzolandó objektum
+     */
     @Override
     public void draw(Graphics2D g2, MushroomString ms) {
 

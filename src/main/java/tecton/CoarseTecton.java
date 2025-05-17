@@ -17,6 +17,11 @@ public class CoarseTecton extends Tecton implements TectonAccept {
         super(maxStrings);
     }
 
+    /**
+     * A tekton széttörését megvalósító függvény.
+     * @param tectons Az összes tekton listája
+     * @param newTectons Egy update során létrejött új tektonok listája
+     */
     @Override
     public void createSplitTectons(ArrayList<Tecton> tectons, ArrayList<Tecton> newTectons) {
         createSplitTectonsWithFactory(() -> new CoarseTecton(getMaxStrings()), newTectons);

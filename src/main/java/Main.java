@@ -6,13 +6,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-/*
+/**
  * A Main osztály felelős a program kiindulási pontjáért, innen hívódik meg a main függvény.
  */
 public class Main {
 
     private static final UtilityTool uTool = new UtilityTool();
 
+	/**
+	 * A program indulásakor hívódó main függvény
+	 */
 	public static void main(String[] args) {
         JFrame frame = new JFrame("Fungorium");
 

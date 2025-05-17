@@ -26,7 +26,7 @@ public class MushroomString implements Updatable, Serializable {
 	
 	private int orphanAge = 0;                // hány kör óta árva?
 	private static final int ORPHAN_AGE_LIMIT = 3;
-	private boolean connectedToMushroom;
+	private final boolean connectedToMushroom;
 	GeometryString geometry;
 
 	/**
@@ -54,33 +54,29 @@ public class MushroomString implements Updatable, Serializable {
 	public Mushroom getMushroom() {
 		return mushroom;
 	}
-
 	public ArrayList<MushroomString> getNeighbours() {
 		return neighbours;
 	}
-
 	public ArrayList<Tecton> getConnection() {
 		return connection;
 	}
-
 	public boolean getDead() {
 		return dead;
 	}
-
 	public int getLifeLine() {
 		return lifeLine;
 	}
-	
 	public LifeCycle getLifeCycle() {
 		return lifeCycle;
 	}
-	
 	public boolean isConnectedToBody() {
 	    return connectedToBody;
 	}
-
 	public void setConnectedToBody(boolean b) {
 	    connectedToBody = b;
+	}
+	public GeometryString getGeometry() {
+		return geometry;
 	}
 
 	
@@ -94,8 +90,9 @@ public class MushroomString implements Updatable, Serializable {
 	
 	/**
 	 * A fonal terjedését megvalósító függvény.
-	 * Elvégzi a szükséges feltételek ellenőrzését, majd hozzáadja az étvett tektont a connections-höz,
-	 * illetve megkeresi, hogy van-e egy másik fonal, amihez ez az új csatlakozni tud
+	 * @param target A cél tekton
+	 * @param allStrings A MushroomStringek listája
+	 * @return a terjedés sikeressége
 	**/
 	
 	public boolean branch(Tecton target, ArrayList<MushroomString> allStrings) {
@@ -141,6 +138,7 @@ public class MushroomString implements Updatable, Serializable {
 	/**
      * Az Updatable interfész felüldefiniált update függvénye. 
      * Elvégzi a fonal fejlődését, és ha még nem halott, akkor megnöveli a lifeLine-t.
+	 * Ha a megfelelő feltétel teljesül, akkor halottra állítja a fonalat.
      *
      * @param random A véletlenséget be/kikapcsoló változó.
      */
@@ -201,9 +199,5 @@ public class MushroomString implements Updatable, Serializable {
 				ms.neighbours.set(0, null);
 			}
 		}
-	}
-
-	public GeometryString getGeometry() {
-		return geometry;
 	}
 }
