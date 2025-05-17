@@ -14,7 +14,7 @@ public class Main {
     private static final UtilityTool uTool = new UtilityTool();
 
 	public static void main(String[] args) {
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("Fungorium");
 
 		BufferedImage logo = uTool.load(MainMenu.prefix + "mb_big.png");
 		frame.setIconImage(logo);

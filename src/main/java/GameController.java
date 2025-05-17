@@ -39,7 +39,7 @@ public class GameController {
     }
 
     /**
-     * A kirajzoláskor egy vélwtlen eltolást hoz létre az adott tektonon, hogy ne minden objektum egymáson legyen.
+     * A kirajzoláskor egy véletlen eltolást hoz létre az adott tektonon, hogy ne minden objektum egymáson legyen.
      *
      * @param geometry a felhasznált GeometryTecton példány
      * @return az új geometry
