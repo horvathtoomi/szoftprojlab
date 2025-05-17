@@ -98,7 +98,7 @@ public abstract class Tecton implements Serializable {
         double dx = this.geometry.getX() - t.geometry.getX();
         double dy = this.geometry.getY() - t.geometry.getY();
         double distance = Math.sqrt(dx * dx + dy * dy);
-        System.out.println(distance);
+        //System.out.println(distance);
 
         return distance <= 3000;
     }

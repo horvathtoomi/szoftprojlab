@@ -13,7 +13,7 @@ public class DefaultMushroomStringDrawer implements MushroomStringDrawer {
         if(ms.getDead()){
             g2.setColor(Color.GRAY);
         } else if(ms.getLifeCycle() == MushroomString.LifeCycle.Child) {
-            g2.setColor(Color.GREEN);
+            g2.setColor(Color.WHITE);
         } else {
             g2.setColor(Color.BLUE);
         }
