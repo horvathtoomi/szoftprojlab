@@ -116,7 +116,7 @@ public class Insect implements Updatable, Serializable {
 				return 0;
 			}
 		}
-		return 0;
+		return -3;
 	}
 
 	 /**

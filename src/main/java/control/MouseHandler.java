@@ -4,6 +4,7 @@ import main.java.GameController;
 import main.java.GamePanel;
 import main.java.Geometry;
 import main.java.insect.Insect;
+import main.java.mushroom.CanGrowBodyVisitor;
 import main.java.mushroom.GeometryString;
 import main.java.mushroom.MushroomBody;
 import main.java.mushroom.MushroomString;
@@ -15,6 +16,7 @@ import main.java.spore.SporeAccept;
 import main.java.spore.SporeConsumptionVisitor;
 import main.java.tecton.GeometryTecton;
 import main.java.tecton.Tecton;
+import main.java.tecton.TectonAccept;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -152,16 +154,13 @@ public class MouseHandler implements MouseListener {
         gamePanel.setShineOn(GamePanel.ShineOn.MUSHSTRING);
         repaintCallback.run();
         for (MushroomString ms : gc.getPlanet().getMushstrings()) {
-        	if(ms.getConnection().get(0) == null ||  ms.getConnection().get(1) != null)
-        		System.out.println("dominik is román, és azok nem jók mint tudjuk!!!");
         	if(ms.getConnection().get(0).getGeometry() == null
-        			&& ms.getConnection().get(1).getGeometry() == null)
+        			&& ms.getConnection().get(1).getGeometry() == null && ms.getConnection().size() != 2)
         		continue;
         	ArrayList<Tecton> connections = ms.getConnection();
 
             Geometry geom1;
             Geometry geom2;
-            // Az összekötött tektonok geometriáját lekérjük
             if(connections.get(1) != null){
                  geom1 = connections.get(0).getGeometry();
                  geom2 = connections.get(1).getGeometry();
@@ -173,10 +172,8 @@ public class MouseHandler implements MouseListener {
                 System.out.println("Buzi románok");
             }
 
-            // Csak akkor folytatjuk, ha elég közel van a klikk a fonalhoz
             if (isClickNearLine(x, y, geom1.getX(), geom1.getY(), geom2.getX(), geom2.getY())) {
                 System.out.println("Clicked on a mushroom string");
-                // Ha a current player Shroomer, akkor megnézzük, hogy az ő gombájának fonala-e
                 if (gc.getCurrentPlayer() instanceof Shroomer shroomer) {
                     if (ms.getMushroom() == shroomer.getMushroom() && !ms.getDead()) {
                         clickedMushroomString = ms;
@@ -232,18 +229,21 @@ public class MouseHandler implements MouseListener {
 
         if (clickedTecton != null) {
             if (p instanceof Shroomer) {
-                MushroomBody mb = new MushroomBody(clickedTecton, ((Shroomer) p).getMushroom(), 2, false);
-                for(MushroomBody m : gc.getPlanet().getMushbodies()) {
-                    if(m.getLocation().equals(clickedTecton)) {
-                        return;
+                CanGrowBodyVisitor v = new CanGrowBodyVisitor();
+                TectonAccept acceptor = (TectonAccept) clickedTecton;
+                acceptor.accept(v);
+                if(v.canPerformAction()){
+                    MushroomBody mb = new MushroomBody(clickedTecton, ((Shroomer) p).getMushroom(), 2, false);
+                    for(MushroomBody m : gc.getPlanet().getMushbodies()) {
+                        if(m.getLocation().equals(clickedTecton)) {
+                            return;
+                        }
                     }
+                    GeometryTecton tectonGeometry = clickedTecton.getGeometry();
+                    mb.setGeometry(gc.randomOffsetInsideCircle(tectonGeometry));
+                    gc.getPlanet().getMushbodies().add(mb);
                 }
-
-                // Setting geometry for mushroom body
-                GeometryTecton tectonGeometry = clickedTecton.getGeometry();
-                mb.setGeometry(gc.randomOffsetInsideCircle(tectonGeometry));
-
-                gc.getPlanet().getMushbodies().add(mb);
+                else return;
             } else if (p instanceof Insecter) {
                 for(Insect i : gc.getPlanet().getInsects()) {
                     if(i.getLocation().equals(clickedTecton)) {
@@ -275,7 +275,6 @@ public class MouseHandler implements MouseListener {
         if(p instanceof Shroomer) {
             int code = keyHandler.getKeyCode();
             System.out.println("Current keyCode: " + code);
-            //System.out.println("Clicked at " + mouseX + ", " + mouseY);
             //A gombára,vagy fonalra mehet
             if(keyHandler.getKeyCode() == KeyHandler.KEY_MUSHROOM){ // click on mushroom
                 System.out.println("Mushroom at " + mouseX + ", " + mouseY);
@@ -332,12 +331,12 @@ public class MouseHandler implements MouseListener {
                     }
                 }
                 else if(clickedTecton.canGrowHypha(gc.getPlanet().getMushstrings())){
-                	if(clickedTecton == null)
-                    	System.out.println("büdös románok!!!");
                     if(clickedMushroomString != null){
-                        if(clickedMushroomString.branch(clickedTecton, gc.getPlanet().getMushstrings()))
-                        	System.out.println("büdös románok!!!");
+                        if(clickedMushroomString.branch(clickedTecton, gc.getPlanet().getMushstrings())){
                             gc.nextTurnCheck();
+                            for(Tecton t : clickedMushroomString.getConnection())
+                                System.out.println(t);
+                        }
                     }
                     else if(clickedMushroomBody != null && keyHandler.getKeyCode() == KeyHandler.KEY_HYPHA){ // H = hypha
                             if(clickedMushroomBody.getLocation().equals(clickedTecton)){
@@ -367,8 +366,12 @@ public class MouseHandler implements MouseListener {
 
             if(clickedTecton != null && clickedInsect.getLocation() != clickedTecton && clickedTecton.isNeighbour(clickedInsect.getLocation()) && gc.getPlanet().getMushstrings().stream()
                     .anyMatch(ms -> ms.getConnection().contains(clickedInsect.getLocation()) && ms.getConnection().contains(clickedTecton))) {
-                clickedInsect.move(clickedTecton);
-                gc.nextTurnCheck();
+                if(clickedInsect.move(clickedTecton) != -3){
+                    gc.nextTurnCheck();
+                    p.setActions(p.getActions() + clickedInsect.move(clickedTecton));
+                    System.out.println("Moved");
+                }
+
             }
             else if(clickedSpore != null) {
                 if (clickedInsect.getLocation() == clickedSpore.getLocation()) {

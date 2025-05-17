@@ -1,0 +1,12 @@
+tecton t1 big
+tecton t2 healing
+SetNeighbours t1 t2
+shroomer s
+mushroom m s
+mushroombody mb m t1 big s
+mushroomstring ms m t1 s
+branch ms t2 s
+insecter i
+insect in t1 i
+pass s
+cut in ms i

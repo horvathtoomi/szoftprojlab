@@ -158,12 +158,12 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
 	private boolean hasHealingEnd(){
 		boolean hasHealingEnd = false;
 		for (Tecton t : connection) {
-			KeepStringAliveVisitor healV = new KeepStringAliveVisitor();
-			((TectonAccept) t).accept(healV);
-			if (healV.canPerformAction()) {      // Healing -> true
-				hasHealingEnd = true;
-				break;
-			}
+			if(t != null) {KeepStringAliveVisitor healV = new KeepStringAliveVisitor();
+				((TectonAccept) t).accept(healV);
+				if (healV.canPerformAction()) {      // Healing -> true
+					hasHealingEnd = true;
+					break;
+				}}
 		}
 		return hasHealingEnd;
 	}
@@ -199,8 +199,9 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
 		boolean toxicReachedLimit = false;
 
 		CanKillStringVisitor v = new CanKillStringVisitor();
-		for (Tecton t : new ArrayList<>(connection)) {       // biztonság kedvéért másolaton iterálunk
-			((TectonAccept) t).accept(v);
+		for (Tecton t : connection) {
+			if(t != null) {((TectonAccept) t).accept(v);}
+
 
 			/* csak ToxicTectonra ad true-t a visitor */
 			if (v.canPerformAction() && age >= TOXIC_AGE_LIMIT) {
@@ -219,12 +220,12 @@ public class MushroomString extends Nameable implements Updatable, Serializable 
 	    akkor öregszik s végül elpusztul  */
 		if (!connectedToBody) {
 			v = new CanKillStringVisitor();
-			((TectonAccept) connection.get(0)).accept(v);
+			if(connection.get(0) != null) {((TectonAccept) connection.get(0)).accept(v);
 
-			if (v.canPerformAction() && age >= TOXIC_AGE_LIMIT) {
-				dead = true;
-				return;
-			}
+				if (v.canPerformAction() && age >= TOXIC_AGE_LIMIT) {
+					dead = true;
+					return;
+				}}
 		}
 
 	    /* 4) ha már nincs toxikus águnk, indulunk elölről a számlálással,
