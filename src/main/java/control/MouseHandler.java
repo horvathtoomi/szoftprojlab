@@ -262,7 +262,6 @@ public class MouseHandler implements MouseListener {
                 }
                 Insect i = new Insect(clickedTecton);
 
-
                 GeometryTecton tectonGeometry = clickedTecton.getGeometry();
                 i.setGeometry(gc.randomOffsetInsideCircle(tectonGeometry));
 
@@ -361,7 +360,7 @@ public class MouseHandler implements MouseListener {
             reset();
         }
         else if(p instanceof Insecter) {
-            //A kattintás egy tektonra, spórára, vagy fonalra mehet, de lehet itt is célszerű lenne gombokkal szabályozni, hogy ne lehessen véletlenül mondjuk félrekattintani, emiatt az if-ek ideiglenesek
+            //A kattintás egy tektonra, spórára, vagy fonalra mehet
             if(keyHandler.getKeyCode() == KeyHandler.KEY_MOVE){ // M = move
                 selectTecton(mouseX, mouseY);
             }
@@ -386,12 +385,13 @@ public class MouseHandler implements MouseListener {
                 if (clickedInsect.getLocation() == clickedSpore.getLocation()) {
                     SporeConsumptionVisitor v = new SporeConsumptionVisitor(clickedInsect, gc);
                     ((SporeAccept) clickedSpore).accept(v);
+                gc.getCurrentPlayer().setScore(clickedInsect.getNutrients());
                     gc.nextTurnCheck();
                 }
             }
             else if(clickedMushroomString != null) {
-                clickedInsect.cutHypha(clickedMushroomString);
-                gc.nextTurnCheck();
+                if(clickedInsect.cutHypha(clickedMushroomString))
+                    gc.nextTurnCheck();
             }
           reset();
         }

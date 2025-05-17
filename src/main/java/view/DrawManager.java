@@ -47,7 +47,7 @@ public class DrawManager {
      */
     public void drawTecton(Graphics2D g, Tecton t, boolean shining){
         if(shining){
-            drawShineEffect(g, (int) t.getGeometry().getX(), (int) t.getGeometry().getY(), (int) (t.getGeometry().getRadius() + 10));
+            drawShineEffect(g, t.getGeometry().getX(), t.getGeometry().getY(), (t.getGeometry().getRadius() + 10));
         }
         tectonDrawer.draw(g, t);
     }
@@ -60,7 +60,7 @@ public class DrawManager {
      */
     public void drawSpore(Graphics2D g, Spore spore, boolean shining) {
         if(shining){
-            drawShineEffect(g, (int) spore.getGeometry().getX(), (int) spore.getGeometry().getY(), 25);
+            drawShineEffect(g,  spore.getGeometry().getX(), spore.getGeometry().getY(), 25);
         }
         sporeDrawer.draw(g, spore);
     }
@@ -72,7 +72,7 @@ public class DrawManager {
      */
     public void drawMushroomBody(Graphics2D g, MushroomBody mushroomBody, boolean shining) {
         if(shining) {
-            drawShineEffect(g, (int) mushroomBody.getGeometry().getX(), (int) mushroomBody.getGeometry().getY(), 35);
+            drawShineEffect(g, mushroomBody.getGeometry().getX(),  mushroomBody.getGeometry().getY(), 35);
         }
         mushroomBodyDrawer.draw(g, mushroomBody);
     }
@@ -100,7 +100,7 @@ public class DrawManager {
      */
     public void drawInsect(Graphics2D g, Insect insect, boolean shining) {
         if(shining) {
-            drawShineEffect(g, (int) (insect.getGeometry().getX() + 20), (int) (insect.getGeometry().getY() + 20), 30);
+            drawShineEffect(g, (insect.getGeometry().getX() + 20), (insect.getGeometry().getY() + 20), 30);
         }
         insectDrawer.draw(g, insect);
     }

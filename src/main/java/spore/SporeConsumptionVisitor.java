@@ -28,21 +28,25 @@ public class SporeConsumptionVisitor implements SporeVisitor {
     @Override
     public void visit(FastSpore s) {
         s.applyEffect(insect);
+        System.out.println("fast spore");
     }
 
     @Override
     public void visit(GentleSpore s) {
         s.applyEffect(insect);
+        System.out.println("Gentle Spore");
     }
 
     @Override
     public void visit(SlowSpore s) {
         s.applyEffect(insect);
+        System.out.println("Slow Spore");
     }
 
     @Override
     public void visit(ParalyzerSpore s) {
         s.applyEffect(insect);
+        System.out.println("Paralyzer");
     }
 
     /**
@@ -51,10 +55,12 @@ public class SporeConsumptionVisitor implements SporeVisitor {
      */
     @Override
     public void visit(MultiplierSpore s) {
+        System.out.println("multiplier");
         // 1) az eredeti hatás
         s.applyEffect(insect);
         // 2) klónozás
         Insect clone = s.makeNewInsect(insect);
+        clone.setGeometry(gameController.randomOffsetInsideCircle(insect.getLocation().getGeometry()));
         gameController.getPlanet().getInsects().add(clone);
         AddInsectVisitor v = new AddInsectVisitor(insect, clone);
         for (Player player : gameController.getPlayers()) {

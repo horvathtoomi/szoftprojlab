@@ -120,11 +120,11 @@ public class Insect implements Updatable, Serializable {
      *
      * @param ms Az elvágandó gombafonal.
      */
-	public void cutHypha(MushroomString ms)
+	public boolean cutHypha(MushroomString ms)
 	{
-		if(!canCutString){return;}
+		if(!canCutString){return false;}
 	    // 1) ellenőrizzük, hogy azon a Tectonon állunk-e, ahol a fonal egyik vége van
-	    if (!ms.getConnection().contains(location)) return;
+	    if (!ms.getConnection().contains(location)) return false;
 
 	    // 2) keressük meg a szomszéd fonalakat
 	    for (MushroomString nb : ms.getNeighbours()) {
@@ -139,6 +139,7 @@ public class Insect implements Updatable, Serializable {
 	        if (ms.getNeighbours().get(1) == nb) ms.getNeighbours().set(1, null);
 	    }
 		ms.die();
+		return true;
 	}
 	
 	/**
