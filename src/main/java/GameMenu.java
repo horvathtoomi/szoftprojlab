@@ -4,6 +4,7 @@ import main.java.console.ConsoleHandler;
 import main.java.view.UtilityTool;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -27,24 +28,37 @@ public class GameMenu extends JMenuBar {
         public GameMenu(JFrame frame, GameController gameController) {
             this.frame = frame;
             this.gameController = gameController;
-            setBackground(Color.LIGHT_GRAY);
+            setBackground(new Color(77, 92, 71));
             UtilityTool uTool = new UtilityTool();
+            setBorderPainted(false);
 
             //Gombok
-            BufferedImage b1Image = uTool.load(MainMenu.prefix + "b2.png");
+            BufferedImage b1Image = uTool.load(MainMenu.prefix + "bExit4.png");
+            BufferedImage b1Imageh = uTool.load(MainMenu.prefix + "bExit4h.png");
             b1 = new JButton("");
-            b1.setMargin(new Insets(0,0,0,0));
-            b1.setIcon(new ImageIcon(b1Image));
-            styleButton(b1);
+            styleButton(b1, b1Image, b1Imageh);
 
-            b2 = new JButton("Load");
-            styleButton(b2);
+            BufferedImage b2Image = uTool.load(MainMenu.prefix + "bLoad4.png");
+            BufferedImage b2Imageh = uTool.load(MainMenu.prefix + "bLoad4h.png");
+            b2 = new JButton("");
+            styleButton(b2, b2Image, b2Imageh);
 
-            b3 = new JButton("Exit");
-            styleButton(b3);
+            BufferedImage b3Image = uTool.load(MainMenu.prefix + "bExit4.png");
+            BufferedImage b3Imageh = uTool.load(MainMenu.prefix + "bExit4h.png");
+            b3 = new JButton("");
+            styleButton(b3,b3Image, b3Imageh);
 
             b4 = new JButton("Developer Console");
-            styleButton(b4);
+            b4.setForeground(Color.WHITE);
+            b4.setBackground(baseColor);
+            b4.setMargin(new Insets(0,0,0,0));
+            Dimension size = new Dimension(120, 35);
+            b4.setPreferredSize(size);
+            b4.setMinimumSize(size);
+            b4.setMaximumSize(size);
+            b4.setContentAreaFilled(true);
+            b4.setBorderPainted(false);
+            b4.setOpaque(true);
 
             b1.addActionListener(e -> {
                 if (GameFileChooser.saveGame(frame, gameController)) {
@@ -64,7 +78,6 @@ public class GameMenu extends JMenuBar {
             });
 
             b3.addActionListener(e -> {
-                System.out.println("exit");
                 frame.setJMenuBar(null);
                 frame.getContentPane().removeAll();
                 MainMenu menu = new MainMenu(frame);
@@ -78,11 +91,14 @@ public class GameMenu extends JMenuBar {
                 frame.repaint();
             });
 
+            UIManager.put("PopupMenu.border", new LineBorder(new Color(77, 92, 71)));
             JMenu menu = new JMenu("Menu");
+            menu.setForeground(Color.WHITE);
+
             menu.add(b1);
             menu.add(b2);
-            menu.add(b4);
             menu.add(b3);
+            menu.add(b4);
 
             this.setPreferredSize(new Dimension(100, 20));
             this.add(menu);
@@ -92,27 +108,26 @@ public class GameMenu extends JMenuBar {
          * A játékbeli gombok stílusát állítja be.
          * @param button A gomb, amit beállít
          */
-        private void styleButton(JButton button){
+        private void styleButton(JButton button, BufferedImage image, BufferedImage hovered) {
 
             button.setContentAreaFilled(true);
-            button.setBorderPainted(true);
+            button.setBorderPainted(false);
             button.setOpaque(true);
-            button.setForeground(Color.WHITE);
-            button.setBackground(baseColor);
+            button.setMargin(new Insets(0,10,0,0));
+            button.setIcon(new ImageIcon(image));
 
-            Dimension size = new Dimension(150, 25);
+            Dimension size = new Dimension(120, 35);
             button.setPreferredSize(size);
             button.setMinimumSize(size);
             button.setMaximumSize(size);
 
-
             button.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseEntered(java.awt.event.MouseEvent evt) {
-                    button.setBackground(hoverColor);
+                    button.setIcon(new ImageIcon(hovered));
                 }
 
                 public void mouseExited(java.awt.event.MouseEvent evt) {
-                    button.setBackground(baseColor);
+                    button.setIcon(new ImageIcon(image));
                 }
             });
         }

@@ -22,6 +22,10 @@ public class Main {
 		BufferedImage logo = uTool.load(MainMenu.prefix + "mb_big.png");
 		frame.setIconImage(logo);
 
+		BufferedImage cursorImage = uTool.load(MainMenu.prefix + "cursor2.png");
+		Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0, 0), "cursor");
+		frame.setCursor(cursor);
+
         MainMenu menu = new MainMenu(frame);
 		menu.setBackground(new Color(6, 26, 14));
 

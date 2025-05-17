@@ -94,11 +94,6 @@ public class MainMenu extends JPanel {
 		button.setContentAreaFilled(false);
 		button.setBorderPainted(false);
 		button.setOpaque(false);
-		button.setForeground(Color.WHITE);
-
-		Color baseColor = new Color(47, 84, 39);
-
-		button.setBackground(baseColor);
 
 		button.setIcon(new ImageIcon(image));
 		button.setMargin(new Insets(0,20,0,0));
