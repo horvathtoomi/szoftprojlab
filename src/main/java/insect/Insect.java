@@ -1,7 +1,7 @@
 package main.java.insect;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+
 import main.java.tecton.*;
 import main.java.mushroom.*;
 import main.java.Geometry;
@@ -53,10 +53,6 @@ public class Insect implements Updatable, Serializable {
 	}
 
 	//Getterek, Setterek
-	public boolean getCanCutString() 
-	{
-		return canCutString;
-	}
 	public boolean getCanMove()
 	{
 		return !canMove;
@@ -123,63 +119,25 @@ public class Insect implements Updatable, Serializable {
      * A megadott gombafonal elvágása.
      *
      * @param ms      Az elvágandó gombafonal.
-     * @param strings Az összes fonalat tartalmazó lista.
      */
-	public void cutHypha(MushroomString ms, ArrayList<MushroomString> strings)
+	public void cutHypha(MushroomString ms)
 	{
 	    // 1) ellenőrizzük, hogy azon a Tectonon állunk-e, ahol a fonal egyik vége van
 	    if (!ms.getConnection().contains(location)) return;
 
-	    /* 2) keressük meg a szomszéd fonalat (ha volt) */
+	    // 2) keressük meg a szomszéd fonalakat
 	    for (MushroomString nb : ms.getNeighbours()) {
 	        if (nb == null) continue;
 
 	        // a neighbour listájából is eltávolítjuk ms-t
 	        if (nb.getNeighbours().get(0) == ms) nb.getNeighbours().set(0, null);
-	        if (nb.getNeighbours().size() > 1 && nb.getNeighbours().get(1) == ms)
-	            nb.getNeighbours().set(1, null);
+	        if (nb.getNeighbours().get(1) == ms) nb.getNeighbours().set(1, null);
 
 	        // ms neighbour-listájából töröljük nb-t
 	        if (ms.getNeighbours().get(0) == nb) ms.getNeighbours().set(0, null);
-	        if (ms.getNeighbours().size() > 1 && ms.getNeighbours().get(1) == nb)
-	            ms.getNeighbours().set(1, null);
+	        if (ms.getNeighbours().get(1) == nb) ms.getNeighbours().set(1, null);
 	    }
-
-	    /* 3) az elvágott fonalról levágjuk a másik Tectont,
-	          így „félfonal” marad (csak location marad benne) */
-	    if (ms.getConnection().size() == 2) {
-
-	        // 2.a  Meghatározzuk, melyik végpont marad a rovar alatt,
-	        //       és melyik „esik le”
-	        Tecton dropped;
-	        if (ms.getConnection().get(0) == location) {
-	            dropped = ms.getConnection().remove(1);
-	        } else {
-	            dropped = ms.getConnection().remove(0);
-	        }
-
-	        // 2.b  Új fél-fonal létrehozása a leeső Tectonon
-	        ArrayList<Tecton> newConn = new ArrayList<>();
-	        newConn.add(dropped);
-
-	        MushroomString clone = new MushroomString(
-	            MushroomString.nextCloneName(ms.getName()),
-	            ms.getMushroom(),
-	            newConn,
-	            new ArrayList<>(java.util.Arrays.asList(null, null)),
-	            ms.getLifeLine(),
-				ms.getGeometry()
-	        );
-
-	        // 2.c  Szomszédlista frissítése
-	        ms.getNeighbours().removeIf(clone::equals);           // biztosan kiveszi a klónt
-	        while (ms.getNeighbours().size() < 2) ms.getNeighbours().add(null);  // feltölt null-lal
-
-	        // 2.d  Belerakjuk a bolygó globális listájába, hogy a LIST parancs is lássa
-	        strings.add(clone);
-	    }
-
-	    // 4) NEM ölünk meg semmit azonnal – a MushroomString.update végzi az öregedést
+		ms.die();
 	}
 	
 	/**

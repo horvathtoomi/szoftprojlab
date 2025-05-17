@@ -177,13 +177,13 @@ public class MouseHandler implements MouseListener {
                 if (gc.getCurrentPlayer() instanceof Shroomer shroomer) {
                     if (ms.getMushroom() == shroomer.getMushroom() && !ms.getDead()) {
                         clickedMushroomString = ms;
-                        System.out.println("Selected mushroom string: " + ms.getName());
+                        System.out.println("Selected mushroom string: " + ms);
                         return;
                     }
                 } else if (gc.getCurrentPlayer() instanceof Insecter) {
                     if (!ms.getDead()) {
                         clickedMushroomString = ms;
-                        System.out.println("Selected mushroom string: " + ms.getName());
+                        System.out.println("Selected mushroom string: " + ms);
                         return;
                     }
                 }
@@ -342,7 +342,7 @@ public class MouseHandler implements MouseListener {
                                 connection.add(clickedTecton);
                                 connection.add(null);
                                 GeometryString geom = new GeometryString(clickedMushroomBody.getGeometry().getX(), clickedMushroomBody.getGeometry().getY(), clickedTecton.getGeometry().getX(), clickedTecton.getGeometry().getY());
-                                gc.getPlanet().getMushstrings().add(new MushroomString("hypha", ((Shroomer) gc.getCurrentPlayer()).getMushroom(), connection, new ArrayList<>(Arrays.asList(null, null)), gc.getTurnCounter(), geom));
+                                gc.getPlanet().getMushstrings().add(new MushroomString(((Shroomer) gc.getCurrentPlayer()).getMushroom(), connection, new ArrayList<>(Arrays.asList(null, null)), gc.getTurnCounter(), geom));
                                 gc.nextTurnCheck();
                             }
                     }
@@ -380,7 +380,7 @@ public class MouseHandler implements MouseListener {
                 }
             }
             else if(clickedMushroomString != null) {
-                clickedInsect.cutHypha(clickedMushroomString, gc.getPlanet().getMushstrings());
+                clickedInsect.cutHypha(clickedMushroomString);
                 gc.nextTurnCheck();
             }
           reset();

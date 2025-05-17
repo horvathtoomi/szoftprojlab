@@ -311,11 +311,11 @@ public class MushroomBody implements Updatable, Serializable {
      * @param strings A gombafonalak listája.
      */
 	public void die(ArrayList<MushroomString> strings) {
-		for(int i = 0; i < strings.size(); i++) {
-			if (strings.get(i).getNeighbours().get(0) == null) {
-				strings.get(i).die(strings);
-			}
-		}
+        for (MushroomString string : strings) {
+            if (string.getNeighbours().get(0) == null && string.getNeighbours().get(1) != null && string.getMushroom() == mushroom && string.getConnection().get(0).equals(location)) {
+                string.die();
+            }
+        }
 		dead = true;
 	}
 }

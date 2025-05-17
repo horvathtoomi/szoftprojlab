@@ -71,7 +71,7 @@ public class Planet implements Updatable, Serializable {
     public ArrayList<Spore> getSpores() {
     	return spores;
     }
-    
+
     /**
      * Megnézi, hogy van-e spóra egy adott mushroomString tektonján.
      *
@@ -183,7 +183,7 @@ public class Planet implements Updatable, Serializable {
         insects.forEach(i -> i.update(random));
         mushbodies.forEach(mb -> mb.update(random));
         for (MushroomString ms : mushstrings) {
-            boolean shouldUpdateRandomly = (ms.getLifeCycle() != MushroomString.LifeCycle.Child) || !checkForSpores(ms);
+            boolean shouldUpdateRandomly = !checkForSpores(ms);
             ms.update(shouldUpdateRandomly);
         }
         ArrayList<Tecton> newTectons = new ArrayList<>();
@@ -202,9 +202,6 @@ public class Planet implements Updatable, Serializable {
         System.out.println("Tectonok száma: " + tectons.size());
         for(Tecton t : tectons) {
             t.determineNeighbours(tectons);
-            for(Tecton t2 : t.getNeighbours()) {
-                //System.out.println();
-            }
         }
     }
 
