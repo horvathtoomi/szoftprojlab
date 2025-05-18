@@ -14,7 +14,7 @@ import java.awt.image.BufferedImage;
 public class GameMenu extends JMenuBar {
 
         GameController gameController;
-        JButton b1, b2, b3, b4;
+        JButton b1, b2, b3;
         JFrame frame;
 
         Color baseColor = new Color(47, 84, 39);
@@ -33,8 +33,8 @@ public class GameMenu extends JMenuBar {
             setBorderPainted(false);
 
             //Gombok
-            BufferedImage b1Image = uTool.load(MainMenu.prefix + "bExit4.png");
-            BufferedImage b1Imageh = uTool.load(MainMenu.prefix + "bExit4h.png");
+            BufferedImage b1Image = uTool.load(MainMenu.prefix + "bSave.png");
+            BufferedImage b1Imageh = uTool.load(MainMenu.prefix + "bSaveh.png");
             b1 = new JButton("");
             styleButton(b1, b1Image, b1Imageh);
 
@@ -48,18 +48,6 @@ public class GameMenu extends JMenuBar {
             b3 = new JButton("");
             styleButton(b3,b3Image, b3Imageh);
 
-            b4 = new JButton("Developer Console");
-            b4.setForeground(Color.WHITE);
-            b4.setBackground(baseColor);
-            b4.setMargin(new Insets(0,0,0,0));
-            Dimension size = new Dimension(120, 35);
-            b4.setPreferredSize(size);
-            b4.setMinimumSize(size);
-            b4.setMaximumSize(size);
-            b4.setContentAreaFilled(true);
-            b4.setBorderPainted(false);
-            b4.setOpaque(true);
-
             b1.addActionListener(e -> {
                 if (GameFileChooser.saveGame(frame, gameController)) {
                     JOptionPane.showMessageDialog(frame, "Játékállapot sikeresen elmentve!", "Mentés sikeres", JOptionPane.INFORMATION_MESSAGE);
@@ -72,11 +60,6 @@ public class GameMenu extends JMenuBar {
                     JOptionPane.showMessageDialog(frame, "Játékállapot sikeresen betöltve!", "Betöltés sikeres", JOptionPane.INFORMATION_MESSAGE);
                     MainMenu.startGameFromLoad(loadedState);
                 }
-            });
-
-            b4.addActionListener(e -> {
-                ConsoleHandler consoleHandler = new ConsoleHandler();
-                consoleHandler.startConsoleInput();
             });
 
             b3.addActionListener(e -> {
@@ -93,14 +76,17 @@ public class GameMenu extends JMenuBar {
                 frame.repaint();
             });
 
-            UIManager.put("PopupMenu.border", new LineBorder(new Color(77, 92, 71)));
+            UIManager.put("Menu.selectionBackground", new Color(50, 50, 50));
+            UIManager.put("Menu.selectionForeground", Color.WHITE);
             JMenu menu = new JMenu("Menu");
             menu.setForeground(Color.WHITE);
+            menu.setBorder(BorderFactory.createEmptyBorder());
+            menu.setBorderPainted(false);
+            menu.getPopupMenu().setBorder(BorderFactory.createEmptyBorder());
 
             menu.add(b1);
             menu.add(b2);
             menu.add(b3);
-            menu.add(b4);
 
             this.setPreferredSize(new Dimension(100, 20));
             this.add(menu);
