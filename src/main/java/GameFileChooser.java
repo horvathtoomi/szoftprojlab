@@ -13,11 +13,10 @@ public class GameFileChooser {
      * Megjeleníti a fájlbetöltési dialógust és betölti a kiválasztott játékállást.
      *
      * @param parentComponent A szülő komponens, amihez a dialógus kapcsolódik
-     * @param frame A JFrame, ahol a játék fut
      *
      * @return A betöltött játék controllere, vagy null ha a betöltés sikertelen
      */
-    public static GameState loadGame(JFrame parentComponent, JFrame frame) {
+    public static GameState loadGame(JFrame parentComponent) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Játékállás betöltése");
         fileChooser.setFileFilter(new FileFilter() {
@@ -42,6 +41,7 @@ public class GameFileChooser {
                 }
             } catch(Exception exc){
                     System.err.println("Hiba a játékállás betöltése közben: " + exc.getMessage());
+                    exc.printStackTrace();
                     JOptionPane.showMessageDialog(parentComponent, "Hiba a játékállás betöltése közben: " + exc.getMessage(), "Hiba", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -136,7 +136,7 @@ public class GameFileChooser {
             GameState state = new GameState(planet, players, turnCounter, currentPlayer, isInit);
             oos.writeObject(state);
 
-            //System.out.println("Játékállás sikeresen elmentve: " + file.getName());
+            System.out.println("Játékállás sikeresen elmentve: " + file.getName());
             return true;
         } catch (IOException e) {
             System.err.println("Hiba a játékállás mentése közben: " + e.getMessage());
@@ -145,38 +145,4 @@ public class GameFileChooser {
         }
     }
 
-    /**
-     * Betölti a játék állapotát a megadott fájlból.
-     *
-     * @param file A forrás fájl
-     * @param frame A JFrame, ami a játékot tartalmazza (repaint callback számára)
-     * @return A betöltött játék kontroller
-     */
-    private static GameController loadGameFromFile(File file, JFrame frame) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-            // A játék állapotának betöltése
-            GameState state = (GameState) ois.readObject();
-
-            // Létrehozzuk az új GameController-t
-            // A frame::repaint callback biztosítja, hogy a grafikus felület frissüljön
-            GameController controller = new GameController(false, 20, frame::repaint);
-            controller.setPlanet(state.planet());
-
-            // Beállítjuk a játékosokat
-            for (Player player : state.players()) {
-                controller.addPlayer(player);
-            }
-
-            // Beállítjuk a kör számlálót és az aktuális játékost
-            controller.setTurnCounter(state.turnCounter());
-            controller.setCurrentPlayer(state.currentPlayer());
-            controller.setInit(state.isInit());
-
-            return controller;
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Hiba a játékállás betöltése közben: " + e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
-    }
 }

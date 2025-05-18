@@ -8,12 +8,16 @@ import main.java.control.KeyHandler;
 import main.java.control.MouseHandler;
 
 import java.awt.*;
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * Az absztrakt Player osztály egy általános játékost reprezentál, amelynek van neve, pontszáma
  * és hátralévő akciói. Kétféle játékos származhat belőle: Shroomer és Insecter.
  */
-public abstract class Player extends Nameable implements Updatable {
+public abstract class Player extends Nameable implements Updatable, Serializable {
+    @Serial
+    private static final long serialVersionUID = -119107727171198036L;
 
     public int score;
     public int remainingActions;

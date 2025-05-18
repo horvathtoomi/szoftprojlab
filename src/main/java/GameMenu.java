@@ -67,7 +67,7 @@ public class GameMenu extends JMenuBar {
             });
 
             b2.addActionListener(e -> {
-                GameState loadedState = GameFileChooser.loadGame(frame, frame);
+                GameState loadedState = GameFileChooser.loadGame(frame);
                 if(loadedState != null) {
                     JOptionPane.showMessageDialog(frame, "Játékállapot sikeresen betöltve!", "Betöltés sikeres", JOptionPane.INFORMATION_MESSAGE);
                     MainMenu.startGameFromLoad(loadedState);

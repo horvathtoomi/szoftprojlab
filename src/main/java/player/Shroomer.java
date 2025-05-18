@@ -4,6 +4,7 @@ import main.java.control.*;
 import main.java.mushroom.Mushroom;
 
 import java.awt.*;
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -13,6 +14,8 @@ import java.io.Serializable;
  * GrowHypha, MushroomBody, SpreadSpore, valamint Pass.
  */
 public class Shroomer extends Player implements PlayerAccept, Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     Mushroom mushroom;
 

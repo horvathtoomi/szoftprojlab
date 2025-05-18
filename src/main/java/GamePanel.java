@@ -18,7 +18,7 @@ public class GamePanel extends JPanel {
 	public enum ShineOn {TECTON, MUSHBODY, MUSHSTRING, SPORE, INSECT, NONE}
 	private ShineOn shineOn = ShineOn.NONE;
 
-	private GameController gameController;
+	private final GameController gameController;
 	private final DrawManager drawManager;
 	private final BufferedImage backgroundImage;
 

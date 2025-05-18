@@ -1,5 +1,6 @@
 package main.java.insect;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import main.java.tecton.*;
@@ -13,6 +14,8 @@ import main.java.Updatable;
  * mozgás, fonalvágás, spórák elfogyasztása és állapotváltozás.
  */
 public class Insect implements Updatable, Serializable {
+	@Serial
+	private static final long serialVersionUID = 1L;
 
 	private int collectedNutrients;
 	private Tecton location;

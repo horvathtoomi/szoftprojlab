@@ -63,7 +63,7 @@ public class MainMenu extends JPanel {
 		newGameButton.addActionListener(e -> startGame());
 
 		loadGameButton.addActionListener(e -> {
-			GameState loadedState = GameFileChooser.loadGame(frame, frame);
+			GameState loadedState = GameFileChooser.loadGame(frame);
 			if(loadedState != null) {
 				JOptionPane.showMessageDialog(frame, "Játékállapot sikeresen betöltve!", "Betöltés sikeres", JOptionPane.INFORMATION_MESSAGE);
 				startGameFromLoad(loadedState);
