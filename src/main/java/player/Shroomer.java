@@ -3,6 +3,7 @@ package main.java.player;
 import main.java.control.*;
 import main.java.mushroom.Mushroom;
 
+import java.awt.*;
 import java.io.Serializable;
 
 /**
@@ -74,6 +75,16 @@ public class Shroomer extends Player implements PlayerAccept, Serializable {
         } else {
             return new ShroomerSecondClickAction(keyHandler, mouseHandler);
         }
+    }
+
+    /**
+     * Visszaadja az adott játékos típus "színét", amivel meg kell őt jeleniteni játék közben a jobb alsó sarokban
+     *
+     * @return A játékos színe (piros)
+     */
+    @Override
+    public Color getPlayerColor() {
+        return new Color(243, 3, 3);
     }
 }
 

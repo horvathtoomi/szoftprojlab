@@ -7,6 +7,8 @@ import main.java.Updatable;
 import main.java.control.KeyHandler;
 import main.java.control.MouseHandler;
 
+import java.awt.*;
+
 /**
  * Az absztrakt Player osztály egy általános játékost reprezentál, amelynek van neve, pontszáma
  * és hátralévő akciói. Kétféle játékos származhat belőle: Shroomer és Insecter.
@@ -102,4 +104,11 @@ public abstract class Player extends Nameable implements Updatable {
      * @param mouseHandler A mH példány, amiből a kiválasztott objektumokat kapja
      */
     public abstract ClickAction getClickAction(boolean init, boolean isFirstClick, KeyHandler keyHandler, MouseHandler mouseHandler);
+
+    /**
+     * Absztrakt metódus, visszaadja az adott játékos típus "színét", amivel meg kell őt jeleniteni játék közben a jobb alsó sarokban
+     * @return A játékos színe
+     */
+    public abstract Color getPlayerColor();
+
 }

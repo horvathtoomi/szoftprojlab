@@ -3,6 +3,7 @@ package main.java.player;
 import main.java.control.*;
 import main.java.insect.Insect;
 
+import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,5 +83,15 @@ public class Insecter extends Player implements PlayerAccept, Serializable {
         } else {
             return new InsecterSecondClickAction(keyHandler, mouseHandler);
         }
+    }
+
+    /**
+     * Visszaadja az adott játékos típus "színét", amivel meg kell őt jeleniteni játék közben a jobb alsó sarokban
+     *
+     * @return A játékos színe (sárga)
+     */
+    @Override
+    public Color getPlayerColor() {
+        return new Color(255, 215, 0);
     }
 }
