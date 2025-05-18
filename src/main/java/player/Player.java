@@ -1,8 +1,11 @@
 package main.java.player;
 
 
+import main.java.control.ClickAction;
 import main.java.Nameable;
 import main.java.Updatable;
+import main.java.control.KeyHandler;
+import main.java.control.MouseHandler;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -94,4 +97,12 @@ public abstract class Player extends Nameable implements Updatable, Serializable
         	setActions(10000);
         }
     }
+
+    /**
+     * Absztrakt metódus, amit megmondja, hogy az adott játékos (jelenlegi állapotában és inputkóddal) mit csináljon a következő kattintásra.
+     *
+     * @param isFirstClick Ez az "első" kattintás?
+     * @param keyHandler A kH példány, ami a végrehajtható akciókat szabályozza
+     */
+    public abstract ClickAction getClickAction(boolean isFirstClick, KeyHandler keyHandler, MouseHandler mouseHandler);
 }
