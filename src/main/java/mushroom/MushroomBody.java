@@ -43,7 +43,7 @@ public class MushroomBody implements Updatable, Serializable {
 		}
 		this.testing = testing;
 		this.state = state;
-		remainingSporulations = 4;
+		remainingSporulations = 3;
 		dead = false;
 	}
 
@@ -255,7 +255,7 @@ public class MushroomBody implements Updatable, Serializable {
 				counter++;
 			}
 		}
-        return counter > 2;
+        return counter > 1;
 	}
 	
 	/**
