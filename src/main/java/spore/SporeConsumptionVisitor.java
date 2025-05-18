@@ -28,25 +28,25 @@ public class SporeConsumptionVisitor implements SporeVisitor {
     @Override
     public void visit(FastSpore s) {
         s.applyEffect(insect);
-        System.out.println("fast spore");
+        //System.out.println("fast spore");
     }
 
     @Override
     public void visit(GentleSpore s) {
         s.applyEffect(insect);
-        System.out.println("Gentle Spore");
+        //System.out.println("Gentle Spore");
     }
 
     @Override
     public void visit(SlowSpore s) {
         s.applyEffect(insect);
-        System.out.println("Slow Spore");
+        //System.out.println("Slow Spore");
     }
 
     @Override
     public void visit(ParalyzerSpore s) {
         s.applyEffect(insect);
-        System.out.println("Paralyzer");
+        //System.out.println("Paralyzer");
     }
 
     /**
@@ -55,7 +55,7 @@ public class SporeConsumptionVisitor implements SporeVisitor {
      */
     @Override
     public void visit(MultiplierSpore s) {
-        System.out.println("multiplier");
+        //System.out.println("multiplier");
         // 1) az eredeti hatás
         s.applyEffect(insect);
         // 2) klónozás

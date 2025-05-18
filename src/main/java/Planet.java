@@ -189,11 +189,19 @@ public class Planet implements Updatable, Serializable {
             boolean shouldUpdateRandomly = !checkForSpores(ms);
             ms.update(shouldUpdateRandomly);
         }
+        manageTectonSplit(random);
+    }
+
+    /**
+     * A tektonok széttörését kezelő függvény.
+     *
+     * @param random A bekövetkezést be/kikapcsoló változó
+     */
+    private void manageTectonSplit(boolean random) {
         ArrayList<Tecton> newTectons = new ArrayList<>();
         for (Tecton t : tectons) {
             if(random) {
-                Random rng = new Random();
-                int n = rng.nextInt(100);
+                int n = getN(t);
                 if(n == 0) {
                     t.createSplitTectons(tectons, newTectons);
                     t.setDead(true);
@@ -206,6 +214,35 @@ public class Planet implements Updatable, Serializable {
         for(Tecton t : tectons) {
             t.determineNeighbours(tectons);
         }
+    }
+
+    /**
+     * Segédfüggvény, a tektonok széttöréséhez az alapján generál számot, hogy van-e a tektonon rovar/gombatest.
+     *
+     * @param t A vizsgált tekton
+     * @return A generált szám
+     */
+    private int getN(Tecton t) {
+        Random rng = new Random();
+        boolean hasPlayerObject = false;
+        for(MushroomBody mb : mushbodies) {
+            if(mb.getLocation() == t) {
+                hasPlayerObject = true;
+            }
+        }
+        for(Insect in : insects) {
+            if(in.getLocation() == t) {
+                hasPlayerObject = true;
+            }
+        }
+        int n;
+        if(hasPlayerObject) {
+            n = rng.nextInt(200);
+        }
+        else{
+            n = rng.nextInt(100);
+        }
+        return n;
     }
 
     /**

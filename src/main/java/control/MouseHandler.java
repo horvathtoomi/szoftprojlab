@@ -5,15 +5,12 @@ import main.java.GamePanel;
 import main.java.Geometry;
 import main.java.insect.Insect;
 import main.java.mushroom.CanGrowBodyVisitor;
-import main.java.mushroom.GeometryString;
 import main.java.mushroom.MushroomBody;
 import main.java.mushroom.MushroomString;
 import main.java.player.Insecter;
 import main.java.player.Player;
 import main.java.player.Shroomer;
 import main.java.spore.Spore;
-import main.java.spore.SporeAccept;
-import main.java.spore.SporeConsumptionVisitor;
 import main.java.tecton.GeometryTecton;
 import main.java.tecton.Tecton;
 import main.java.tecton.TectonAccept;
@@ -21,7 +18,6 @@ import main.java.tecton.TectonAccept;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * A MouseHandler osztály felelős az egér események kezeléséért.
@@ -57,7 +53,7 @@ public class MouseHandler implements MouseListener {
     /**
      * Visszaállítja a kijelölést, és a kiválasztott objektumokat semmire a második kattintás után.
      */
-    private void reset(){
+    public void reset(){
         firstClick = true;
         clickedSpore = null;
         clickedInsect = null;
@@ -72,7 +68,7 @@ public class MouseHandler implements MouseListener {
      * @param x a kattintás x koordinátája
      * @param y a kattintás y koordinátája
      */
-    private void selectTecton(int x, int y) {
+    public void selectTecton(int x, int y) {
         // Beállítjuk a kiemelést a tektonokra
         gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
         repaintCallback.run();
@@ -93,7 +89,7 @@ public class MouseHandler implements MouseListener {
      * @param x a kattintás x koordinátája
      * @param y a kattintás y koordinátája
      */
-    private void selectMushroomBody(int x, int y) {
+    public void selectMushroomBody(int x, int y) {
         // Beállítjuk a kiemelést a gombatestekre
         gamePanel.setShineOn(GamePanel.ShineOn.MUSHBODY);
         repaintCallback.run();
@@ -115,7 +111,7 @@ public class MouseHandler implements MouseListener {
      * @param x a kattintás x koordinátája
      * @param y a kattintás y koordinátája
      */
-    private void selectInsect(int x, int y) {
+    public void selectInsect(int x, int y) {
         // Beállítjuk a kiemelést a rovarokra
         gamePanel.setShineOn(GamePanel.ShineOn.INSECT);
         repaintCallback.run();
@@ -137,7 +133,7 @@ public class MouseHandler implements MouseListener {
      * @param x a kattintás x koordinátája
      * @param y a kattintás y koordinátája
      */
-    private void selectSpore(int x, int y) {
+    public void selectSpore(int x, int y) {
         // Beállítjuk a kiemelést a spórákra
         gamePanel.setShineOn(GamePanel.ShineOn.SPORE);
         repaintCallback.run();
@@ -158,7 +154,7 @@ public class MouseHandler implements MouseListener {
      * @param x a kattintás x koordinátája
      * @param y a kattintás y koordinátája
      */
-    private void selectMushroomString(int x, int y) {
+    public void selectMushroomString(int x, int y) {
         
         // Beállítjuk a kiemelést a gombafonalokra
         gamePanel.setShineOn(GamePanel.ShineOn.MUSHSTRING);
@@ -275,140 +271,15 @@ public class MouseHandler implements MouseListener {
     }
 
     /**
-     * Az éles játék kattintásának feldolgozása, ha ez az "első kattintás"
-     * @param p A játékos, aki végzi a kattintást
-     * @param mouseX a kattintás x koordinátája
-     * @param mouseY a kattintás y koordinátája
-     */
-    private void firstGameClick(Player p, int mouseX, int mouseY) {
-        if(p instanceof Shroomer) {
-            /*int code = keyHandler.getKeyCode();
-            System.out.println("Current keyCode: " + code);
-            A gombára,vagy fonalra mehet*/
-            if(keyHandler.getKeyCode() == KeyHandler.KEY_MUSHROOM){ // click on mushroom
-                //System.out.println("Mushroom at " + mouseX + ", " + mouseY);
-                selectMushroomBody(mouseX, mouseY);
-                keyHandler.resetKeyCode();
-            }
-            else if(keyHandler.getKeyCode() == KeyHandler.KEY_BRANCH) { // branch existing hypha
-                selectMushroomString(mouseX, mouseY);
-            }
-
-            if(clickedMushroomBody != null || clickedMushroomString != null)
-                firstClick = false; //Ha spórás tektonra kattint, akkor a firstClick marad true, hiszen az új test növesztése már nem igényel további kattintást
-        }
-        else if(p instanceof Insecter) {
-            //System.out.println("Clicked at " + mouseX + ", " + mouseY);
-            //A kattintás egy rovarra mehet, amivel cselekedni akarunk
-            selectInsect(mouseX, mouseY);
-            if (clickedInsect != null) {
-                firstClick = false;
-            }
-        }
-    }
-
-    /**
-     * Az éles játék kattintásának feldolgozása, ha ez a "második kattintás"
-     * @param p A játékos, aki végzi a kattintást
-     * @param mouseX a kattintás x koordinátája
-     * @param mouseY a kattintás y koordinátája
-     */
-    private void secondGameClick(Player p, int mouseX, int mouseY){
-        //System.out.println("Second click at " + mouseX + ", " + mouseY);
-        if(p instanceof Shroomer) {
-            //Tektonra mehet, ahova a spórát szórjuk, vagy fonalat növesztünk oda. Egyelőre ideiglenes elágazás, és a gombafonalas cuccok is csak így láthatatlanban első gondolatra így kellene
-            selectTecton(mouseX, mouseY);
-            if(clickedTecton != null){
-                if(keyHandler.getKeyCode() == KeyHandler.KEY_SPREAD_SPORE){ //S = spread spores
-                    Spore sp = clickedMushroomBody.spreadSpores(clickedTecton, "spore", "random");
-                    if(sp != null){
-                        gc.getPlanet().getSpores().add(sp);
-                        //System.out.println("Spore added");
-                        GeometryTecton tectonGeometry = clickedTecton.getGeometry();
-                        sp.setGeometry(gc.randomOffsetInsideCircle(tectonGeometry));
-                        gc.nextTurnCheck();
-                    }
-                }
-                else if(keyHandler.getKeyCode() == KeyHandler.KEY_GROW_BODY) {
-                    MushroomBody mb = clickedMushroomBody.giveBirth(gc.getPlanet().getSpores(), clickedTecton, gc.getPlanet().getMushbodies(), gc.getPlanet().getMushstrings(),(Shroomer) gc.getCurrentPlayer());
-                    if(mb != null){
-                        gc.getPlanet().getMushbodies().add(mb);
-                        //System.out.println("MushroomBody added");
-                        GeometryTecton tectonGeometry = clickedTecton.getGeometry();
-                        mb.setGeometry(gc.randomOffsetInsideCircle(tectonGeometry));
-                        gc.nextTurnCheck();
-                    }
-                }
-                else if(clickedTecton.canGrowHypha(gc.getPlanet().getMushstrings())){
-                    if(clickedMushroomString != null){
-                        if(clickedMushroomString.branch(clickedTecton, gc.getPlanet().getMushstrings())){
-                            gc.nextTurnCheck();
-                        }
-                    }
-                    else if(clickedMushroomBody != null && keyHandler.getKeyCode() == KeyHandler.KEY_HYPHA){ // H = hypha
-                            if(clickedMushroomBody.getLocation().equals(clickedTecton)){
-                                ArrayList<Tecton> connection = new ArrayList<>();
-                                connection.add(clickedTecton);
-                                connection.add(null);
-                                GeometryString geom = new GeometryString(clickedMushroomBody.getGeometry().getX(), clickedMushroomBody.getGeometry().getY(), clickedTecton.getGeometry().getX(), clickedTecton.getGeometry().getY());
-                                gc.getPlanet().getMushstrings().add(new MushroomString(((Shroomer) gc.getCurrentPlayer()).getMushroom(), connection, new ArrayList<>(Arrays.asList(null, null)), gc.getTurnCounter(), geom, true));
-                                gc.nextTurnCheck();
-                            }
-                    }
-                }
-            }
-            reset();
-        }
-        else if(p instanceof Insecter) {
-            //A kattintás egy tektonra, spórára, vagy fonalra mehet
-            if(keyHandler.getKeyCode() == KeyHandler.KEY_MOVE){ // M = move
-                selectTecton(mouseX, mouseY);
-            }
-            else if(keyHandler.getKeyCode() == KeyHandler.KEY_EAT){ //E = eat spore
-                selectSpore(mouseX, mouseY);
-            }
-            else if(keyHandler.getKeyCode() == KeyHandler.KEY_CUT) { //C = cut
-                selectMushroomString(mouseX, mouseY);
-            }
-
-            if(clickedTecton != null && clickedInsect.getLocation() != clickedTecton && clickedTecton.isNeighbour(clickedInsect.getLocation()) && gc.getPlanet().getMushstrings().stream()
-                    .anyMatch(ms -> ms.getConnection().contains(clickedInsect.getLocation()) && ms.getConnection().contains(clickedTecton))) {
-                int actionNumber = clickedInsect.move(clickedTecton);
-                if(actionNumber != -3){
-                    clickedInsect.setGeometry(gc.randomOffsetInsideCircle(clickedTecton.getGeometry()));
-                    gc.nextTurnCheck();
-                    p.setActions(p.getActions() + actionNumber);
-                }
-
-            }
-            else if(clickedSpore != null) {
-                if (clickedInsect.getLocation() == clickedSpore.getLocation()) {
-                    SporeConsumptionVisitor v = new SporeConsumptionVisitor(clickedInsect, gc);
-                    ((SporeAccept) clickedSpore).accept(v);
-                gc.getCurrentPlayer().setScore(clickedInsect.getNutrients());
-                    gc.nextTurnCheck();
-                }
-            }
-            else if(clickedMushroomString != null) {
-                if(clickedInsect.cutHypha(clickedMushroomString))
-                    gc.nextTurnCheck();
-            }
-          reset();
-        }
-    }
-
-    /**
      * Az éles játék kattintásának feldolgozása aszerint, hogy ez a játékos "első kattintása" a legutóbbi akció óta, vagy sem
      * @param p A játékos, aki végzi a kattintást
      * @param mouseX a kattintás x koordinátája
      * @param mouseY a kattintás y koordinátája
      */
-    private void gameClick(Player p, int mouseX, int mouseY) {
-        if (firstClick) {
-            firstGameClick(p, mouseX, mouseY);
-        } else {
-            secondGameClick(p, mouseX, mouseY);
-        }
+    void handleGameClick(Player p, int mouseX, int mouseY) {
+        ClickAction action = p.getClickAction(firstClick, keyHandler, this);
+        action.execute(gc, mouseX, mouseY);
+        repaintCallback.run();
     }
 
     /**
@@ -423,7 +294,7 @@ public class MouseHandler implements MouseListener {
         if (gc.getInit()) {
             initClick(p, x, y);
         } else {
-            gameClick(p, x, y);
+            handleGameClick(p, x, y);
         }
         repaintCallback.run();
     }
@@ -492,4 +363,11 @@ public class MouseHandler implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {}
 
+    public MushroomBody getClickedMushroomBody() {return clickedMushroomBody;}
+    public MushroomString getClickedMushroomString() {return clickedMushroomString;}
+    public Tecton getClickedTecton() {return clickedTecton;}
+    public Insect getClickedInsect() {return clickedInsect;}
+    public Spore getClickedSpore() {return clickedSpore;}
+    public void setFirstClick(boolean firstClick) {this.firstClick = firstClick;}
+    public GameController getGameController(){return gc;}
 }
