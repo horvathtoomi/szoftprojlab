@@ -227,14 +227,27 @@ public class MouseHandler implements MouseListener {
      * @param mouseY a kattintás y koordinátája
      */
     private void initClick(Player p, int mouseX, int mouseY) {
-        //System.out.println("Clicked at " + mouseX + ", " + mouseY);
         selectTecton(mouseX, mouseY);
 
         if (clickedTecton != null) {
-            handleGameClick(p, mouseX, mouseY);
-            gc.setInitCheck();
-            gc.setCurrentPlayerToNextPlayer();
-            reset();
+            if (p instanceof Shroomer) {
+                int mushCountBefore = gc.getPlanet().getMushbodies().size();
+                handleGameClick(p, mouseX, mouseY);
+                int mushCountAfter = gc.getPlanet().getMushbodies().size();
+
+                if (mushCountAfter > mushCountBefore) {
+                    gc.setInitCheck();
+                    gc.setCurrentPlayerToNextPlayer();
+                    reset();
+                }
+                // Ha nem nőtt a lista, nem történik semmi
+            } else {
+                // Más játékos (Tecton, Insect...) esetén minden kattintás lépésnek számít
+                handleGameClick(p, mouseX, mouseY);
+                gc.setInitCheck();
+                gc.setCurrentPlayerToNextPlayer();
+                reset();
+            }
         }
     }
 
