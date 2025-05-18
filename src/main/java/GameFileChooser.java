@@ -17,7 +17,7 @@ public class GameFileChooser {
      *
      * @return A betöltött játék controllere, vagy null ha a betöltés sikertelen
      */
-    public static boolean loadGame(JFrame parentComponent, JFrame frame) {
+    public static GameState loadGame(JFrame parentComponent, JFrame frame) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Játékállás betöltése");
         fileChooser.setFileFilter(new FileFilter() {
@@ -36,30 +36,28 @@ public class GameFileChooser {
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             try {
-                GameController loadedGame = loadGameFromFile(selectedFile, frame);
-                if (loadedGame != null) {
-                    //System.out.println("Játékállapot sikeresen betöltve: " + selectedFile.getName());
-
-                    // Új játékpanel létrehozása a betöltött játékkal
-                    GamePanel gamePanel = new GamePanel(loadedGame.getPlayers());
-                    gamePanel.setGameController(loadedGame);
-
-                    // Frissítjük a framet
-                    frame.getContentPane().removeAll();
-                    frame.setJMenuBar(new GameMenu(frame, loadedGame));
-                    frame.add(gamePanel);
-                    frame.revalidate();
-                    frame.repaint();
-                    gamePanel.requestFocusInWindow();
-
-                    return true;
+                GameState loadedState = loadGameStateFromFile(selectedFile);
+                if (loadedState != null) {
+                    return loadedState;
                 }
             } catch(Exception exc){
                     System.err.println("Hiba a játékállás betöltése közben: " + exc.getMessage());
                     JOptionPane.showMessageDialog(parentComponent, "Hiba a játékállás betöltése közben: " + exc.getMessage(), "Hiba", JOptionPane.ERROR_MESSAGE);
             }
         }
-        return false;
+        return null;
+    }
+
+    // Új segédfüggvény a GameState betöltésére
+    private static GameState loadGameStateFromFile(File file) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+            // A játék állapotának betöltése
+            return (GameState) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Hiba a játékállás betöltése közben: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**

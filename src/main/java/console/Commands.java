@@ -1,7 +1,10 @@
 package main.java.console;
 
 import main.java.GameFileChooser;
+import main.java.GameState;
+import main.java.MainMenu;
 
+import javax.swing.*;
 import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -36,10 +39,10 @@ public class Commands {
     }
 
     public void loadFile(String filename) {
-        if(GameFileChooser.loadGame(null,null)) {
-            consoleHandler.printToConsole("Game loaded from " + filename);
-        } else {
-            consoleHandler.printToConsole("Game couldn't be loaded from " + filename);
+        GameState loadedState = GameFileChooser.loadGame(MainMenu.getFrame(), MainMenu.getFrame());
+        if(loadedState != null) {
+            JOptionPane.showMessageDialog(MainMenu.getFrame(), "Játékállapot sikeresen betöltve!", "Betöltés sikeres", JOptionPane.INFORMATION_MESSAGE);
+            MainMenu.startGameFromLoad(loadedState);
         }
     }
 

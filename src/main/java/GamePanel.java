@@ -44,10 +44,20 @@ public class GamePanel extends JPanel {
 		this.setFocusable(true);
 	}
 
-	//Getterek, setterek
-	public void setGameController(GameController gameController) {
-		this.gameController = gameController;
+	public GamePanel(GameController existingController) {
+		gameController = existingController;
+		drawManager = new DrawManager();
+		setBackground(Color.BLACK);
+		setDoubleBuffered(true);
+		UtilityTool ut = new UtilityTool();
+		backgroundImage = ut.load(MainMenu.prefix + "Background_icon3.png");
+		KeyHandler keyHandler = new KeyHandler(gameController, this::repaint, this);
+		MouseHandler mouseHandler = new MouseHandler(gameController, this::repaint, this, keyHandler);
+		this.addMouseListener(mouseHandler);
+		this.addKeyListener(keyHandler);
+		this.setFocusable(true);
 	}
+
 
 	public GameController getGameController() {
 		return gameController;

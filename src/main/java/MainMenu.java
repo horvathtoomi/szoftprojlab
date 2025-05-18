@@ -19,14 +19,18 @@ public class MainMenu extends JPanel {
 	
 	public static String prefix = "resources/";  //Intellij-ben írjátok be a resources/-t, eclipseben legyen üres sztring
 
-    private final JFrame frame;
+    private static JFrame frame;
+
+	public static JFrame getFrame() {
+		return frame;
+	}
 
 	/**
 	 * Létrehoz egy új példányt, és elhelyezi a kapott frame-en
 	 * @param frame A kapott ablak
 	 */
 	public MainMenu(JFrame frame) {
-		this.frame = frame;
+		MainMenu.frame = frame;
 
 		UtilityTool uTool = new UtilityTool();
 		BufferedImage bgImage = uTool.load(prefix + "menu_bg6.png");
@@ -59,10 +63,10 @@ public class MainMenu extends JPanel {
 		newGameButton.addActionListener(e -> startGame());
 
 		loadGameButton.addActionListener(e -> {
-			if (GameFileChooser.loadGame(frame, frame)) {
+			GameState loadedState = GameFileChooser.loadGame(frame, frame);
+			if(loadedState != null) {
 				JOptionPane.showMessageDialog(frame, "Játékállapot sikeresen betöltve!", "Betöltés sikeres", JOptionPane.INFORMATION_MESSAGE);
-				GameState state = null; //TODO
-				startGameFromLoad(state);
+				startGameFromLoad(loadedState);
 			}
 		});
 
@@ -149,8 +153,36 @@ public class MainMenu extends JPanel {
 	/**
 	 * A betöltött játék elindításáért felelős gomb hatása
 	 */
-	private void startGameFromLoad(GameState state){
-		makeFrame();
+	public static void startGameFromLoad(GameState state){
+		if (state == null) {
+			return;
+		}
+		GameController loadedController = new GameController(false, 20, frame::repaint);
+		loadedController.setPlanet(state.planet());
+
+		for(Player player : state.players()) {
+			loadedController.addPlayer(player);
+		}
+
+		// Kör számláló és az aktuális játékos beállítása
+		loadedController.setTurnCounter(state.turnCounter());
+		loadedController.setCurrentPlayer(state.currentPlayer());
+		loadedController.setInit(state.isInit());
+
+		// Fontos: a topológiai kapcsolatok újraépítése
+		loadedController.getPlanet().recalcNeighbours();
+		loadedController.getPlanet().checkForBodyConnection();
+
+		// Új GamePanel létrehozása a betöltött kontrollerrel
+		GamePanel gamePanel = new GamePanel(loadedController);
+
+		// Frame beállítása
+		frame.getContentPane().removeAll();
+		frame.setJMenuBar(new GameMenu(frame, loadedController));
+		frame.add(gamePanel, BorderLayout.CENTER);
+		frame.revalidate();
+		frame.repaint();
+		gamePanel.requestFocusInWindow();
 	}
 	/**
 	 * Az új ablak létrehozását végző függvény
