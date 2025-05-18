@@ -1,13 +1,9 @@
 package main.java.player;
 
-import main.java.control.ClickAction;
-import main.java.control.ShroomerFirstClickAction;
-import main.java.control.ShroomerSecondClickAction;
-import main.java.control.KeyHandler;
-import main.java.control.MouseHandler;
+import main.java.control.*;
 import main.java.mushroom.Mushroom;
 
-import java.io.Serial;
+import java.awt.*;
 import java.io.Serializable;
 
 /**
@@ -17,8 +13,6 @@ import java.io.Serializable;
  * GrowHypha, MushroomBody, SpreadSpore, valamint Pass.
  */
 public class Shroomer extends Player implements PlayerAccept, Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     Mushroom mushroom;
 
@@ -66,17 +60,31 @@ public class Shroomer extends Player implements PlayerAccept, Serializable {
     /**
      * Az adott játékos (jelenlegi állapotában és inputkóddal) mit csináljon a következő kattintásra.
      *
+     * @param init A játék inicializációs fázisban van?
      * @param isFirstClick Ez az "első" kattintás?
      * @param keyHandler A kH példány, ami a végrehajtható akciókat szabályozza
+     * @param mouseHandler A mH példány, amiből a kiválasztott objektumokat kapja
      */
     @Override
-    public ClickAction getClickAction(boolean isFirstClick, KeyHandler keyHandler, MouseHandler mouseHandler) {
-        System.out.println(isFirstClick);
+    public ClickAction getClickAction(boolean init, boolean isFirstClick, KeyHandler keyHandler, MouseHandler mouseHandler) {
+        if(init){
+            return new ShroomerInitClickAction(mouseHandler);
+        }
         if (isFirstClick) {
             return new ShroomerFirstClickAction(keyHandler, mouseHandler);
         } else {
             return new ShroomerSecondClickAction(keyHandler, mouseHandler);
         }
+    }
+
+    /**
+     * Visszaadja az adott játékos típus "színét", amivel meg kell őt jeleniteni játék közben a jobb alsó sarokban
+     *
+     * @return A játékos színe (piros)
+     */
+    @Override
+    public Color getPlayerColor() {
+        return new Color(243, 3, 3);
     }
 }
 

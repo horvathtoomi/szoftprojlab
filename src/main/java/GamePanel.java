@@ -113,13 +113,7 @@ public class GamePanel extends JPanel {
 		g2.drawString(roundText, statusX + padding, statusY + lineHeight * 2);
 
 		if (currentPlayer != null) {
-			Color playerColor;
-			if (currentPlayer instanceof Shroomer) {
-				playerColor = new Color(243, 3, 3);
-			} else {
-				playerColor = new Color(255, 215, 0);
-			}
-
+			Color playerColor = currentPlayer.getPlayerColor();
 			g2.setColor(playerColor);
 			g2.fillRoundRect(statusX + 160, statusY + lineHeight - 12, 10, 10, 5, 5);
 

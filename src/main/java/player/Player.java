@@ -7,16 +7,13 @@ import main.java.Updatable;
 import main.java.control.KeyHandler;
 import main.java.control.MouseHandler;
 
-import java.io.Serial;
-import java.io.Serializable;
+import java.awt.*;
 
 /**
  * Az absztrakt Player osztály egy általános játékost reprezentál, amelynek van neve, pontszáma
  * és hátralévő akciói. Kétféle játékos származhat belőle: Shroomer és Insecter.
  */
-public abstract class Player extends Nameable implements Updatable, Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
+public abstract class Player extends Nameable implements Updatable {
 
     public int score;
     public int remainingActions;
@@ -101,8 +98,17 @@ public abstract class Player extends Nameable implements Updatable, Serializable
     /**
      * Absztrakt metódus, amit megmondja, hogy az adott játékos (jelenlegi állapotában és inputkóddal) mit csináljon a következő kattintásra.
      *
+     * @param init A játék inicializációs fázisban van?
      * @param isFirstClick Ez az "első" kattintás?
      * @param keyHandler A kH példány, ami a végrehajtható akciókat szabályozza
+     * @param mouseHandler A mH példány, amiből a kiválasztott objektumokat kapja
      */
-    public abstract ClickAction getClickAction(boolean isFirstClick, KeyHandler keyHandler, MouseHandler mouseHandler);
+    public abstract ClickAction getClickAction(boolean init, boolean isFirstClick, KeyHandler keyHandler, MouseHandler mouseHandler);
+
+    /**
+     * Absztrakt metódus, visszaadja az adott játékos típus "színét", amivel meg kell őt jeleniteni játék közben a jobb alsó sarokban
+     * @return A játékos színe
+     */
+    public abstract Color getPlayerColor();
+
 }
