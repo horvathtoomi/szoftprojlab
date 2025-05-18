@@ -147,7 +147,7 @@ public class MouseHandler implements MouseListener {
             int radius = 35;
             if ((x <= (tx + radius) && x >= (tx - radius)) && (y <= (ty + radius) && y >= (ty - radius))) {
                 clickedSpore = s;
-                System.out.println("Selected spore: " + s.getName());
+                //System.out.println("Selected spore: " + s.getName());
                 break;
             }
         }
@@ -174,26 +174,26 @@ public class MouseHandler implements MouseListener {
             if(connections.get(1) != null){
                  geom1 = connections.get(0).getGeometry();
                  geom2 = connections.get(1).getGeometry();
-                 System.out.println("Büdös kurva anyád");
+                 //System.out.println("2 tektont köt össze");
             }
             else{
                 geom1 = new Geometry(ms.getGeometry().getX(), ms.getGeometry().getY());
                 geom2 = connections.get(0).getGeometry();
-                System.out.println("Buzi románok");
+                //System.out.println("új fonal");
             }
 
             if (isClickNearLine(x, y, geom1.getX(), geom1.getY(), geom2.getX(), geom2.getY())) {
-                System.out.println("Clicked on a mushroom string");
+                //System.out.println("Clicked on a mushroom string");
                 if (gc.getCurrentPlayer() instanceof Shroomer shroomer) {
                     if (ms.getMushroom() == shroomer.getMushroom() && !ms.getDead()) {
                         clickedMushroomString = ms;
-                        System.out.println("Selected mushroom string: " + ms);
+                        //System.out.println("Selected mushroom string: " + ms);
                         return;
                     }
                 } else if (gc.getCurrentPlayer() instanceof Insecter) {
                     if (!ms.getDead()) {
                         clickedMushroomString = ms;
-                        System.out.println("Selected mushroom string: " + ms);
+                        //System.out.println("Selected mushroom string: " + ms);
                         return;
                     }
                 }
@@ -215,15 +215,15 @@ public class MouseHandler implements MouseListener {
         final int THRESHOLD = 10;
 
         double lineLength = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-        System.out.println("Line length: " + lineLength);
+        //System.out.println("Line length: " + lineLength);
         if (lineLength == 0) return false;
 
         double distance = Math.abs((x2 - x1) * (y1 - clickY) - (x1 - clickX) * (y2 - y1)) / lineLength;
-        System.out.println("Distance: " + distance);
+        //System.out.println("Distance: " + distance);
         if (distance > THRESHOLD) return false;
 
         double dotProduct = ((clickX - x1) * (x2 - x1) + (clickY - y1) * (y2 - y1)) / (lineLength * lineLength);
-        System.out.println("Dot product: " + dotProduct);
+        //System.out.println("Dot product: " + dotProduct);
         return dotProduct >= 0 && dotProduct <= 1;
     }
 
@@ -234,7 +234,7 @@ public class MouseHandler implements MouseListener {
      * @param mouseY a kattintás y koordinátája
      */
     private void initClick(Player p, int mouseX, int mouseY) {
-        System.out.println("Clicked at " + mouseX + ", " + mouseY);
+        //System.out.println("Clicked at " + mouseX + ", " + mouseY);
         selectTecton(mouseX, mouseY);
 
         if (clickedTecton != null) {
@@ -282,11 +282,11 @@ public class MouseHandler implements MouseListener {
      */
     private void firstGameClick(Player p, int mouseX, int mouseY) {
         if(p instanceof Shroomer) {
-            int code = keyHandler.getKeyCode();
+            /*int code = keyHandler.getKeyCode();
             System.out.println("Current keyCode: " + code);
-            //A gombára,vagy fonalra mehet
+            A gombára,vagy fonalra mehet*/
             if(keyHandler.getKeyCode() == KeyHandler.KEY_MUSHROOM){ // click on mushroom
-                System.out.println("Mushroom at " + mouseX + ", " + mouseY);
+                //System.out.println("Mushroom at " + mouseX + ", " + mouseY);
                 selectMushroomBody(mouseX, mouseY);
                 keyHandler.resetKeyCode();
             }
@@ -298,7 +298,7 @@ public class MouseHandler implements MouseListener {
                 firstClick = false; //Ha spórás tektonra kattint, akkor a firstClick marad true, hiszen az új test növesztése már nem igényel további kattintást
         }
         else if(p instanceof Insecter) {
-            System.out.println("Clicked at " + mouseX + ", " + mouseY);
+            //System.out.println("Clicked at " + mouseX + ", " + mouseY);
             //A kattintás egy rovarra mehet, amivel cselekedni akarunk
             selectInsect(mouseX, mouseY);
             if (clickedInsect != null) {
@@ -314,7 +314,7 @@ public class MouseHandler implements MouseListener {
      * @param mouseY a kattintás y koordinátája
      */
     private void secondGameClick(Player p, int mouseX, int mouseY){
-        System.out.println("Second click at " + mouseX + ", " + mouseY);
+        //System.out.println("Second click at " + mouseX + ", " + mouseY);
         if(p instanceof Shroomer) {
             //Tektonra mehet, ahova a spórát szórjuk, vagy fonalat növesztünk oda. Egyelőre ideiglenes elágazás, és a gombafonalas cuccok is csak így láthatatlanban első gondolatra így kellene
             selectTecton(mouseX, mouseY);
@@ -323,7 +323,7 @@ public class MouseHandler implements MouseListener {
                     Spore sp = clickedMushroomBody.spreadSpores(clickedTecton, "spore", "random");
                     if(sp != null){
                         gc.getPlanet().getSpores().add(sp);
-                        System.out.println("Spore added");
+                        //System.out.println("Spore added");
                         GeometryTecton tectonGeometry = clickedTecton.getGeometry();
                         sp.setGeometry(gc.randomOffsetInsideCircle(tectonGeometry));
                         gc.nextTurnCheck();
@@ -333,7 +333,7 @@ public class MouseHandler implements MouseListener {
                     MushroomBody mb = clickedMushroomBody.giveBirth(gc.getPlanet().getSpores(), clickedTecton, gc.getPlanet().getMushbodies(), gc.getPlanet().getMushstrings(),(Shroomer) gc.getCurrentPlayer());
                     if(mb != null){
                         gc.getPlanet().getMushbodies().add(mb);
-                        System.out.println("MushroomBody added");
+                        //System.out.println("MushroomBody added");
                         GeometryTecton tectonGeometry = clickedTecton.getGeometry();
                         mb.setGeometry(gc.randomOffsetInsideCircle(tectonGeometry));
                         gc.nextTurnCheck();

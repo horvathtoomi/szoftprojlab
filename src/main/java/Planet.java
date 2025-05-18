@@ -189,7 +189,7 @@ public class Planet implements Updatable, Serializable {
         for (Tecton t : tectons) {
             if(random) {
                 Random rng = new Random();
-                int n = rng.nextInt(10000);
+                int n = rng.nextInt(100);
                 if(n == 0) {
                     t.createSplitTectons(tectons, newTectons);
                     t.setDead(true);
@@ -198,7 +198,7 @@ public class Planet implements Updatable, Serializable {
             }
         }
         tectons.addAll(newTectons);
-        System.out.println("Tectonok száma: " + tectons.size());
+        //System.out.println("Tectonok száma: " + tectons.size());
         for(Tecton t : tectons) {
             t.determineNeighbours(tectons);
         }

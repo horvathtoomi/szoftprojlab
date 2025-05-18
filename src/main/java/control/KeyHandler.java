@@ -55,7 +55,7 @@ public class KeyHandler implements KeyListener {
         keyCode = e.getKeyCode();
         keyMap.put(keyCode, true);
 
-        System.out.println("Key pressed: " + (char)keyCode);
+        //System.out.println("Key pressed: " + (char)keyCode);
 
         switch (keyCode) {
             case KEY_PASS:
