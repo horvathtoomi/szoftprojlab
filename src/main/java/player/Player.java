@@ -96,8 +96,10 @@ public abstract class Player extends Nameable implements Updatable {
     /**
      * Absztrakt metódus, amit megmondja, hogy az adott játékos (jelenlegi állapotában és inputkóddal) mit csináljon a következő kattintásra.
      *
+     * @param init A játék inicializációs fázisban van?
      * @param isFirstClick Ez az "első" kattintás?
      * @param keyHandler A kH példány, ami a végrehajtható akciókat szabályozza
+     * @param mouseHandler A mH példány, amiből a kiválasztott objektumokat kapja
      */
-    public abstract ClickAction getClickAction(boolean isFirstClick, KeyHandler keyHandler, MouseHandler mouseHandler);
+    public abstract ClickAction getClickAction(boolean init, boolean isFirstClick, KeyHandler keyHandler, MouseHandler mouseHandler);
 }

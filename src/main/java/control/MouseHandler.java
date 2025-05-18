@@ -4,16 +4,13 @@ import main.java.GameController;
 import main.java.GamePanel;
 import main.java.Geometry;
 import main.java.insect.Insect;
-import main.java.mushroom.CanGrowBodyVisitor;
 import main.java.mushroom.MushroomBody;
 import main.java.mushroom.MushroomString;
 import main.java.player.Insecter;
 import main.java.player.Player;
 import main.java.player.Shroomer;
 import main.java.spore.Spore;
-import main.java.tecton.GeometryTecton;
 import main.java.tecton.Tecton;
-import main.java.tecton.TectonAccept;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -234,36 +231,7 @@ public class MouseHandler implements MouseListener {
         selectTecton(mouseX, mouseY);
 
         if (clickedTecton != null) {
-            if (p instanceof Shroomer) {
-                CanGrowBodyVisitor v = new CanGrowBodyVisitor();
-                TectonAccept acceptor = (TectonAccept) clickedTecton;
-                acceptor.accept(v);
-                if(v.canPerformAction()){
-                    MushroomBody mb = new MushroomBody(clickedTecton, ((Shroomer) p).getMushroom(), 2, false);
-                    for(MushroomBody m : gc.getPlanet().getMushbodies()) {
-                        if(m.getLocation().equals(clickedTecton)) {
-                            return;
-                        }
-                    }
-                    GeometryTecton tectonGeometry = clickedTecton.getGeometry();
-                    mb.setGeometry(gc.randomOffsetInsideCircle(tectonGeometry));
-                    gc.getPlanet().getMushbodies().add(mb);
-                }
-                else return;
-            } else if (p instanceof Insecter) {
-                for(Insect i : gc.getPlanet().getInsects()) {
-                    if(i.getLocation().equals(clickedTecton)) {
-                        return;
-                    }
-                }
-                Insect i = new Insect(clickedTecton);
-
-                GeometryTecton tectonGeometry = clickedTecton.getGeometry();
-                i.setGeometry(gc.randomOffsetInsideCircle(tectonGeometry));
-
-                gc.getPlanet().getInsects().add(i);
-                ((Insecter) p).addInsect(i);
-            }
+            handleGameClick(p, mouseX, mouseY);
             gc.setInitCheck();
             gc.setCurrentPlayerToNextPlayer();
             reset();
@@ -277,7 +245,7 @@ public class MouseHandler implements MouseListener {
      * @param mouseY a kattintás y koordinátája
      */
     void handleGameClick(Player p, int mouseX, int mouseY) {
-        ClickAction action = p.getClickAction(firstClick, keyHandler, this);
+        ClickAction action = p.getClickAction(gc.getInit(), firstClick, keyHandler, this);
         action.execute(gc, mouseX, mouseY);
         repaintCallback.run();
     }

@@ -1,10 +1,6 @@
 package main.java.player;
 
-import main.java.control.ClickAction;
-import main.java.control.InsecterFirstClickAction;
-import main.java.control.InsecterSecondClickAction;
-import main.java.control.KeyHandler;
-import main.java.control.MouseHandler;
+import main.java.control.*;
 import main.java.insect.Insect;
 
 import java.io.Serializable;
@@ -71,12 +67,16 @@ public class Insecter extends Player implements PlayerAccept, Serializable {
     /**
      * Az adott játékos (jelenlegi állapotában és inputkóddal) mit csináljon a következő kattintásra.
      *
+     * @param init A játék inicializációs fázisban van?
      * @param isFirstClick Ez az "első" kattintás?
      * @param keyHandler A kH példány, ami a végrehajtható akciókat szabályozza
      * @param mouseHandler A mH példány, amiből az inputot kapta
      */
     @Override
-    public ClickAction getClickAction(boolean isFirstClick, KeyHandler keyHandler, MouseHandler mouseHandler) {
+    public ClickAction getClickAction(boolean init, boolean isFirstClick, KeyHandler keyHandler, MouseHandler mouseHandler) {
+        if(init){
+            return new InsecterInitClickAction(mouseHandler);
+        }
         if (isFirstClick) {
             return new InsecterFirstClickAction(mouseHandler);
         } else {
