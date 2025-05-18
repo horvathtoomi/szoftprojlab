@@ -3,15 +3,29 @@ package main.java.control;
 import main.java.GameController;
 import main.java.mushroom.MushroomString;
 
+/**
+ * Ez az osztály felüldefiniálja a ClickAction execute fv-ét.
+ * Az dönti el, hogy egy kattintást hogyan kell feldolgozni, ha azt egy gombász végzi, és ez az "első" kattintás
+ */
 public class ShroomerFirstClickAction implements ClickAction {
     private final KeyHandler keyHandler;
     private final MouseHandler mouseHandler;
 
+    /**
+     * Konstruktor, létrehozza a példányt a megadott MH és KH példánnyal
+     */
     public ShroomerFirstClickAction(KeyHandler keyHandler, MouseHandler mouseHandler) {
         this.keyHandler = keyHandler;
         this.mouseHandler = mouseHandler;
     }
 
+    /**
+     * A fent említett execute fv.
+     *
+     * @param gc A GC pédány, a játékos lekéréséhez kell
+     * @param mouseX A kattintás X koordinátája
+     * @param mouseY A kattintás Y koordinátája
+     */
     @Override
     public void execute(GameController gc, int mouseX, int mouseY) {
         /*int code = keyHandler.getKeyCode();

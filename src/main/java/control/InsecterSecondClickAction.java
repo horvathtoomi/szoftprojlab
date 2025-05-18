@@ -9,15 +9,29 @@ import main.java.spore.SporeAccept;
 import main.java.spore.SporeConsumptionVisitor;
 import main.java.tecton.Tecton;
 
+/**
+ * Ez az osztály felüldefiniálja a ClickAction execute fv-ét.
+ * Az dönti el, hogy egy kattintást hogyan kell feldolgozni, ha azt egy rovarász végzi, és ez a "második" kattintás
+ */
 public class InsecterSecondClickAction implements ClickAction {
     private final KeyHandler keyHandler;
     private final MouseHandler mouseHandler;
 
+    /**
+     * Konstruktor, létrehozza a példányt a megadott MH és KH példánnyal
+     */
     public InsecterSecondClickAction(KeyHandler keyHandler, MouseHandler mouseHandler) {
         this.keyHandler = keyHandler;
         this.mouseHandler = mouseHandler;
     }
 
+    /**
+     * A fent említett execute fv.
+     *
+     * @param gc A GC pédány, a játékos lekéréséhez kell
+     * @param mouseX A kattintás X koordinátája
+     * @param mouseY A kattintás Y koordinátája
+     */
     @Override
     public void execute(GameController gc, int mouseX, int mouseY) {
         //A kattintás egy tektonra, spórára, vagy fonalra mehet

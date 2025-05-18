@@ -12,15 +12,29 @@ import main.java.tecton.Tecton;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Ez az osztály felüldefiniálja a ClickAction execute fv-ét.
+ * Az dönti el, hogy egy kattintást hogyan kell feldolgozni, ha azt egy gombász végzi, és ez a "második" kattintás
+ */
 public class ShroomerSecondClickAction implements ClickAction {
     private final KeyHandler keyHandler;
     private final MouseHandler mouseHandler;
 
+    /**
+     * Konstruktor, létrehozza a példányt a megadott MH és KH példánnyal
+     */
     public ShroomerSecondClickAction(KeyHandler keyHandler, MouseHandler mouseHandler) {
         this.keyHandler = keyHandler;
         this.mouseHandler = mouseHandler;
     }
 
+    /**
+     * A fent említett execute fv.
+     *
+     * @param gc A GC pédány, a játékos lekéréséhez kell
+     * @param mouseX A kattintás X koordinátája
+     * @param mouseY A kattintás Y koordinátája
+     */
     @Override
     public void execute(GameController gc, int mouseX, int mouseY) {
         mouseHandler.selectTecton(mouseX, mouseY);
