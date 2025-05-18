@@ -43,7 +43,7 @@ public class MushroomBody implements Updatable, Serializable {
 		}
 		this.testing = testing;
 		this.state = state;
-		remainingSporulations = 3;
+		remainingSporulations = 4;
 		dead = false;
 	}
 
@@ -93,16 +93,19 @@ public class MushroomBody implements Updatable, Serializable {
 		if(random){
 			Random rng = new Random();
 			int n = rng.nextInt(3);
-			System.out.println("generált gombatest növekvős szám: " + n);
+			//System.out.println("generált gombatest növekvős szám: " + n);
 			if(n == 0)
 				grow();
 			n = rng.nextInt(4);
-			System.out.println("generált spóratermelős szám: " + n);
+			//System.out.println("generált spóratermelős szám: " + n);
 			if(n == 0)
 				produceSpores();
 		}
-		else
+		else{
 			grow();
+			produceSpores();
+		}
+
 	}
 	
 	/**
@@ -202,7 +205,7 @@ public class MushroomBody implements Updatable, Serializable {
 				break;
             }
 			default : {
-                System.out.println("A megadott típus érvénytelen, egy alap gyorsító spórát hozok létre");
+                //System.out.println("A megadott típus érvénytelen, egy alap gyorsító spórát hozok létre");
                 spore = new FastSpore(1, mushroom, target, newName);
 				break;
             }
@@ -275,12 +278,11 @@ public class MushroomBody implements Updatable, Serializable {
 		}
 		boolean hasString = false;
 		for (MushroomString string : strings) {
-            if (string.getConnection().contains(tecton)) {
+            if (string.getConnection().contains(tecton) && string.getMushroom().equals(mushroom)) {
                 hasString = true;
                 break;
             }
 		}
-		//hasString = true;
         return hasEnoughSpores(spores, tecton) && v.canPerformAction() && hasString;
     }
 	

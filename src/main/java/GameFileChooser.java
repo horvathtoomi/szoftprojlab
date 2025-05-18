@@ -38,7 +38,7 @@ public class GameFileChooser {
             try {
                 GameController loadedGame = loadGameFromFile(selectedFile, frame);
                 if (loadedGame != null) {
-                    System.out.println("Játékállapot sikeresen betöltve: " + selectedFile.getName());
+                    //System.out.println("Játékállapot sikeresen betöltve: " + selectedFile.getName());
 
                     // Új játékpanel létrehozása a betöltött játékkal
                     GamePanel gamePanel = new GamePanel(loadedGame.getPlayers());
@@ -138,7 +138,7 @@ public class GameFileChooser {
             GameState state = new GameState(planet, players, turnCounter, currentPlayer, isInit);
             oos.writeObject(state);
 
-            System.out.println("Játékállás sikeresen elmentve: " + file.getName());
+            //System.out.println("Játékállás sikeresen elmentve: " + file.getName());
             return true;
         } catch (IOException e) {
             System.err.println("Hiba a játékállás mentése közben: " + e.getMessage());
