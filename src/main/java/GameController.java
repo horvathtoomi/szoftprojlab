@@ -20,7 +20,7 @@ public class GameController {
     private final boolean testing;
     private final ArrayList<Player> players;
     private Player currentPlayer;
-    private final Runnable repaintCallback;
+    private final transient Runnable repaintCallback;
 
     private boolean init = true;
     

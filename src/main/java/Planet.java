@@ -46,10 +46,6 @@ public class Planet implements Updatable, Serializable {
     public void addTecton(Tecton tecton) {
         tectons.add(tecton);
     }
-
-    public void addMushroomString(MushroomString ms) {
-        mushstrings.add(ms);
-    }
     
     //Getterek, Setterek
     public ArrayList<Tecton> getTectons() {

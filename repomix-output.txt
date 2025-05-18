@@ -111,7 +111,6 @@ src/main/java/view/DefaultMushroomBodyDrawer.java
 src/main/java/view/DefaultMushroomStringDrawer.java
 src/main/java/view/DefaultSporeDrawer.java
 src/main/java/view/DefaultTectonDrawer.java
-src/main/java/view/Drawable.java
 src/main/java/view/DrawingFactory.java
 src/main/java/view/DrawManager.java
 src/main/java/view/InsectDrawer.java
@@ -122,6 +121,9 @@ src/main/java/view/TectonDrawer.java
 src/main/java/view/UtilityTool.java
 src/scripts/file1.txt
 src/scripts/script1.txt
+src/scripts/ujfile.txt
+src/scripts/ujfile2.txt
+src/scripts/ujfile3.txt
 src/szoftprojlab.iml
 src/test/java/Tesztek/test10/expected.txt
 src/test/java/Tesztek/test10/input.txt
@@ -189,6 +191,35 @@ szoftprojlabGrafikus.iml
 ================================================================
 Files
 ================================================================
+
+================
+File: src/scripts/ujfile.txt
+================
+asd
+asd
+asd
+command1
+command2
+
+================
+File: src/scripts/ujfile2.txt
+================
+asd
+asd
+asd
+asd
+asd
+script ujfile3
+asd
+
+================
+File: src/scripts/ujfile3.txt
+================
+asd
+asd
+as
+script ujfile2
+asd
 
 ================
 File: .gitignore
@@ -454,56 +485,6 @@ public class CommandCompleter {
                 .filter(cmd -> !currentCompletions.contains(cmd))
                 .sorted().forEach(currentCompletions::add);
     }
-}
-
-================
-File: src/main/java/insect/AddInsectVisitor.java
-================
-package main.java.insect;
-
-import main.java.player.*;
-
-public class AddInsectVisitor implements PlayerVisitor
-{
-    private final Insect insect;
-    private final Insect clone;
-
-    public AddInsectVisitor(Insect insect, Insect clone) {
-        this.insect = insect;
-        this.clone = clone;
-    }
-
-    public void visit(Insecter insecter)
-    {
-        if (insecter.getInsects().contains(insect)) {
-            insecter.getInsects().add(clone);
-        }
-    }
-
-    public void visit(Shroomer shroomer)
-    {
-
-    }
-}
-
-================
-File: src/main/java/insect/RemoveInsectVisitor.java
-================
-package main.java.insect;
-
-import main.java.player.*;
-
-public class RemoveInsectVisitor implements PlayerVisitor
-{
-	public void visit(Insecter insecter) 
-	{
-		insecter.getInsects().removeIf(Insect::getDead);
-	}
-	
-	public void visit(Shroomer shroomer) 
-	{
-		
-	}
 }
 
 ================
@@ -3369,56 +3350,80 @@ public class ScriptModeDocument extends DefaultStyledDocument {
 }
 
 ================
-File: src/main/java/mushroom/CanGrowBodyVisitor.java
+File: src/main/java/insect/AddInsectVisitor.java
 ================
-package main.java.mushroom;
+package main.java.insect;
 
-import main.java.tecton.*;
+import main.java.player.*;
 
 /**
- * Visitor implementáció, amely meghatározza, hogy egy adott Tecton típuson 
- * lehet-e gombatest növesztését kezdeményezni.
- * A döntést a 'canPerformAction' logikai érték reprezentálja.
+ * Visitor arra az esetre, ha a játékos a játék közben egy új rovart kap
  */
-public class CanGrowBodyVisitor implements TectonVisitor<Void> {
+public class AddInsectVisitor implements PlayerVisitor
+{
+    private final Insect insect;
+    private final Insect clone;
 
-	private boolean canPerformAction = true;
-	
-	/**
-     * Eredmény lekérdezése: az utolsó meglátogatott Tecton típus alapján
-     * visszaadja, hogy azon lehet-e testet növeszteni.
+
+    public AddInsectVisitor(Insect insect, Insect clone) {
+        this.insect = insect;
+        this.clone = clone;
+    }
+
+    /**
+     * Insecterhez hozzáadjuk a rovart
+     *
+     * @param insecter az Insecter példány, amelyen a látogató műveletet hajt végre
      */
-    public boolean canPerformAction() { return canPerformAction; }
+    public void visit(Insecter insecter)
+    {
+        if (insecter.getInsects().contains(insect)) {
+            insecter.getInsects().add(clone);
+        }
+    }
 
-    @Override
-    public Void visit(BigTecton big) {
-        canPerformAction = big.hasSpace();
-		return null;
+    /**
+     * Shroomer esetén nem csinálunk semmit
+     *
+     * @param shroomer a Shroomer példány, amelyen a látogató műveletet hajt végre
+     */
+    public void visit(Shroomer shroomer)
+    {
+
     }
-    
-    @Override
-    public Void visit(SmallTecton small) {
-        canPerformAction = small.hasSpace();
-		return null;
-    }
-    
-    @Override
-    public Void visit(ToxicTecton toxic) {
-        canPerformAction = toxic.hasSpace();
-		return null;
-    }
-    
-    @Override
-    public Void visit(HealingTecton healing) {
-        canPerformAction = healing.hasSpace();
-		return null;
-    }
-    
-    @Override
-    public Void visit(CoarseTecton coarse) {
-        canPerformAction = false;  // Coarse sose engedi
-		return null;
-    }
+}
+
+================
+File: src/main/java/insect/RemoveInsectVisitor.java
+================
+package main.java.insect;
+
+import main.java.player.*;
+
+/**
+ * Visitor arra az esetre, ha a játékos a játék közben elveszti egyik rovarát, mert az meghalt
+ */
+public class RemoveInsectVisitor implements PlayerVisitor
+{
+	/**
+	 * Insecter elveszti a rovart, ha az halott
+	 *
+	 * @param insecter az Insecter példány, amelyen a látogató műveletet hajt végre
+	 */
+	public void visit(Insecter insecter) 
+	{
+		insecter.getInsects().removeIf(Insect::getDead);
+	}
+
+	/**
+	 * Shroomer esetén nem csinálunk semmit
+	 *
+	 * @param shroomer a Shroomer példány, amelyen a látogató műveletet hajt végre
+	 */
+	public void visit(Shroomer shroomer) 
+	{
+		
+	}
 }
 
 ================
@@ -3426,12 +3431,17 @@ File: src/main/java/Nameable.java
 ================
 package main.java;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * Egy absztrakt osztály, amely névvel rendelkező objektumokat reprezentál.
  * Az osztály egy String name mezőt tartalmaz, valamint getter és setter metódusokat
  * a név eléréséhez és módosításához.
  */ 
-public abstract class Nameable {
+public abstract class Nameable implements Serializable {
+	@Serial
+	private static final long serialVersionUID = 1L;
 
 	private String name;
 
@@ -3649,65 +3659,6 @@ public class SlowSpore extends Spore implements SporeAccept {
 		insect.setCollectedNutrients(nutrientValue);
 		this.die();
 	}
-}
-
-================
-File: src/main/java/spore/SporeConsumptionVisitor.java
-================
-package main.java.spore;
-
-import main.java.GameController;
-import main.java.insect.AddInsectVisitor;
-import main.java.insect.Insect;
-import main.java.player.Player;
-import main.java.player.PlayerAccept;
-
-/**
- * Amikor egy Insect elfogyaszt egy Spore-t, ezt a visitert hívjuk,
- * így típusonként eltérő logikát tudunk futtatni.
- */
-public class SporeConsumptionVisitor implements SporeVisitor {
-
-    private final Insect insect;
-    private final GameController gameController;
-
-    public SporeConsumptionVisitor(Insect insect, GameController gameController) {
-        this.insect = insect;
-        this.gameController = gameController;
-    }
-
-    @Override
-    public void visit(FastSpore s) {
-        s.applyEffect(insect);
-    }
-
-    @Override
-    public void visit(GentleSpore s) {
-        s.applyEffect(insect);
-    }
-
-    @Override
-    public void visit(SlowSpore s) {
-        s.applyEffect(insect);
-    }
-
-    @Override
-    public void visit(ParalyzerSpore s) {
-        s.applyEffect(insect);
-    }
-
-    @Override
-    public void visit(MultiplierSpore s) {
-        // 1) az eredeti hatás
-        s.applyEffect(insect);
-        // 2) klónozás
-        Insect clone = s.makeNewInsect(insect);
-        gameController.getPlanet().getInsects().add(clone);
-        AddInsectVisitor v = new AddInsectVisitor(insect, clone);
-        for (Player player : gameController.getPlayers()) {
-            ((PlayerAccept) player).accept(v);
-        }
-    }
 }
 
 ================
@@ -3981,6 +3932,59 @@ public record GameState(Planet planet, ArrayList<Player> players, int turnCounte
 }
 
 ================
+File: src/main/java/mushroom/CanGrowBodyVisitor.java
+================
+package main.java.mushroom;
+
+import main.java.tecton.*;
+
+/**
+ * Visitor implementáció, amely meghatározza, hogy egy adott Tecton típuson 
+ * lehet-e gombatest növesztését kezdeményezni.
+ * A döntést a 'canPerformAction' logikai érték reprezentálja.
+ */
+public class CanGrowBodyVisitor implements TectonVisitor<Void> {
+
+	private boolean canPerformAction = true;
+	
+	/**
+     * Eredmény lekérdezése: az utolsó meglátogatott Tecton típus alapján
+     * visszaadja, hogy azon lehet-e testet növeszteni. Ez akkor igaz, ha van a tektonon hely.
+     */
+    public boolean canPerformAction() { return canPerformAction; }
+
+    @Override
+    public Void visit(BigTecton big) {
+        canPerformAction = big.hasSpace();
+		return null;
+    }
+    
+    @Override
+    public Void visit(SmallTecton small) {
+        canPerformAction = small.hasSpace();
+		return null;
+    }
+    
+    @Override
+    public Void visit(ToxicTecton toxic) {
+        canPerformAction = toxic.hasSpace();
+		return null;
+    }
+    
+    @Override
+    public Void visit(HealingTecton healing) {
+        canPerformAction = healing.hasSpace();
+		return null;
+    }
+    
+    @Override
+    public Void visit(CoarseTecton coarse) {
+        canPerformAction = false;  // Coarse sose engedi
+		return null;
+    }
+}
+
+================
 File: src/main/java/player/Player.java
 ================
 package main.java.player;
@@ -3989,11 +3993,16 @@ package main.java.player;
 import main.java.Nameable;
 import main.java.Updatable;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * Az absztrakt Player osztály egy általános játékost reprezentál, amelynek van neve, pontszáma
  * és hátralévő akciói. Kétféle játékos származhat belőle: Shroomer és Insecter.
  */
-public abstract class Player extends Nameable implements Updatable {
+public abstract class Player extends Nameable implements Updatable, Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     public int score;
     public int remainingActions;
@@ -4077,155 +4086,6 @@ public abstract class Player extends Nameable implements Updatable {
 }
 
 ================
-File: src/main/java/tecton/BigTecton.java
-================
-package main.java.tecton;
-
-import java.util.ArrayList;
-import java.util.Random;
-
-/**
- * BigTecton a Tecton egyik típusa, melyen 5 különböző fonal is lehet.
- * Implementálja a TectonAccept interfészt a visitor minta miatt.
- */
-public class BigTecton extends Tecton implements TectonAccept  {
-
-	 /**
-     * Konstruktor – létrehoz egy új BigTecton példányt a megadott névvel és maximális gombafonal-számmal.
-     *
-     * @param maxStrings A maximálisan tárolható gombafonalak száma.
-     */
-    public BigTecton(int maxStrings) {
-        super(maxStrings);
-    }
-
-    @Override
-    public void createSplitTectons(ArrayList<Tecton> tectons, ArrayList<Tecton> newTectons) {
-        createSplitTectonsWithFactory(() -> new BigTecton(getMaxStrings()), newTectons);
-    }
-    
-    /**
-     * Visitor minta accept metódusa: elfogadja a látogatót.
-     *
-     * @param visitor A látogatót reprezentáló objektum, amely végrehajtja a megfelelő műveletet.
-     */
-    @Override
-    public <R> R accept(TectonVisitor<R> visitor) {
-        return visitor.visit(this);
-    }
-}
-
-================
-File: src/main/java/tecton/CoarseTecton.java
-================
-package main.java.tecton;
-
-import java.util.ArrayList;
-
-/**
- * CoarseTecton a Tecton egyik típusa, melyen nem nőhet gombatest.
- * Implementálja a TectonAccept interfészt a visitor minta miatt.
- */
-public class CoarseTecton extends Tecton implements TectonAccept {
-
-    /**
-     * Konstruktor: létrehoz egy új CoarseTecton példányt a megadott névvel és a maximális gombafonal számával, ami rajta lehet.
-     *
-     * @param maxStrings A maximálisan tárolható gombafonalak száma.
-     */
-    public CoarseTecton(int maxStrings) {
-        super(maxStrings);
-    }
-
-    @Override
-    public void createSplitTectons(ArrayList<Tecton> tectons, ArrayList<Tecton> newTectons) {
-        createSplitTectonsWithFactory(() -> new CoarseTecton(getMaxStrings()), newTectons);
-    }
-
-    /**
-     * Visitor minta accept metódusa: elfogadja a látogatót.
-     *
-     * @param visitor A látogatót reprezentáló objektum, amely végrehajtja a megfelelő műveletet.
-     */
-    @Override
-    public <R> R accept(TectonVisitor<R> visitor) {
-        return visitor.visit(this);
-    }
-}
-
-================
-File: src/main/java/tecton/GeometryTecton.java
-================
-package main.java.tecton;
-
-import main.java.Geometry;
-
-import java.io.Serial;
-import java.io.Serializable;
-
-public class GeometryTecton extends Geometry implements Serializable {
-	@Serial
-	private static final long serialVersionUID = 1L;
-	private final int radius;
-	
-	public GeometryTecton(int x, int y, int radius) {
-		super(x, y);
-		this.radius = radius;
-	}
-	
-    public int getRadius() {
-		return radius;
-	}
-}
-
-================
-File: src/main/java/tecton/SmallTecton.java
-================
-package main.java.tecton;
-
-import java.util.ArrayList;
-
-/**
- * SmallTecton a Tecton egyik típusa, melyen csak 2 különböző fonal lehet.
- * Implementálja a TectonAccept interfészt a visitor minta miatt.
- */
-public class SmallTecton extends Tecton implements TectonAccept {
-
-	/**
-     * Konstruktor: létrehoz egy új SmallTecton példányt a megadott névvel és a maximális gombafonal számával, ami rajta lehet.
-     *
-     * @param maxStrings A maximálisan tárolható gombafonalak száma.
-     */
-    public SmallTecton(int maxStrings) {
-    	super(maxStrings);
-    }
-
-    @Override
-    public void createSplitTectons(ArrayList<Tecton> tectons, ArrayList<Tecton> newTectons) {
-        createSplitTectonsWithFactory(() -> new SmallTecton(getMaxStrings()), newTectons);
-    }
-
-    /**
-     * Visitor minta accept metódusa: elfogadja a látogatót.
-     */
-	@Override
-    public <R> R accept(TectonVisitor<R> visitor) {
-        return visitor.visit(this);
-    }
-}
-
-================
-File: src/main/java/view/Drawable.java
-================
-package main.java.view;
-
-public interface Drawable {
-
-    public void drawItself();
-    
-}
-
-================
 File: src/main/java/GameOverVisitor.java
 ================
 package main.java;
@@ -4290,53 +4150,6 @@ public class GameOverVisitor implements PlayerVisitor {
 }
 
 ================
-File: src/main/java/mushroom/Mushroom.java
-================
-package main.java.mushroom;
-
-import java.util.ArrayList;
-
-/**
- * A Mushroom osztály egy gombát reprezentál a játékban, amelyhez tartozik egy gombász (shroomer),
- * egy név, valamint lehet élő vagy halott állapotban.
- */
-public class Mushroom {
-
-	boolean dead;
-	boolean testing;
-	
-	/**
-     * Konstruktor, amely inicializál egy új Mushroom példányt.
-     *
-     * @param testing Tesztelési mód jelzője. Ha igaz, a gomba tesztelési üzemmódban jött létre.
-     */
-	public Mushroom(boolean testing) {
-		dead = false;
-		this.testing = testing;
-	}
-
-	public boolean getDead() {
-		return dead;
-	}
-	
-	/**
-     * Meghívása esetén a gomba elpusztul: minden hozzá tartozó MushroomBody objektumot is elpusztít,
-     * majd a saját állapotát halottra állítja.
-     *
-     * @param strings Az összes gombafonal listája.
-     * @param bodies Az összes MushroomBody gombatest listája.
-     */
-	public void die(ArrayList<MushroomString> strings, ArrayList<MushroomBody> bodies) {
-        for (MushroomBody body : bodies) {
-            if (body.getMushroom() == this) {
-                body.die(strings);
-            }
-        }
-		dead = true;
-	}
-}
-
-================
 File: src/main/java/spore/MultiplierSpore.java
 ================
 package main.java.spore;
@@ -4394,150 +4207,292 @@ public class MultiplierSpore extends Spore implements SporeAccept {
 }
 
 ================
-File: src/main/java/tecton/HealingTecton.java
+File: src/main/java/spore/SporeConsumptionVisitor.java
+================
+package main.java.spore;
+
+import main.java.GameController;
+import main.java.insect.AddInsectVisitor;
+import main.java.insect.Insect;
+import main.java.player.Player;
+import main.java.player.PlayerAccept;
+
+/**
+ * Amikor egy Insect elfogyaszt egy Spore-t, ezt a visitert hívjuk,
+ * így típusonként eltérő logikát tudunk futtatni.
+ */
+public class SporeConsumptionVisitor implements SporeVisitor {
+
+    private final Insect insect;
+    private final GameController gameController;
+
+    /**
+     * Létrehozz egy új példányt a megadott paraméterekkel
+     * @param insect A rovar, aki elfogyasztja a spórát
+     * @param gameController A gc példány, amin módosítást végzünk a MultiplierSpore esetén
+     */
+    public SporeConsumptionVisitor(Insect insect, GameController gameController) {
+        this.insect = insect;
+        this.gameController = gameController;
+    }
+
+    @Override
+    public void visit(FastSpore s) {
+        s.applyEffect(insect);
+        System.out.println("fast spore");
+    }
+
+    @Override
+    public void visit(GentleSpore s) {
+        s.applyEffect(insect);
+        System.out.println("Gentle Spore");
+    }
+
+    @Override
+    public void visit(SlowSpore s) {
+        s.applyEffect(insect);
+        System.out.println("Slow Spore");
+    }
+
+    @Override
+    public void visit(ParalyzerSpore s) {
+        s.applyEffect(insect);
+        System.out.println("Paralyzer");
+    }
+
+    /**
+     * A spóra applyEffect metódusa mellett ebben az esetben egy új rovart is létre kell hozzunk
+     * @param s A spóra, amit elfogyasztunk
+     */
+    @Override
+    public void visit(MultiplierSpore s) {
+        System.out.println("multiplier");
+        // 1) az eredeti hatás
+        s.applyEffect(insect);
+        // 2) klónozás
+        Insect clone = s.makeNewInsect(insect);
+        clone.setGeometry(gameController.randomOffsetInsideCircle(insect.getLocation().getGeometry()));
+        gameController.getPlanet().getInsects().add(clone);
+        AddInsectVisitor v = new AddInsectVisitor(insect, clone);
+        for (Player player : gameController.getPlayers()) {
+            ((PlayerAccept) player).accept(v);
+        }
+    }
+}
+
+================
+File: src/main/java/tecton/BigTecton.java
+================
+package main.java.tecton;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+/**
+ * BigTecton a Tecton egyik típusa, melyen 5 különböző fonal is lehet.
+ * Implementálja a TectonAccept interfészt a visitor minta miatt.
+ */
+public class BigTecton extends Tecton implements TectonAccept  {
+
+	 /**
+     * Konstruktor – létrehoz egy új BigTecton példányt a megadott névvel és maximális gombafonal-számmal.
+     *
+     * @param maxStrings A maximálisan tárolható gombafonalak száma.
+     */
+    public BigTecton(int maxStrings) {
+        super(maxStrings);
+    }
+
+    /**
+     * A tekton széttörését megvalósító függvény.
+     * @param tectons Az összes tekton listája
+     * @param newTectons Egy update során létrejött új tektonok listája
+     */
+    @Override
+    public void createSplitTectons(ArrayList<Tecton> tectons, ArrayList<Tecton> newTectons) {
+        createSplitTectonsWithFactory(() -> new BigTecton(getMaxStrings()), newTectons);
+    }
+    
+    /**
+     * Visitor minta accept metódusa: elfogadja a látogatót.
+     *
+     * @param visitor A látogatót reprezentáló objektum, amely végrehajtja a megfelelő műveletet.
+     */
+    @Override
+    public <R> R accept(TectonVisitor<R> visitor) {
+        return visitor.visit(this);
+    }
+}
+
+================
+File: src/main/java/tecton/CoarseTecton.java
 ================
 package main.java.tecton;
 
 import java.util.ArrayList;
 
 /**
- * HealingTecton a Tecton egyik típusa, melyen a fonalak nem halnak el.
+ * CoarseTecton a Tecton egyik típusa, melyen nem nőhet gombatest.
  * Implementálja a TectonAccept interfészt a visitor minta miatt.
  */
-public class HealingTecton extends Tecton implements TectonAccept {
+public class CoarseTecton extends Tecton implements TectonAccept {
+
+    /**
+     * Konstruktor: létrehoz egy új CoarseTecton példányt a megadott névvel és a maximális gombafonal számával, ami rajta lehet.
+     *
+     * @param maxStrings A maximálisan tárolható gombafonalak száma.
+     */
+    public CoarseTecton(int maxStrings) {
+        super(maxStrings);
+    }
+
+    /**
+     * A tekton széttörését megvalósító függvény.
+     * @param tectons Az összes tekton listája
+     * @param newTectons Egy update során létrejött új tektonok listája
+     */
+    @Override
+    public void createSplitTectons(ArrayList<Tecton> tectons, ArrayList<Tecton> newTectons) {
+        createSplitTectonsWithFactory(() -> new CoarseTecton(getMaxStrings()), newTectons);
+    }
+
+    /**
+     * Visitor minta accept metódusa: elfogadja a látogatót.
+     *
+     * @param visitor A látogatót reprezentáló objektum, amely végrehajtja a megfelelő műveletet.
+     */
+    @Override
+    public <R> R accept(TectonVisitor<R> visitor) {
+        return visitor.visit(this);
+    }
+}
+
+================
+File: src/main/java/tecton/GeometryTecton.java
+================
+package main.java.tecton;
+
+import main.java.Geometry;
+
+import java.io.Serial;
+import java.io.Serializable;
+
+/**
+ * A Geometry osztály kiterjesztése tektonokra úgy, hogy eltárolja a tekton sugarát is
+ */
+public class GeometryTecton extends Geometry implements Serializable {
+	@Serial
+	private static final long serialVersionUID = 1L;
+	private final int radius;
+
+	/**
+	 * Létrehoz egy új példányt a kapott paraméterekkel
+	 * @param x X koordináta
+	 * @param y Y koordináta
+	 * @param radius a tekton sugara
+	 */
+	public GeometryTecton(int x, int y, int radius) {
+		super(x, y);
+		this.radius = radius;
+	}
+
+	//Getter
+    public int getRadius() {
+		return radius;
+	}
+}
+
+================
+File: src/main/java/tecton/SmallTecton.java
+================
+package main.java.tecton;
+
+import java.util.ArrayList;
+
+/**
+ * SmallTecton a Tecton egyik típusa, melyen csak 2 különböző fonal lehet.
+ * Implementálja a TectonAccept interfészt a visitor minta miatt.
+ */
+public class SmallTecton extends Tecton implements TectonAccept {
+
+	/**
+     * Konstruktor: létrehoz egy új SmallTecton példányt a megadott névvel és a maximális gombafonal számával, ami rajta lehet.
+     *
+     * @param maxStrings A maximálisan tárolható gombafonalak száma.
+     */
+    public SmallTecton(int maxStrings) {
+    	super(maxStrings);
+    }
+
+    /**
+     * A tekton széttörését megvalósító függvény.
+     * @param tectons Az összes tekton listája
+     * @param newTectons Egy update során létrejött új tektonok listája
+     */
+    @Override
+    public void createSplitTectons(ArrayList<Tecton> tectons, ArrayList<Tecton> newTectons) {
+        createSplitTectonsWithFactory(() -> new SmallTecton(getMaxStrings()), newTectons);
+    }
+
+    /**
+     * Visitor minta accept metódusa: elfogadja a látogatót.
+     */
+	@Override
+    public <R> R accept(TectonVisitor<R> visitor) {
+        return visitor.visit(this);
+    }
+}
+
+================
+File: src/main/java/mushroom/Mushroom.java
+================
+package main.java.mushroom;
+
+import java.util.ArrayList;
+
+/**
+ * A Mushroom osztály egy gombát reprezentál a játékban, amelyhez tartozik egy gombász (shroomer),
+ * egy név, valamint lehet élő vagy halott állapotban.
+ */
+public class Mushroom {
+
+	boolean dead;
+	boolean testing;
 	
 	/**
-     * Konstruktor: létrehoz egy új HealingTecton példányt a megadott névvel és a maximális gombafonal számával, ami rajta lehet.
+     * Konstruktor, amely inicializál egy új Mushroom példányt.
      *
-     * @param maxStrings A maximálisan tárolható gombafonalak száma.
+     * @param testing Tesztelési mód jelzője. Ha igaz, a gomba tesztelési üzemmódban jött létre.
      */
-    public HealingTecton(int maxStrings) {
-    	super(maxStrings);
-    }
-
-    @Override
-    public void createSplitTectons(ArrayList<Tecton> tectons, ArrayList<Tecton> newTectons) {
-        createSplitTectonsWithFactory(() -> new HealingTecton(getMaxStrings()), newTectons);
-    }
-    /**
-     * Visitor minta accept metódusa: elfogadja a látogatót.
-     *
-     * @param visitor A látogatót reprezentáló objektum, amely végrehajtja a megfelelő műveletet.
-     */
-	@Override
-    public <R> R accept(TectonVisitor<R> visitor) {
-        return visitor.visit(this);
-    }
-}
-
-================
-File: src/main/java/tecton/ToxicTecton.java
-================
-package main.java.tecton;
-
-import java.util.ArrayList;
-
-/**
- * ToxicTecton a Tecton egyik típusa, melyen a gombák egy idő után elpusztulnak.
- * Implementálja a TectonAccept interfészt a visitor minta miatt.
- */
-public class ToxicTecton extends Tecton implements TectonAccept {
+	public Mushroom(boolean testing) {
+		dead = false;
+		this.testing = testing;
+	}
 
 	/**
-     * Konstruktor: létrehoz egy új ToxicTecton példányt a megadott névvel és a maximális gombafonal számával, ami rajta lehet.
+	 * Visszaadja, hogy egy gomba hallott-e
+	 *
+	 * @return i/h, állapotától függően
+	 */
+	public boolean getDead() {
+		return dead;
+	}
+	
+	/**
+     * Meghívása esetén a gomba elpusztul: minden hozzá tartozó MushroomBody objektumot is elpusztít,
+     * majd a saját állapotát halottra állítja.
      *
-     * @param maxStrings A maximálisan tárolható gombafonalak száma.
+     * @param strings Az összes gombafonal listája.
+     * @param bodies Az összes MushroomBody gombatest listája.
      */
-    public ToxicTecton(int maxStrings) {
-    	super(maxStrings);
-    }
-
-    @Override
-    public void createSplitTectons(ArrayList<Tecton> tectons, ArrayList<Tecton> newTectons) {
-        createSplitTectonsWithFactory(() -> new ToxicTecton(getMaxStrings()), newTectons);
-    }
-    /**
-     * Visitor minta accept metódusa: elfogadja a látogatót.
-     *
-     * @param visitor A látogatót reprezentáló objektum, amely végrehajtja a megfelelő műveletet.
-     */
-	@Override
-    public <R> R accept(TectonVisitor<R> visitor) {
-        return visitor.visit(this);
-    }
-}
-
-================
-File: src/main/java/view/DefaultDrawingFactory.java
-================
-package main.java.view;
-
-public class DefaultDrawingFactory implements DrawingFactory {
-
-    @Override
-    public DefaultTectonDrawer createTectonDrawer(){
-        return new DefaultTectonDrawer();
-    }
-
-    @Override
-    public DefaultSporeDrawer createSporeDrawer(){
-        return new DefaultSporeDrawer();
-    }
-
-    @Override
-    public DefaultMushroomBodyDrawer createMushroomBodyDrawer(){
-        return new DefaultMushroomBodyDrawer();
-    }
-
-    @Override
-    public DefaultMushroomStringDrawer createMushroomStringDrawer(){
-        return new DefaultMushroomStringDrawer();
-    }
-
-    @Override
-    public DefaultInsectDrawer createInsectDrawer(){
-        return new DefaultInsectDrawer();
-    }
-
-}
-
-================
-File: src/main/java/view/DrawingFactory.java
-================
-package main.java.view;
-
-public interface DrawingFactory {
-    DefaultTectonDrawer createTectonDrawer();
-    DefaultSporeDrawer createSporeDrawer();
-    DefaultMushroomBodyDrawer createMushroomBodyDrawer();
-    DefaultMushroomStringDrawer createMushroomStringDrawer();
-    DefaultInsectDrawer createInsectDrawer();
-}
-
-================
-File: src/main/java/view/UtilityTool.java
-================
-package main.java.view;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
-
-public class UtilityTool {
-
-    public BufferedImage load(String path){
-        BufferedImage bufim = null;
-        try {
-            bufim = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)));
-        } catch (IOException e) {
-            System.out.println("[UTILITYTOOL] ERROR: " + e.getMessage());
-        } catch (NullPointerException e) {
-            System.out.println("[UTILITYTOOL] ERROR: File not found at path: " + path);
+	public void die(ArrayList<MushroomString> strings, ArrayList<MushroomBody> bodies) {
+        for (MushroomBody body : bodies) {
+            if (body.getMushroom() == this) {
+                body.die(strings);
+            }
         }
-        return bufim;
-    }
-
+		dead = true;
+	}
 }
 
 ================
@@ -4761,6 +4716,192 @@ public abstract class Spore extends Nameable implements Serializable {
 }
 
 ================
+File: src/main/java/tecton/HealingTecton.java
+================
+package main.java.tecton;
+
+import java.util.ArrayList;
+
+/**
+ * HealingTecton a Tecton egyik típusa, melyen a fonalak nem halnak el.
+ * Implementálja a TectonAccept interfészt a visitor minta miatt.
+ */
+public class HealingTecton extends Tecton implements TectonAccept {
+	
+	/**
+     * Konstruktor: létrehoz egy új HealingTecton példányt a megadott névvel és a maximális gombafonal számával, ami rajta lehet.
+     *
+     * @param maxStrings A maximálisan tárolható gombafonalak száma.
+     */
+    public HealingTecton(int maxStrings) {
+    	super(maxStrings);
+    }
+
+    /**
+     * A tekton széttörését megvalósító függvény.
+     * @param tectons Az összes tekton listája
+     * @param newTectons Egy update során létrejött új tektonok listája
+     */
+    @Override
+    public void createSplitTectons(ArrayList<Tecton> tectons, ArrayList<Tecton> newTectons) {
+        createSplitTectonsWithFactory(() -> new HealingTecton(getMaxStrings()), newTectons);
+    }
+    /**
+     * Visitor minta accept metódusa: elfogadja a látogatót.
+     *
+     * @param visitor A látogatót reprezentáló objektum, amely végrehajtja a megfelelő műveletet.
+     */
+	@Override
+    public <R> R accept(TectonVisitor<R> visitor) {
+        return visitor.visit(this);
+    }
+}
+
+================
+File: src/main/java/tecton/ToxicTecton.java
+================
+package main.java.tecton;
+
+import java.util.ArrayList;
+
+/**
+ * ToxicTecton a Tecton egyik típusa, melyen a gombák egy idő után elpusztulnak.
+ * Implementálja a TectonAccept interfészt a visitor minta miatt.
+ */
+public class ToxicTecton extends Tecton implements TectonAccept {
+
+	/**
+     * Konstruktor: létrehoz egy új ToxicTecton példányt a megadott névvel és a maximális gombafonal számával, ami rajta lehet.
+     *
+     * @param maxStrings A maximálisan tárolható gombafonalak száma.
+     */
+    public ToxicTecton(int maxStrings) {
+    	super(maxStrings);
+    }
+
+    /**
+     * A tekton széttörését megvalósító függvény.
+     * @param tectons Az összes tekton listája
+     * @param newTectons Egy update során létrejött új tektonok listája
+     */
+    @Override
+    public void createSplitTectons(ArrayList<Tecton> tectons, ArrayList<Tecton> newTectons) {
+        createSplitTectonsWithFactory(() -> new ToxicTecton(getMaxStrings()), newTectons);
+    }
+    /**
+     * Visitor minta accept metódusa: elfogadja a látogatót.
+     *
+     * @param visitor A látogatót reprezentáló objektum, amely végrehajtja a megfelelő műveletet.
+     */
+	@Override
+    public <R> R accept(TectonVisitor<R> visitor) {
+        return visitor.visit(this);
+    }
+}
+
+================
+File: src/main/java/view/DefaultDrawingFactory.java
+================
+package main.java.view;
+
+/**
+ * A drawer osztályokat létrehozó Factory modell
+ */
+public class DefaultDrawingFactory implements DrawingFactory {
+
+    /**
+     * Tektonkirajzoló létrehozása
+     */
+    @Override
+    public DefaultTectonDrawer createTectonDrawer(){
+        return new DefaultTectonDrawer();
+    }
+
+    /**
+     * Spórkirajzoló létrehozása
+     */
+    @Override
+    public DefaultSporeDrawer createSporeDrawer(){
+        return new DefaultSporeDrawer();
+    }
+
+    /**
+     * Gombatestkirajzoló létrehozása
+     */
+    @Override
+    public DefaultMushroomBodyDrawer createMushroomBodyDrawer(){
+        return new DefaultMushroomBodyDrawer();
+    }
+
+    /**
+     * Fonalkirajzoló létrehozása
+     */
+    @Override
+    public DefaultMushroomStringDrawer createMushroomStringDrawer(){
+        return new DefaultMushroomStringDrawer();
+    }
+
+    /**
+     * Rovarkirajzoló létrehozása
+     */
+    @Override
+    public DefaultInsectDrawer createInsectDrawer(){
+        return new DefaultInsectDrawer();
+    }
+
+}
+
+================
+File: src/main/java/view/DrawingFactory.java
+================
+package main.java.view;
+
+/**
+ * A bővíthetőség érdekében létrehozott interfész a Factory modellhez
+ */
+public interface DrawingFactory {
+    DefaultTectonDrawer createTectonDrawer();
+    DefaultSporeDrawer createSporeDrawer();
+    DefaultMushroomBodyDrawer createMushroomBodyDrawer();
+    DefaultMushroomStringDrawer createMushroomStringDrawer();
+    DefaultInsectDrawer createInsectDrawer();
+}
+
+================
+File: src/main/java/view/UtilityTool.java
+================
+package main.java.view;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Objects;
+
+/**
+ * Utility osztály, amelyet a beolvasáshoz használunk
+ */
+public class UtilityTool {
+
+    /**
+     * Beolvasó metódus
+     * @param path A kép elérési útja
+     * @return A beolvasott és feldolgozott kép
+     */
+    public BufferedImage load(String path){
+        BufferedImage bufim = null;
+        try {
+            bufim = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)));
+        } catch (IOException e) {
+            System.out.println("[UTILITYTOOL] ERROR: " + e.getMessage());
+        } catch (NullPointerException e) {
+            System.out.println("[UTILITYTOOL] ERROR: File not found at path: " + path);
+        }
+        return bufim;
+    }
+
+}
+
+================
 File: src/main/java/view/SporeDrawer.java
 ================
 package main.java.view;
@@ -4768,8 +4909,232 @@ package main.java.view;
 import main.java.spore.Spore;
 import java.awt.*;
 
+/**
+ * Interfész a spórák kirajzolásához a bővíthetőség érdekében
+ */
 public interface SporeDrawer {
     void draw(Graphics2D g2, Spore s);
+}
+
+================
+File: src/main/java/tecton/TectonDrawerVisitor.java
+================
+package main.java.tecton;
+
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+
+import main.java.MainMenu;
+import main.java.view.UtilityTool;
+
+/**
+ * Ez a visitor dönti el a tektonok esetbében, hogy hogyan is kell azt megjeleníteni
+ */
+public class TectonDrawerVisitor implements TectonVisitor<Void> {
+
+	private final Graphics2D g2;
+	UtilityTool uTool = new UtilityTool();
+
+	/**
+	 * Létrehoz egy új példányt a megadott paraméterekkel.
+	 * @param g2 A kirajzolásért felelős példány
+	 */
+	public TectonDrawerVisitor(Graphics2D g2) {
+		this.g2 = g2;
+	}
+
+	/**
+	 * BigTecton esetén a megjelenítés
+	 * @param big a tekton, amit ki kell rajzolni
+	 */
+	public Void visit(BigTecton big) {
+		BufferedImage image = uTool.load(MainMenu.prefix + "bt.png");
+		float r = big.getGeometry().getRadius();
+		g2.drawImage(image, (int) (big.getGeometry().getX() - r),
+				(int) (big.getGeometry().getY() - r),
+				(int)r * 2, (int)r * 2, null);
+		return null;
+	}
+
+	/**
+	 * SmallTecton esetén a megjelenítés
+	 * @param small a tekton, amit ki kell rajzolni
+	 */
+	public Void visit(SmallTecton small) {
+		BufferedImage image = uTool.load(MainMenu.prefix + "st.png");
+		float r = small.getGeometry().getRadius();
+		g2.drawImage(image, (int) (small.getGeometry().getX() - r),
+                (int) (small.getGeometry().getY() - r),
+                (int) (r * 2), (int) (r * 2), null);
+
+		return null;
+	}
+
+	/**
+	 * ToxicTecton esetén a megjelenítés
+	 * @param toxic a tekton, amit ki kell rajzolni
+	 */
+	public Void visit(ToxicTecton toxic) {
+		BufferedImage image = uTool.load(MainMenu.prefix + "tt.png");
+		float r = toxic.getGeometry().getRadius();
+		g2.drawImage(image, (int) (toxic.getGeometry().getX() - r),
+                (int) (toxic.getGeometry().getY() - r),
+                (int) (r * 2), (int) (r * 2), null);
+
+		return null;
+	}
+
+	/**
+	 * HealingTecton esetén a megjelenítés
+	 * @param healing a tekton, amit ki kell rajzolni
+	 */
+	public Void visit(HealingTecton healing) {
+		BufferedImage image = uTool.load(MainMenu.prefix + "ht.png");
+		float r = healing.getGeometry().getRadius();
+		g2.drawImage(image, (int) (healing.getGeometry().getX() - r),
+                (int) (healing.getGeometry().getY() - r),
+                (int) (r * 2), (int) (r * 2), null);
+
+		return null;
+	}
+
+	/**
+	 * CoarseTecton esetén a megjelenítés
+	 * @param coarse a tekton, amit ki kell rajzolni
+	 */
+	public Void visit(CoarseTecton coarse) {
+		BufferedImage image = uTool.load(MainMenu.prefix + "ct.png");
+		float r = coarse.getGeometry().getRadius();
+		g2.drawImage(image, (int) (coarse.getGeometry().getX() - r),
+                (int) (coarse.getGeometry().getY() - r),
+                (int) (r * 2), (int) (r * 2), null);
+
+		return null;
+	}
+}
+
+================
+File: src/main/java/view/DefaultTectonDrawer.java
+================
+package main.java.view;
+
+import java.awt.*;
+import main.java.tecton.*;
+
+/**
+ * A tektonokat kirajzoló osztály
+ */
+public class DefaultTectonDrawer extends UtilityTool implements TectonDrawer {
+
+    /**
+     * Létrehoz egy új példányt
+     */
+    public DefaultTectonDrawer() {}
+
+    /**
+     * A kirajzoló függvény. Visitor segítségével dönti el, hogy melyik tektont hogyan rajzolja ki
+     * @param g2 A kirajzoló objektum
+     * @param tecton A kirajzolandó objektum
+     */
+    @Override
+    public void draw(Graphics2D g2, Tecton tecton){
+    	TectonAccept acceptor = (TectonAccept) tecton;
+    	TectonDrawerVisitor tdvisitor = new TectonDrawerVisitor(g2);
+    	acceptor.accept(tdvisitor);
+    }
+}
+
+================
+File: src/main/java/view/InsectDrawer.java
+================
+package main.java.view;
+
+import java.awt.*;
+import main.java.insect.Insect;
+
+/**
+ * Interfész a rovarok kirajzolásához a bővíthetőség érdekében
+ */
+public interface InsectDrawer {
+    void draw(Graphics2D g2, Insect i);
+}
+
+================
+File: src/main/java/view/MushroomBodyDrawer.java
+================
+package main.java.view;
+
+import java.awt.*;
+import main.java.mushroom.MushroomBody;
+
+/**
+ * Interfész a gombatestek kirajzolásához a bővíthetőség érdekében
+ */
+public interface MushroomBodyDrawer {
+    void draw(Graphics2D g2, MushroomBody mb);
+}
+
+================
+File: src/main/java/view/MushroomStringDrawer.java
+================
+package main.java.view;
+
+import java.awt.*;
+import main.java.mushroom.MushroomString;
+
+/**
+ * Interfész a fonalak kirajzolásához a bővíthetőség érdekében
+ */
+public interface MushroomStringDrawer {
+    void draw(Graphics2D g2, MushroomString ms);
+}
+
+================
+File: src/main/java/view/TectonDrawer.java
+================
+package main.java.view;
+
+import main.java.tecton.Tecton;
+import java.awt.*;
+
+/**
+ * Interfész a tektonok kirajzolásához a bővíthetőség érdekében
+ */
+public interface TectonDrawer {
+    void draw(Graphics2D g2, Tecton t);
+}
+
+================
+File: src/main/java/Geometry.java
+================
+package main.java;
+
+
+import java.io.Serial;
+import java.io.Serializable;
+
+/**
+ * Egy adott objektum elhelyezkedését adja meg a pályán
+ */
+public class Geometry implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+    private final int x;
+    private final int y;
+
+    /**
+     * Létrehoz egy új példányt a kapott paraméterekkel
+     * @param x X koordináta
+     * @param y Y koordináta
+     */
+    public Geometry(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    // getterek
+    public int getX() { return x; }
+    public int getY() { return y; }
 }
 
 ================
@@ -4782,18 +5147,29 @@ import main.java.Geometry;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * A Geometry osztály kiterjesztése fonalakra úgy, hogy eltárolja a fonal végpontjait is
+ */
 public class GeometryString extends Geometry implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-    private final int x2;
-    private final int y2;
+    private int x2;
+    private int y2;
 
+    /**
+     * Létrehozza az új példányt, és beállítja a kezdő-végpontjait.
+     * @param x kezdőpont x koordinátája
+     * @param y kezdőpont y koordinátája
+     * @param x2 végpont x koordinátája
+     * @param y2 végpont y koordinátája
+     */
     public GeometryString(int x, int y, int x2, int y2) {
         super(x,y);
         this.x2 = x2;
         this.y2 = y2;
     }
 
+    //Getterek, setterek
     public int getX2() {
         return x2;
     }
@@ -4801,7 +5177,14 @@ public class GeometryString extends Geometry implements Serializable {
     public int getY2() {
         return y2;
     }
+    
+    public void setX2(int x2) {
+    	this.x2 = x2;
+    }
 
+    public void setY2(int y2) {
+    	this.y2 = y2;
+    }
 }
 
 ================
@@ -4880,6 +5263,17 @@ public class MushroomBody implements Updatable, Serializable {
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
 	}
+	public String getState() {
+		if(state == 0) {
+			return "SMALL";
+		}
+		else if(state == 1) {
+			return "MEDIUM";
+		}
+		else {
+			return "BIG";
+		}
+	}
 	
 	/**
      * Az Updatable interfész felüldefiniált update függvénye. 
@@ -4944,10 +5338,7 @@ public class MushroomBody implements Updatable, Serializable {
 	    int type = rand.nextInt(5);
 		Spore spore;
         switch (type) {
-			case 0 :
-				spore = new FastSpore(Spore.randomNutrientValue(), mushroom, target, newName);
-				break;
-			case 1 :
+            case 1 :
 				spore = new SlowSpore(Spore.randomNutrientValue(), mushroom, target, newName);
 				break;
 			case 2 :
@@ -4962,7 +5353,7 @@ public class MushroomBody implements Updatable, Serializable {
 			default :
 				spore = new FastSpore(Spore.randomNutrientValue(), mushroom, target, newName);
 				break;
-		};
+		}
 		return spore;
     }
 	
@@ -5102,502 +5493,18 @@ public class MushroomBody implements Updatable, Serializable {
         return new MushroomBody(tecton, this.mushroom, 0, false);
 	}
 	
-	public String getState() {
-		if(state == 0) {
-			return "SMALL";
-		}
-		else if(state == 1) {
-			return "MEDIUM";
-		}
-		else {
-			return "BIG";
-		}
-	}
-	
 	/**
      * A gombatest halálát végrehajtó metódus, amely meghívja az összes kapcsolódó fonal halálát is.
      *S
      * @param strings A gombafonalak listája.
      */
 	public void die(ArrayList<MushroomString> strings) {
-		for(int i = 0; i < strings.size(); i++) {
-			if (strings.get(i).getNeighbours().get(0) == null) {
-				strings.get(i).die(strings);
-			}
-		}
-		dead = true;
-	}
-}
-
-================
-File: src/main/java/tecton/TectonDrawerVisitor.java
-================
-package main.java.tecton;
-
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-
-import main.java.MainMenu;
-import main.java.view.UtilityTool;
-
-public class TectonDrawerVisitor implements TectonVisitor<Void> {
-
-	private final Graphics2D g2;
-	UtilityTool uTool = new UtilityTool();
-
-	public TectonDrawerVisitor(Graphics2D g2) {
-		this.g2 = g2;
-	}
-
-	public Void visit(BigTecton big) {
-		BufferedImage image = uTool.load(MainMenu.prefix + "bt.png");
-		float r = big.getGeometry().getRadius();
-		g2.drawImage(image, (int) (big.getGeometry().getX() - r),
-				(int) (big.getGeometry().getY() - r),
-				(int)r * 2, (int)r * 2, null);
-		return null;
-	}
-
-	public Void visit(SmallTecton small) {
-		BufferedImage image = uTool.load(MainMenu.prefix + "st.png");
-		float r = small.getGeometry().getRadius();
-		g2.drawImage(image, (int) (small.getGeometry().getX() - r),
-                (int) (small.getGeometry().getY() - r),
-                (int) (r * 2), (int) (r * 2), null);
-
-		return null;
-	}
-
-
-	public Void visit(ToxicTecton toxic) {
-		BufferedImage image = uTool.load(MainMenu.prefix + "tt.png");
-		float r = toxic.getGeometry().getRadius();
-		g2.drawImage(image, (int) (toxic.getGeometry().getX() - r),
-                (int) (toxic.getGeometry().getY() - r),
-                (int) (r * 2), (int) (r * 2), null);
-
-		return null;
-	}
-
-	public Void visit(HealingTecton healing) {
-		BufferedImage image = uTool.load(MainMenu.prefix + "ht.png");
-		float r = healing.getGeometry().getRadius();
-		g2.drawImage(image, (int) (healing.getGeometry().getX() - r),
-                (int) (healing.getGeometry().getY() - r),
-                (int) (r * 2), (int) (r * 2), null);
-
-		return null;
-	}
-
-	public Void visit(CoarseTecton coarse) {
-		BufferedImage image = uTool.load(MainMenu.prefix + "ct.png");
-		float r = coarse.getGeometry().getRadius();
-		g2.drawImage(image, (int) (coarse.getGeometry().getX() - r),
-                (int) (coarse.getGeometry().getY() - r),
-                (int) (r * 2), (int) (r * 2), null);
-
-		return null;
-	}
-}
-
-================
-File: src/main/java/view/DefaultMushroomStringDrawer.java
-================
-package main.java.view;
-
-import java.awt.*;
-import main.java.mushroom.*;
-
-public class DefaultMushroomStringDrawer implements MushroomStringDrawer {
-
-    @Override
-    public void draw(Graphics2D g2, MushroomString ms) {
-
-        Stroke originalStroke = g2.getStroke();
-
-        if(ms.getDead()){
-            g2.setColor(Color.GRAY);
-        } else if(ms.getLifeCycle() == MushroomString.LifeCycle.Child) {
-            g2.setColor(Color.GREEN);
-        } else {
-            g2.setColor(Color.BLUE);
-        }
-
-        float thickness = ms.getLifeCycle() == MushroomString.LifeCycle.Grown ? 3.0f : 1.5f;
-        g2.setStroke(new BasicStroke(thickness));
-        g2.drawLine(ms.getGeometry().getX(), ms.getGeometry().getY(),
-                ms.getGeometry().getX2(), ms.getGeometry().getY2());
-        g2.setStroke(originalStroke);
-    }
-}
-
-================
-File: src/main/java/view/DefaultTectonDrawer.java
-================
-package main.java.view;
-
-import java.awt.*;
-import main.java.tecton.*;
-
-public class DefaultTectonDrawer extends UtilityTool implements TectonDrawer {
-
-
-    public DefaultTectonDrawer() {}
-
-    @Override
-    public void draw(Graphics2D g2, Tecton tecton){
-    	TectonAccept acceptor = (TectonAccept) tecton;
-    	TectonDrawerVisitor tdvisitor = new TectonDrawerVisitor(g2);
-    	acceptor.accept(tdvisitor);
-    }
-}
-
-================
-File: src/main/java/view/InsectDrawer.java
-================
-package main.java.view;
-
-import java.awt.*;
-import main.java.insect.Insect;
-
-public interface InsectDrawer {
-    void draw(Graphics2D g2, Insect i);
-}
-
-================
-File: src/main/java/view/MushroomBodyDrawer.java
-================
-package main.java.view;
-
-import java.awt.*;
-import main.java.mushroom.MushroomBody;
-
-public interface MushroomBodyDrawer {
-    void draw(Graphics2D g2, MushroomBody mb);
-}
-
-================
-File: src/main/java/view/MushroomStringDrawer.java
-================
-package main.java.view;
-
-import java.awt.*;
-import main.java.mushroom.MushroomString;
-
-public interface MushroomStringDrawer {
-    void draw(Graphics2D g2, MushroomString ms);
-}
-
-================
-File: src/main/java/view/TectonDrawer.java
-================
-package main.java.view;
-
-import main.java.tecton.Tecton;
-import java.awt.*;
-
-public interface TectonDrawer {
-    void draw(Graphics2D g2, Tecton t);
-}
-
-================
-File: src/main/java/Geometry.java
-================
-package main.java;
-
-
-import java.io.Serial;
-import java.io.Serializable;
-
-public class Geometry implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-    private final int x;
-    private final int y;
-
-
-    public Geometry(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    // getterek, ha kellenek a DrawManagernek
-    public int getX() { return x; }
-    public int getY() { return y; }
-}
-
-================
-File: src/main/java/mushroom/MushroomString.java
-================
-package main.java.mushroom;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import main.java.Nameable;
-import main.java.Updatable;
-
-import main.java.tecton.*;
-
-/**
- * A gombafonalat megvalósító osztály, melynek tulajdonsága az általa összekötött két tekton, a hozzá kapcsolódó
- * fonalak, a gombája, érettségi szintje, és az állapota, hogy életben van-e, vagy már elpusztult
- */
-public class MushroomString extends Nameable implements Updatable, Serializable {
-	
-	private static class CloneCounter {
-	    private static int counter = 1;
-	    static synchronized int next() { return counter++; }
-	}
-	
-	private final ArrayList<Tecton> connection;
-	private final ArrayList<MushroomString> neighbours;
-	private final Mushroom mushroom;
-	private static final int TOXIC_AGE_LIMIT = 3; // 3 kör után elpusztul a toxic tektonon
-
-	public enum LifeCycle {Child, Grown}
-	private LifeCycle lifeCycle = LifeCycle.Child;
-	
-	private boolean connectedToBody = false;
-	boolean dead;
-	int lifeLine;
-	int age = 0;
-	
-	private int orphanAge = 0;                // hány kör óta árva?
-	private static final int ORPHAN_AGE_LIMIT = 3;
-
-	GeometryString geometry;
-
-	/**
-	 * A MushroomString osztály konstruktora, amely inicializálja a fonal nevét, a hozzá tartozó gombát, 
-	 * a kapcsolódó tektonokat és a szomszédos fonalakat.
-	 * 
-	 * @param name A fonal neve.
-	 * @param mushroom A gomba, amelyhez a fonal tartozik.
-	 * @param connection A tektonok listája, amelyekhez a fonal csatlakozik.
-	 * @param neighbours A szomszédos fonalak listája, amelyek a fonal szomszédai.
-	 * @param lifeLine A születésének aktuális körszáma
-	 */
-	public MushroomString(String name, Mushroom mushroom, ArrayList<Tecton> connection, ArrayList<MushroomString> neighbours, int lifeLine, GeometryString geometry) {
-		this.mushroom = mushroom;
-		this.connection = connection;
-		this.neighbours  = (neighbours == null)
-                ? new ArrayList<>(java.util.Arrays.asList(null, null))
-                : neighbours;   
-		dead = false;
-		setName(name);
-		this.lifeLine = lifeLine;
-		this.geometry = geometry;
-	}
-	
-	public static String nextCloneName(String base) {
-	    return base + "_clone" + CloneCounter.next();
-	}
-	
-	//Getterek, Setterek
-	public Mushroom getMushroom() {
-		return mushroom;
-	}
-
-	public ArrayList<MushroomString> getNeighbours() {
-		return neighbours;
-	}
-
-	public ArrayList<Tecton> getConnection() {
-		return connection;
-	}
-
-	public boolean getDead() {
-		return dead;
-	}
-
-	public int getLifeLine() {
-		return lifeLine;
-	}
-	
-	public LifeCycle getLifeCycle() {
-		return lifeCycle;
-	}
-	
-	public boolean isConnectedToBody() {
-	    return connectedToBody;
-	}
-
-	public void setConnectedToBody(boolean b) {
-	    connectedToBody = b;
-	}
-
-	
-	/**
-	 * Megnöveli a fonal aktuális "életszámlálóját" 1-gyel
-	 */
-	public void incrementAge() {
-		lifeLine++;
-		age++;
-	}
-	
-	/**
-	 * A fonal terjedését megvalósító függvény.
-	 * Elvégzi a szükséges feltételek ellenőrzését, majd hozzáadja az étvett tektont a connections-höz,
-	 * illetve megkeresi, hogy van-e egy másik fonal, amihez ez az új csatlakozni tud
-	**/
-	
-	public boolean branch(Tecton target, ArrayList<MushroomString> allStrings) {
-	    // Nem tudunk nőni, ha:
-	    if (dead || !connection.get(0).getNeighbours().contains(target)) {
-			return false;
-		}
-	    /* ------------------------------------------------------------------
-	     * B) Már összeköt két Tectont → új fonalat kell létrehozni,
-	     *    amely a második Tectonról (connection.get(1)) indul tovább.
-	     * ------------------------------------------------------------------ */
-	    Tecton start = connection.get(1);          // a „híd” másik vége
-	    ArrayList<Tecton> newConn = new ArrayList<>();
-	    newConn.add(start);
-	    newConn.add(target);
-
-	    ArrayList<MushroomString> newNb = new ArrayList<>();
-	    newNb.add(this);         // az 1. szomszéd az „anyafonal”
-	    newNb.add(null);
-
-	    MushroomString child = new MushroomString(
-	    		getName() + "_clone" + CloneCounter.next(), // valami egyedi név
-	            mushroom,
-	            newConn,
-	            newNb,
-	            lifeLine,// a körszámot örökli
-				new GeometryString(this.getGeometry().getX2(), this.getGeometry().getY2(), target.getGeometry().getX(),target.getGeometry().getY()) // új geometria
-	    );
-
-	    /* A régi fonal egyik szomszédjaként bejegyezzük az újat            */
-		neighbours.set(1, child);
-	    allStrings.add(child);
-	    return true;
-	}
-
-	private boolean hasHealingEnd(){
-		boolean hasHealingEnd = false;
-		for (Tecton t : connection) {
-			KeepStringAliveVisitor healV = new KeepStringAliveVisitor();
-			((TectonAccept) t).accept(healV);
-			if (healV.canPerformAction()) {      // Healing -> true
-				hasHealingEnd = true;
-				break;
-			}
-		}
-		return hasHealingEnd;
-	}
-
-	private void removeOrphans() {
-		connection.removeIf(t -> {
-			KeepStringAliveVisitor healV = new KeepStringAliveVisitor();
-			((TectonAccept) t).accept(healV);
-			return !healV.canPerformAction();      // true -> nem Healing, leesik
-		});
-
-		if (connection.isEmpty()) {                // csak akkor hal meg, ha SEMMI nem maradt
-			dead = true;
-			return;
-		}
-		orphanAge = 0;                             // számláló újraindul
-	}
-	
-	/**
-     * Az Updatable interfész felüldefiniált update függvénye. 
-     * Elvégzi a fonal fejlődését, és ha még nem halott, akkor megnöveli a lifeLine-t.
-     *
-     * @param random A véletlenséget be/kikapcsoló változó.
-     */
-	@Override
-	public void update(boolean random) {
-		/* 1) öregszünk */
-		if (!dead) {
-			incrementAge();
-		}
-
-		/* 2) végignézzük, van-e toxikus Tecton */
-		boolean toxicReachedLimit = false;
-
-		CanKillStringVisitor v = new CanKillStringVisitor();
-		for (Tecton t : new ArrayList<>(connection)) {       // biztonság kedvéért másolaton iterálunk
-			((TectonAccept) t).accept(v);
-
-			/* csak ToxicTectonra ad true-t a visitor */
-			if (v.canPerformAction() && age >= TOXIC_AGE_LIMIT) {
-				toxicReachedLimit = true;
-				connection.remove(t);        // ez a Tecton „leesik” a fonalról
-			}
-		}
-
-		/* 3) ha minden ág leesett, tényleg meghalunk */
-		if (toxicReachedLimit && connection.isEmpty()) {
-			dead = true;
-			return;
-		}
-	    
-	    /*  if a fonal már nem kapcsolódik a gombatesthez ÉS nem Healing-en áll,
-	    akkor öregszik s végül elpusztul  */
-		if (!connectedToBody) {
-			v = new CanKillStringVisitor();
-			((TectonAccept) connection.get(0)).accept(v);
-
-			if (v.canPerformAction() && age >= TOXIC_AGE_LIMIT) {
-				dead = true;
-				return;
-			}
-		}
-
-	    /* 4) ha már nincs toxikus águnk, indulunk elölről a számlálással,
-	          különben a maradék ág is feleslegesen tovább öregedne */
-		if (toxicReachedLimit) {
-			age = 0;
-		}
-
-		/* 4/b) – árva-e?  (nincs gyökér-kapcsolat) */
-		if (!connectedToBody) {
-			orphanAge++;                 // <<<  minden körben NÖVELJÜK
-
-			/* Healing-vég keresése visitorral */ //nincs használva semmire
-			boolean healingEnd = hasHealingEnd();
-
-			/* 3 kör után minden NEM-Healing ág leesik – akkor is, ha van Healing-vég */
-			if (orphanAge >= ORPHAN_AGE_LIMIT) {
-				removeOrphans();
-			} else {
-				orphanAge = 0;                                 // ismét van gyökér
-			}
-
-			/* 5) normál növekedés (változatlanul) */
-			if (random) {
-				if (new java.util.Random().nextInt(3) == 0) {
-					lifeCycle = LifeCycle.Grown;
-				}
-			} else {
-				lifeCycle = LifeCycle.Grown;
-			}
-		}
-	}
-	
-	/**
-	 * A fonal halálát megvalósító függvény.
-	 * Visitor modell segítségével határozza meg, hogy milyen tektonon van a fonal. Ha healing típusún, akkor nem hal meg
-	 * 
-	 * @param strings A fonalakat tartalmazó lista, amely segít meghatározni a fonal halálát.
-	 */
-	public void die(ArrayList<MushroomString> strings) {
-		KeepStringAliveVisitor v = new KeepStringAliveVisitor();
         for (MushroomString string : strings) {
-            if (string.getMushroom() == mushroom && string.getNeighbours().get(0) == this) {
-                TectonAccept acceptor = (TectonAccept) string.getConnection().get(0);
-                acceptor.accept(v);
-                if (!v.canPerformAction()) {
-                    dead = true;
-                }
+            if (string.getNeighbours().get(0) == null && string.getNeighbours().get(1) != null && string.getMushroom() == mushroom && string.getConnection().get(0).equals(location)) {
+                string.die();
             }
         }
-	}
-
-	public GeometryString getGeometry() {
-		return geometry;
+		dead = true;
 	}
 }
 
@@ -5614,6 +5521,9 @@ import java.awt.event.KeyListener;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A KeyHandler osztály felelős a billentyűzeti input kezeléséért
+ */
 public class KeyHandler implements KeyListener {
 
     private int keyCode = -1; // alapértelmezett érték
@@ -5632,6 +5542,13 @@ public class KeyHandler implements KeyListener {
     public static final int KEY_CUT = KeyEvent.VK_C;
     public static final int KEY_MOVE = KeyEvent.VK_M;
 
+    /**
+     * Létrehozza a példányt a megfelelő komponensekkel
+     *
+     * @param gc A GameController példány, amihez tartozik
+     * @param repaintCallback A képernyő újrarajzolását végző metódus
+     * @param gamePanel A játék, amihez tartozik
+     */
     public KeyHandler(GameController gc, Runnable repaintCallback, GamePanel gamePanel) {
         game = gc;
         this.repaintCallback = repaintCallback;
@@ -5688,7 +5605,10 @@ public class KeyHandler implements KeyListener {
         }
         //repaintCallback.run();
     }
-
+    /**
+     * A billentyű felengedésekor lefutó függvény
+     * @param e a billentyű esemény
+     */
     @Override
     public void keyReleased(KeyEvent e) {
         keyMap.put(e.getKeyCode(), false);
@@ -5701,10 +5621,52 @@ public class KeyHandler implements KeyListener {
     public int getKeyCode() {
         return keyCode;
     }
+    /**
+     * Visszaállítja a lenyomott billentyűt alapértelmezettre
+     */
     public void resetKeyCode() {
         this.keyCode = -1;
     }
 
+}
+
+================
+File: src/main/java/view/DefaultMushroomStringDrawer.java
+================
+package main.java.view;
+
+import java.awt.*;
+import main.java.mushroom.*;
+
+/**
+ * A fonalakat kirajzoló osztály
+ */
+public class DefaultMushroomStringDrawer implements MushroomStringDrawer {
+
+    /**
+     * A kirajzoló függvény
+     * @param g2 A kirajzoló objektum
+     * @param ms A kirajzolandó objektum
+     */
+    @Override
+    public void draw(Graphics2D g2, MushroomString ms) {
+
+        Stroke originalStroke = g2.getStroke();
+
+        if(ms.getDead()){
+            g2.setColor(Color.GRAY);
+        } else if(ms.getLifeCycle() == MushroomString.LifeCycle.Child) {
+            g2.setColor(Color.GREEN);
+        } else {
+            g2.setColor(Color.WHITE);
+        }
+
+        float thickness = ms.getLifeCycle() == MushroomString.LifeCycle.Grown ? 3.0f : 1.5f;
+        g2.setStroke(new BasicStroke(thickness));
+        g2.drawLine(ms.getGeometry().getX(), ms.getGeometry().getY(),
+                ms.getGeometry().getX2(), ms.getGeometry().getY2());
+        g2.setStroke(originalStroke);
+    }
 }
 
 ================
@@ -5810,9 +5772,9 @@ public abstract class Tecton implements Serializable {
         double dx = this.geometry.getX() - t.geometry.getX();
         double dy = this.geometry.getY() - t.geometry.getY();
         double distance = Math.sqrt(dx * dx + dy * dy);
-        System.out.println(distance);
+        //System.out.println(distance);
 
-        return distance <= 3000;
+        return distance <= 400;
     }
 
     /**
@@ -5872,12 +5834,191 @@ public abstract class Tecton implements Serializable {
 }
 
 ================
+File: src/main/java/view/DefaultSporeDrawer.java
+================
+package main.java.view;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+import main.java.MainMenu;
+import main.java.spore.Spore;
+
+/**
+ * A spórákat kirajzoló osztály
+ */
+public class DefaultSporeDrawer extends UtilityTool implements SporeDrawer {
+
+    public static final int SIZE = 30;
+    private final BufferedImage image;
+
+    /**
+     * Létrehoz egy új példányt, és beolvassa a megfelelő képet hozzá
+     */
+    DefaultSporeDrawer() {
+        image = load(MainMenu.prefix + "spore.png");
+    }
+
+    /**
+     * A kirajzoló függvény
+     * @param g2 A kirajzoló objektum
+     * @param spore A kirajzolandó objektum
+     */
+    @Override
+    public void draw(Graphics2D g2, Spore spore) {
+        g2.drawImage(image, (int) (spore.getGeometry().getX() - SIZE / 2), (int) (spore.getGeometry().getY() - SIZE / 2), SIZE, SIZE, null);
+    }
+}
+
+================
+File: src/main/java/view/DefaultInsectDrawer.java
+================
+package main.java.view;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+import main.java.MainMenu;
+import main.java.insect.Insect;
+
+/**
+ * A rovarokat kirajzoló osztály
+ */
+public class DefaultInsectDrawer extends UtilityTool implements InsectDrawer {
+
+    private final BufferedImage image;
+
+    /**
+     * Létrehoz egy új példányt, és beolvassa a megfelelő képet hozzá
+     */
+    DefaultInsectDrawer(){
+        image = load(MainMenu.prefix + "insect_icon3.png");
+    }
+
+    /**
+     * A kirajzoló függvény
+     * @param g2 A kirajzoló objektum
+     * @param insect A kirajzolandó objektum
+     */
+    @Override
+    public void draw(Graphics2D g2, Insect insect) {
+        int width = 40;
+        int height = 40;
+        g2.drawImage(image, insect.getGeometry().getX(), insect.getGeometry().getY(), width, height, null);
+    }
+
+}
+
+================
+File: src/main/java/Main.java
+================
+package main.java;
+
+import main.java.view.UtilityTool;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+/**
+ * A Main osztály felelős a program kiindulási pontjáért, innen hívódik meg a main függvény.
+ */
+public class Main {
+
+    private static final UtilityTool uTool = new UtilityTool();
+
+	/**
+	 * A program indulásakor hívódó main függvény
+	 */
+	public static void main(String[] args) {
+        JFrame frame = new JFrame("Fungorium");
+
+		BufferedImage logo = uTool.load(MainMenu.prefix + "mb_big.png");
+		frame.setIconImage(logo);
+
+		BufferedImage cursorImage = uTool.load(MainMenu.prefix + "cursor2.png");
+		Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0, 0), "cursor");
+		frame.setCursor(cursor);
+
+        MainMenu menu = new MainMenu(frame);
+		menu.setBackground(new Color(6, 26, 14));
+
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		frame.add(menu);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+}
+
+================
+File: src/main/java/view/DefaultMushroomBodyDrawer.java
+================
+package main.java.view;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+import main.java.MainMenu;
+import main.java.mushroom.*;
+
+/**
+ * A gombatesteket kirajzoló osztály
+ */
+public class DefaultMushroomBodyDrawer extends UtilityTool implements MushroomBodyDrawer {
+
+    private final BufferedImage shortImage;
+    private final BufferedImage grownImage;
+    private final BufferedImage mediumImage;
+
+    /**
+     * Létrehoz egy új példányt, és beolvassa a megfelelő képet hozzá
+     */
+    DefaultMushroomBodyDrawer() {
+        shortImage = load(MainMenu.prefix + "mb_small.png");
+        mediumImage = load(MainMenu.prefix + "mb_medium.png");
+        grownImage = load(MainMenu.prefix + "mb_big.png");
+    }
+
+    /**
+     * A kirajzoló függvény
+     * @param g2 A kirajzoló objektum
+     * @param mb A kirajzolandó objektum
+     */
+    @Override
+    public void draw(Graphics2D g2, MushroomBody mb) {
+        BufferedImage image;
+        switch(mb.getState()){
+            case "SMALL" :
+                image = shortImage;
+                break;
+            case "MEDIUM" :
+                image =mediumImage;
+                break;
+            case "BIG" :
+                image = grownImage;
+                break;
+            default :
+                image = shortImage;
+                break;
+        }
+
+        int width = 50;
+        float drawX = mb.getGeometry().getX() - (float) width /2;
+        int height = 50;
+        float drawY = mb.getGeometry().getY() - (float) height /2;
+
+        g2.drawImage(image, (int) drawX, (int) drawY, width, height, null);
+    }
+
+}
+
+================
 File: src/main/java/insect/Insect.java
 ================
 package main.java.insect;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+
 import main.java.tecton.*;
 import main.java.mushroom.*;
 import main.java.Geometry;
@@ -5929,10 +6070,6 @@ public class Insect implements Updatable, Serializable {
 	}
 
 	//Getterek, Setterek
-	public boolean getCanCutString() 
-	{
-		return canCutString;
-	}
 	public boolean getCanMove()
 	{
 		return !canMove;
@@ -5992,70 +6129,34 @@ public class Insect implements Updatable, Serializable {
 				return 0;
 			}
 		}
-		return 0;
+		return -3;
 	}
 
 	 /**
      * A megadott gombafonal elvágása.
      *
-     * @param ms      Az elvágandó gombafonal.
-     * @param strings Az összes fonalat tartalmazó lista.
+     * @param ms Az elvágandó gombafonal.
      */
-	public void cutHypha(MushroomString ms, ArrayList<MushroomString> strings)
+	public boolean cutHypha(MushroomString ms)
 	{
+		if(!canCutString){return false;}
 	    // 1) ellenőrizzük, hogy azon a Tectonon állunk-e, ahol a fonal egyik vége van
-	    if (!ms.getConnection().contains(location)) return;
+	    if (!ms.getConnection().contains(location)) return false;
 
-	    /* 2) keressük meg a szomszéd fonalat (ha volt) */
+	    // 2) keressük meg a szomszéd fonalakat
 	    for (MushroomString nb : ms.getNeighbours()) {
 	        if (nb == null) continue;
 
 	        // a neighbour listájából is eltávolítjuk ms-t
 	        if (nb.getNeighbours().get(0) == ms) nb.getNeighbours().set(0, null);
-	        if (nb.getNeighbours().size() > 1 && nb.getNeighbours().get(1) == ms)
-	            nb.getNeighbours().set(1, null);
+	        if (nb.getNeighbours().get(1) == ms) nb.getNeighbours().set(1, null);
 
 	        // ms neighbour-listájából töröljük nb-t
 	        if (ms.getNeighbours().get(0) == nb) ms.getNeighbours().set(0, null);
-	        if (ms.getNeighbours().size() > 1 && ms.getNeighbours().get(1) == nb)
-	            ms.getNeighbours().set(1, null);
+	        if (ms.getNeighbours().get(1) == nb) ms.getNeighbours().set(1, null);
 	    }
-
-	    /* 3) az elvágott fonalról levágjuk a másik Tectont,
-	          így „félfonal” marad (csak location marad benne) */
-	    if (ms.getConnection().size() == 2) {
-
-	        // 2.a  Meghatározzuk, melyik végpont marad a rovar alatt,
-	        //       és melyik „esik le”
-	        Tecton dropped;
-	        if (ms.getConnection().get(0) == location) {
-	            dropped = ms.getConnection().remove(1);
-	        } else {
-	            dropped = ms.getConnection().remove(0);
-	        }
-
-	        // 2.b  Új fél-fonal létrehozása a leeső Tectonon
-	        ArrayList<Tecton> newConn = new ArrayList<>();
-	        newConn.add(dropped);
-
-	        MushroomString clone = new MushroomString(
-	            MushroomString.nextCloneName(ms.getName()),
-	            ms.getMushroom(),
-	            newConn,
-	            new ArrayList<>(java.util.Arrays.asList(null, null)),
-	            ms.getLifeLine(),
-				ms.getGeometry()
-	        );
-
-	        // 2.c  Szomszédlista frissítése
-	        ms.getNeighbours().removeIf(clone::equals);           // biztosan kiveszi a klónt
-	        while (ms.getNeighbours().size() < 2) ms.getNeighbours().add(null);  // feltölt null-lal
-
-	        // 2.d  Belerakjuk a bolygó globális listájába, hogy a LIST parancs is lássa
-	        strings.add(clone);
-	    }
-
-	    // 4) NEM ölünk meg semmit azonnal – a MushroomString.update végzi az öregedést
+		ms.die();
+		return true;
 	}
 	
 	/**
@@ -6065,146 +6166,6 @@ public class Insect implements Updatable, Serializable {
 	{
 		dead = true;
 	}
-
-}
-
-================
-File: src/main/java/Main.java
-================
-package main.java;
-
-import main.java.view.UtilityTool;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
-/*
- * A Main osztály felelős a program kiindulási pontjáért, innen hívódik meg a main függvény.
- */
-public class Main {
-
-    private static final UtilityTool uTool = new UtilityTool();
-
-	public static void main(String[] args) {
-        JFrame frame = new JFrame();
-
-		BufferedImage logo = uTool.load(MainMenu.prefix + "mb_big.png");
-		frame.setIconImage(logo);
-
-        MainMenu menu = new MainMenu(frame);
-		menu.setBackground(new Color(6, 26, 14));
-
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		frame.add(menu);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
-}
-
-================
-File: src/main/java/view/DefaultInsectDrawer.java
-================
-package main.java.view;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
-import main.java.MainMenu;
-import main.java.insect.Insect;
-
-
-public class DefaultInsectDrawer extends UtilityTool implements InsectDrawer {
-
-    private final BufferedImage image;
-
-    DefaultInsectDrawer(){
-        image = load(MainMenu.prefix + "insect_icon3.png");
-    }
-
-    @Override
-    public void draw(Graphics2D g2, Insect insect) {
-        int width = 40;
-        int height = 40;
-        g2.drawImage(image, (int)insect.getGeometry().getX(), (int)insect.getGeometry().getY(), width, height, null);
-    }
-
-}
-
-================
-File: src/main/java/view/DefaultSporeDrawer.java
-================
-package main.java.view;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
-import main.java.MainMenu;
-import main.java.spore.Spore;
-
-
-public class DefaultSporeDrawer extends UtilityTool implements SporeDrawer {
-
-    public static final int SIZE = 30;
-    private final BufferedImage image;
-    DefaultSporeDrawer() {
-        image = load(MainMenu.prefix + "spore.png");
-    }
-
-    @Override
-    public void draw(Graphics2D g2, Spore spore) {
-        g2.drawImage(image, (int) (spore.getGeometry().getX() - SIZE / 2), (int) (spore.getGeometry().getY() - SIZE / 2), SIZE, SIZE, null);
-    }
-}
-
-================
-File: src/main/java/view/DefaultMushroomBodyDrawer.java
-================
-package main.java.view;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
-import main.java.MainMenu;
-import main.java.mushroom.*;
-
-public class DefaultMushroomBodyDrawer extends UtilityTool implements MushroomBodyDrawer {
-
-    private final BufferedImage shortImage;
-    private final BufferedImage grownImage;
-    private final BufferedImage mediumImage;
-
-    DefaultMushroomBodyDrawer() {
-        shortImage = load(MainMenu.prefix + "mb_small.png");
-        mediumImage = load(MainMenu.prefix + "mb_medium.png");
-        grownImage = load(MainMenu.prefix + "mb_big.png");
-    }
-
-    @Override
-    public void draw(Graphics2D g2, MushroomBody mb) {
-        BufferedImage image;
-        switch(mb.getState()){
-            case "SMALL" :
-                image = shortImage;
-                break;
-            case "MEDIUM" :
-                image =mediumImage;
-                break;
-            case "BIG" :
-                image = grownImage;
-                break;
-            default :
-                image = shortImage;
-                break;
-        }
-
-        int width = 50;
-        float drawX = mb.getGeometry().getX() - (float) width /2;
-        int height = 50;
-        float drawY = mb.getGeometry().getY() - (float) height /2;
-
-        g2.drawImage(image, (int) drawX, (int) drawY, width, height, null);
-    }
 
 }
 
@@ -6223,6 +6184,9 @@ import main.java.mushroom.*;
 import main.java.insect.Insect;
 import main.java.spore.Spore;
 
+/**
+ * A kirajzolást kezelő osztály. Tartalmaz kirajzoló objektumokat
+ */
 public class DrawManager {
     private DefaultTectonDrawer tectonDrawer;
     private DefaultSporeDrawer sporeDrawer;
@@ -6230,10 +6194,17 @@ public class DrawManager {
     private DefaultMushroomStringDrawer mushroomStringDrawer;
     private DefaultInsectDrawer insectDrawer;
 
+    /**
+     * ALétrehoz egy új példányt, és meghívja a setDrawers() metódust
+     */
     public DrawManager(){
         setDrawers(new DefaultDrawingFactory());
     }
 
+    /**
+     * A kapott factory segítségével létrehozza a kirajzolókat
+     * @param factory a Factory, amivel a létrehozást végzi
+     */
     public void setDrawers(DrawingFactory factory){
         this.tectonDrawer = factory.createTectonDrawer();
         this.insectDrawer = factory.createInsectDrawer();
@@ -6242,27 +6213,50 @@ public class DrawManager {
         this.mushroomBodyDrawer = factory.createMushroomBodyDrawer();
     }
 
+    /**
+     * A megfelelő drawer draw() metódusát meghívja
+     * @param g A Rajzoló objektum
+     * @param t A kirajzolandó objektum
+     * @param shining Ki kell-e emelni az objektumot
+     */
     public void drawTecton(Graphics2D g, Tecton t, boolean shining){
         if(shining){
-            drawShineEffect(g, (int) t.getGeometry().getX(), (int) t.getGeometry().getY(), (int) (t.getGeometry().getRadius() + 10));
+            drawShineEffect(g, t.getGeometry().getX(), t.getGeometry().getY(), (t.getGeometry().getRadius() + 10));
         }
         tectonDrawer.draw(g, t);
     }
 
+    /**
+     * A megfelelő drawer draw() metódusát meghívja
+     * @param g A Rajzoló objektum
+     * @param spore A kirajzolandó objektum
+     * @param shining Ki kell-e emelni az objektumot
+     */
     public void drawSpore(Graphics2D g, Spore spore, boolean shining) {
         if(shining){
-            drawShineEffect(g, (int) spore.getGeometry().getX(), (int) spore.getGeometry().getY(), 25);
+            drawShineEffect(g,  spore.getGeometry().getX(), spore.getGeometry().getY(), 25);
         }
         sporeDrawer.draw(g, spore);
     }
-
+    /**
+     * A megfelelő drawer draw() metódusát meghívja
+     * @param g A Rajzoló objektum
+     * @param mushroomBody A kirajzolandó objektum
+     * @param shining Ki kell-e emelni az objektumot
+     */
     public void drawMushroomBody(Graphics2D g, MushroomBody mushroomBody, boolean shining) {
         if(shining) {
-            drawShineEffect(g, (int) mushroomBody.getGeometry().getX(), (int) mushroomBody.getGeometry().getY(), 35);
+            drawShineEffect(g, mushroomBody.getGeometry().getX(),  mushroomBody.getGeometry().getY(), 35);
         }
         mushroomBodyDrawer.draw(g, mushroomBody);
     }
 
+    /**
+     * A megfelelő drawer draw() metódusát meghívja
+     * @param g A Rajzoló objektum
+     * @param mushroomString A kirajzolandó objektum
+     * @param shining Ki kell-e emelni az objektumot
+     */
     public void drawMushroomString(Graphics2D g, MushroomString mushroomString,boolean shining){
         if(shining) {
             int midX = (mushroomString.getGeometry().getX() +mushroomString.getGeometry().getX2() ) / 2;
@@ -6272,13 +6266,25 @@ public class DrawManager {
         mushroomStringDrawer.draw(g, mushroomString);
     }
 
+    /**
+     * A megfelelő drawer draw() metódusát meghívja
+     * @param g A Rajzoló objektum
+     * @param insect A kirajzolandó objektum
+     * @param shining Ki kell-e emelni az objektumot
+     */
     public void drawInsect(Graphics2D g, Insect insect, boolean shining) {
         if(shining) {
-            drawShineEffect(g, (int) (insect.getGeometry().getX() + 20), (int) (insect.getGeometry().getY() + 20), 30);
+            drawShineEffect(g, (insect.getGeometry().getX() + 20), (insect.getGeometry().getY() + 20), 30);
         }
         insectDrawer.draw(g, insect);
     }
 
+    /**
+     * Kirajzolja a teljes bolygót
+     * @param g A Rajzoló objektum
+     * @param p A kirajzolandó objektumokat tartalmazó planet
+     * @param shining Ki kell-e emelni az objektumot
+     */
     public void drawPlanet(Graphics2D g, Planet p, GamePanel.ShineOn shining) {
     	for(Tecton t : p.getTectons()) {
     		drawTecton(g, t, shining == GamePanel.ShineOn.TECTON);
@@ -6306,7 +6312,13 @@ public class DrawManager {
     	}
     }
 
-    // Új metódus a kiemelő effekt rajzolásához
+    /**
+     * Megjeleníti a kiemelés effektet
+     * @param g A Rajzoló objektum
+     * @param x Az effekt x koordinátája
+     * @param y Az effekt Y koordinátája
+     * @param radius Az effekt sugara
+     */
     private void drawShineEffect(Graphics2D g, int x, int y, int radius) {
         // Mentjük az eredeti beállításokat
         Composite originalComposite = g.getComposite();
@@ -6328,6 +6340,213 @@ public class DrawManager {
         g.setStroke(originalStroke);
     }
 
+}
+
+================
+File: src/main/java/mushroom/MushroomString.java
+================
+package main.java.mushroom;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import main.java.Updatable;
+
+import main.java.tecton.*;
+
+/**
+ * A gombafonalat megvalósító osztály, melynek tulajdonsága az általa összekötött két tekton, a hozzá kapcsolódó
+ * fonalak, a gombája, érettségi szintje, és az állapota, hogy életben van-e, vagy már elpusztult
+ */
+public class MushroomString implements Updatable, Serializable {
+	private final ArrayList<Tecton> connection;
+	private final ArrayList<MushroomString> neighbours;
+	private final Mushroom mushroom;
+	private static final int TOXIC_AGE_LIMIT = 3; // 3 kör után elpusztul a toxic tektonon
+
+	public enum LifeCycle {Child, Grown}
+	private LifeCycle lifeCycle = LifeCycle.Child;
+	
+	private boolean connectedToBody = false;
+	boolean dead;
+	int lifeLine;
+	int age = 0;
+	
+	private int orphanAge = 0;                // hány kör óta árva?
+	private static final int ORPHAN_AGE_LIMIT = 3;
+	private final boolean connectedToMushroom;
+	GeometryString geometry;
+
+	/**
+	 * A MushroomString osztály konstruktora, amely inicializálja a fonal nevét, a hozzá tartozó gombát, 
+	 * a kapcsolódó tektonokat és a szomszédos fonalakat.
+	 *
+	 * @param mushroom A gomba, amelyhez a fonal tartozik.
+	 * @param connection A tektonok listája, amelyekhez a fonal csatlakozik.
+	 * @param neighbours A szomszédos fonalak listája, amelyek a fonal szomszédai.
+	 * @param lifeLine A születésének aktuális körszáma
+	 */
+	public MushroomString(Mushroom mushroom, ArrayList<Tecton> connection, ArrayList<MushroomString> neighbours, int lifeLine, GeometryString geometry, boolean connectedToBody) {
+		this.mushroom = mushroom;
+		this.connection = connection;
+		this.neighbours  = (neighbours == null)
+                ? new ArrayList<>(java.util.Arrays.asList(null, null))
+                : neighbours;   
+		dead = false;
+		this.lifeLine = lifeLine;
+		this.geometry = geometry;
+		connectedToMushroom = connectedToBody;
+	}
+	
+	//Getterek, Setterek
+	public Mushroom getMushroom() {
+		return mushroom;
+	}
+	public ArrayList<MushroomString> getNeighbours() {
+		return neighbours;
+	}
+	public ArrayList<Tecton> getConnection() {
+		return connection;
+	}
+	public boolean getDead() {
+		return dead;
+	}
+	public int getLifeLine() {
+		return lifeLine;
+	}
+	public LifeCycle getLifeCycle() {
+		return lifeCycle;
+	}
+	public boolean isConnectedToBody() {
+	    return connectedToBody;
+	}
+	public void setConnectedToBody(boolean b) {
+	    connectedToBody = b;
+	}
+	public GeometryString getGeometry() {
+		return geometry;
+	}
+
+	
+	/**
+	 * Megnöveli a fonal aktuális "életszámlálóját" 1-gyel
+	 */
+	public void incrementAge() {
+		lifeLine++;
+		age++;
+	}
+	
+	/**
+	 * A fonal terjedését megvalósító függvény.
+	 * @param target A cél tekton
+	 * @param allStrings A MushroomStringek listája
+	 * @return a terjedés sikeressége
+	**/
+	
+	public boolean branch(Tecton target, ArrayList<MushroomString> allStrings) {
+
+		//Ha halott, vagy nem szomszédos a céllal, akkor nem tud nőni
+		if (dead || !connection.get(0).getNeighbours().contains(target)) {
+			return false;
+		}
+		//Ha még nem nőtt át sehova, akkor átnő
+		if (connection.get(1) == null) {
+			connection.set(1, target);
+			geometry.setX2(target.getGeometry().getX());
+			geometry.setY2(target.getGeometry().getY());
+			return true;
+		}
+
+		//Különben egy új fonal jön létre. A kezdete az előző vége, a vége pedig a cél tekton
+	    Tecton start = connection.get(1);
+	    ArrayList<Tecton> newConn = new ArrayList<>();
+	    newConn.add(start);
+	    newConn.add(target);
+
+		//Szomszédja az eredeti, és null
+	    ArrayList<MushroomString> newNb = new ArrayList<>();
+	    newNb.add(this);
+	    newNb.add(null);
+
+	    MushroomString child = new MushroomString(
+	            mushroom,
+	            newConn,
+	            newNb,
+	            lifeLine,
+				new GeometryString(this.getGeometry().getX2(), this.getGeometry().getY2(), target.getGeometry().getX(),target.getGeometry().getY()), // új geometria
+				false
+	    );
+
+	    // A régi fonal végén az új fonal lesz
+		neighbours.set(1, child);
+	    allStrings.add(child);
+	    return true;
+	}
+	
+	/**
+     * Az Updatable interfész felüldefiniált update függvénye. 
+     * Elvégzi a fonal fejlődését, és ha még nem halott, akkor megnöveli a lifeLine-t.
+	 * Ha a megfelelő feltétel teljesül, akkor halottra állítja a fonalat.
+     *
+     * @param random A véletlenséget be/kikapcsoló változó.
+     */
+	@Override
+	public void update(boolean random) {
+
+		//Csak ha nem halott, akkor öregszik
+		if (!dead) incrementAge();
+
+		//Ha nem kapcsolódik testhez, meg van nőve, és eltelt 3 kör, akkor meghal. Ha kicsi, egyből meghal
+		if (!connectedToMushroom && neighbours.get(0) == null) {
+			if(lifeCycle == LifeCycle.Child) die();
+			else{
+				orphanAge++;
+				if (orphanAge >= ORPHAN_AGE_LIMIT) die();
+			}
+		}
+
+		//Ha nem köt össze semmit, akkor meghal
+		if(connection.get(0) == null && connection.get(1) == null) die();
+
+		//Ha valamelyik vége toxic-on van, és legalább 3 kör óta él, akkor meghal
+		CanKillStringVisitor v = new CanKillStringVisitor();
+        for (Tecton t : connection) {
+            if (t != null) {
+                ((TectonAccept) t).accept(v);
+                if (v.canPerformAction() && age >= TOXIC_AGE_LIMIT) {
+                    die();
+                }
+            }
+        }
+
+		//1/3-ad eséllyel megnő
+		if(lifeCycle == LifeCycle.Child) {
+			if (random) {
+				if (new java.util.Random().nextInt(3) == 0) {
+					lifeCycle = LifeCycle.Grown;
+				}
+			} else {
+				lifeCycle = LifeCycle.Grown;
+			}
+		}
+	}
+	
+	/**
+	 * A fonal halálát megvalósító függvény.
+	 * Visitor modell segítségével határozza meg, hogy milyen tektonon van a fonal. Ha healing típusún, akkor nem hal meg
+	 */
+	public void die() {
+		dead = true;
+		if(neighbours.get(1) != null){
+			MushroomString ms = neighbours.get(1);
+			KeepStringAliveVisitor v = new KeepStringAliveVisitor();
+			TectonAccept acceptor = (TectonAccept) ms.getConnection().get(0);
+			acceptor.accept(v);
+			if (!v.canPerformAction()) {
+				neighbours.set(1, null);
+				ms.neighbours.set(0, null);
+			}
+		}
+	}
 }
 
 ================
@@ -6381,10 +6600,6 @@ public class Planet implements Updatable, Serializable {
     public void addTecton(Tecton tecton) {
         tectons.add(tecton);
     }
-
-    public void addMushroomString(MushroomString ms) {
-        mushstrings.add(ms);
-    }
     
     //Getterek, Setterek
     public ArrayList<Tecton> getTectons() {
@@ -6406,7 +6621,7 @@ public class Planet implements Updatable, Serializable {
     public ArrayList<Spore> getSpores() {
     	return spores;
     }
-    
+
     /**
      * Megnézi, hogy van-e spóra egy adott mushroomString tektonján.
      *
@@ -6419,7 +6634,10 @@ public class Planet implements Updatable, Serializable {
 	    Tecton location = ms.getConnection().get(0);
 	    return spores.stream().anyMatch(spore -> spore.getLocation() == location);
 	}
-    
+
+    /**
+     * Megvizsgálja, hogy mely fonalak kapcsolódnak gombatesthez
+     */
     public void checkForBodyConnection() {
     	for (MushroomString ms : mushstrings) {
     	    ms.setConnectedToBody(false);
@@ -6518,7 +6736,7 @@ public class Planet implements Updatable, Serializable {
         insects.forEach(i -> i.update(random));
         mushbodies.forEach(mb -> mb.update(random));
         for (MushroomString ms : mushstrings) {
-            boolean shouldUpdateRandomly = (ms.getLifeCycle() != MushroomString.LifeCycle.Child) || !checkForSpores(ms);
+            boolean shouldUpdateRandomly = !checkForSpores(ms);
             ms.update(shouldUpdateRandomly);
         }
         ArrayList<Tecton> newTectons = new ArrayList<>();
@@ -6537,9 +6755,6 @@ public class Planet implements Updatable, Serializable {
         System.out.println("Tectonok száma: " + tectons.size());
         for(Tecton t : tectons) {
             t.determineNeighbours(tectons);
-            for(Tecton t2 : t.getNeighbours()) {
-                //System.out.println();
-            }
         }
     }
 
@@ -6601,6 +6816,7 @@ import main.java.console.ConsoleHandler;
 import main.java.view.UtilityTool;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -6616,27 +6832,45 @@ public class GameMenu extends JMenuBar {
         Color baseColor = new Color(47, 84, 39);
         Color hoverColor = new Color(75, 125, 64);
 
+    /**
+     * Létrehoz egy új példányt a aparaméterek alapján
+     * @param gameController A gc, amihez tartozik
+     * @param frame Az ablak, ami tartalmazza
+     */
         public GameMenu(JFrame frame, GameController gameController) {
             this.frame = frame;
             this.gameController = gameController;
-            setBackground(Color.LIGHT_GRAY);
+            setBackground(new Color(77, 92, 71));
             UtilityTool uTool = new UtilityTool();
+            setBorderPainted(false);
 
             //Gombok
-            BufferedImage b1Image = uTool.load(MainMenu.prefix + "b2.png");
+            BufferedImage b1Image = uTool.load(MainMenu.prefix + "bExit4.png");
+            BufferedImage b1Imageh = uTool.load(MainMenu.prefix + "bExit4h.png");
             b1 = new JButton("");
-            b1.setMargin(new Insets(0,0,0,0));
-            b1.setIcon(new ImageIcon(b1Image));
-            styleButton(b1);
+            styleButton(b1, b1Image, b1Imageh);
 
-            b2 = new JButton("Load");
-            styleButton(b2);
+            BufferedImage b2Image = uTool.load(MainMenu.prefix + "bLoad4.png");
+            BufferedImage b2Imageh = uTool.load(MainMenu.prefix + "bLoad4h.png");
+            b2 = new JButton("");
+            styleButton(b2, b2Image, b2Imageh);
 
-            b3 = new JButton("Exit");
-            styleButton(b3);
+            BufferedImage b3Image = uTool.load(MainMenu.prefix + "bExit4.png");
+            BufferedImage b3Imageh = uTool.load(MainMenu.prefix + "bExit4h.png");
+            b3 = new JButton("");
+            styleButton(b3,b3Image, b3Imageh);
 
             b4 = new JButton("Developer Console");
-            styleButton(b4);
+            b4.setForeground(Color.WHITE);
+            b4.setBackground(baseColor);
+            b4.setMargin(new Insets(0,0,0,0));
+            Dimension size = new Dimension(120, 35);
+            b4.setPreferredSize(size);
+            b4.setMinimumSize(size);
+            b4.setMaximumSize(size);
+            b4.setContentAreaFilled(true);
+            b4.setBorderPainted(false);
+            b4.setOpaque(true);
 
             b1.addActionListener(e -> {
                 if (GameFileChooser.saveGame(frame, gameController)) {
@@ -6656,7 +6890,6 @@ public class GameMenu extends JMenuBar {
             });
 
             b3.addActionListener(e -> {
-                System.out.println("exit");
                 frame.setJMenuBar(null);
                 frame.getContentPane().removeAll();
                 MainMenu menu = new MainMenu(frame);
@@ -6670,11 +6903,14 @@ public class GameMenu extends JMenuBar {
                 frame.repaint();
             });
 
+            UIManager.put("PopupMenu.border", new LineBorder(new Color(77, 92, 71)));
             JMenu menu = new JMenu("Menu");
+            menu.setForeground(Color.WHITE);
+
             menu.add(b1);
             menu.add(b2);
-            menu.add(b4);
             menu.add(b3);
+            menu.add(b4);
 
             this.setPreferredSize(new Dimension(100, 20));
             this.add(menu);
@@ -6682,31 +6918,211 @@ public class GameMenu extends JMenuBar {
 
         /**
          * A játékbeli gombok stílusát állítja be.
+         * @param button A gomb, amit beállít
          */
-        private void styleButton(JButton button){
+        private void styleButton(JButton button, BufferedImage image, BufferedImage hovered) {
 
             button.setContentAreaFilled(true);
-            button.setBorderPainted(true);
+            button.setBorderPainted(false);
             button.setOpaque(true);
-            button.setForeground(Color.WHITE);
-            button.setBackground(baseColor);
+            button.setMargin(new Insets(0,10,0,0));
+            button.setIcon(new ImageIcon(image));
 
-            Dimension size = new Dimension(150, 25);
+            Dimension size = new Dimension(120, 35);
             button.setPreferredSize(size);
             button.setMinimumSize(size);
             button.setMaximumSize(size);
 
-
             button.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseEntered(java.awt.event.MouseEvent evt) {
-                    button.setBackground(hoverColor);
+                    button.setIcon(new ImageIcon(hovered));
                 }
 
                 public void mouseExited(java.awt.event.MouseEvent evt) {
-                    button.setBackground(baseColor);
+                    button.setIcon(new ImageIcon(image));
                 }
             });
         }
+}
+
+================
+File: src/main/java/MainMenu.java
+================
+package main.java;
+
+import javax.swing.*;
+
+import main.java.mushroom.Mushroom;
+import main.java.player.Insecter;
+import main.java.player.Player;
+import main.java.player.Shroomer;
+import main.java.view.UtilityTool;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+/**
+ * A főmenüt megvalósító osztály
+ */
+public class MainMenu extends JPanel {
+	
+	public static String prefix = "resources/";  //Intellij-ben írjátok be a resources/-t, eclipseben legyen üres sztring
+
+    private final JFrame frame;
+
+	/**
+	 * Létrehoz egy új példányt, és elhelyezi a kapott frame-en
+	 * @param frame A kapott ablak
+	 */
+	public MainMenu(JFrame frame) {
+		this.frame = frame;
+
+		UtilityTool uTool = new UtilityTool();
+		BufferedImage bgImage = uTool.load(prefix + "menu_bg6.png");
+
+		ImageIcon backgroundIcon = new ImageIcon(bgImage);
+		JLabel backgroundLabel = new JLabel(backgroundIcon);
+		frame.setSize(bgImage.getWidth(), bgImage.getHeight());
+
+		backgroundLabel.setLayout(new GridBagLayout());
+		this.setLayout(new BorderLayout());
+		this.add(backgroundLabel, BorderLayout.CENTER);
+
+		Font buttonFont = new Font("SansSerif", Font.BOLD, 18);
+
+        JButton newGameButton = new JButton("");
+		BufferedImage b1Image = uTool.load(MainMenu.prefix + "bNewGame3.png");
+		BufferedImage b1ImageHovered = uTool.load(MainMenu.prefix + "bNewGame3h.png");
+		styleButton(newGameButton, buttonFont, b1Image, b1ImageHovered);
+
+        JButton loadGameButton = new JButton("");
+		BufferedImage b2Image = uTool.load(MainMenu.prefix + "bLoad3.png");
+		BufferedImage b2ImageHovered = uTool.load(MainMenu.prefix + "bLoad3h.png");
+		styleButton(loadGameButton, buttonFont, b2Image, b2ImageHovered);
+
+        JButton exitButton = new JButton("");
+		BufferedImage b3Image = uTool.load(MainMenu.prefix + "bExit3.png");
+		BufferedImage b3ImageHovered = uTool.load(MainMenu.prefix + "bExit3h.png");
+		styleButton(exitButton, buttonFont, b3Image, b3ImageHovered);
+
+		newGameButton.addActionListener(e -> startGame());
+
+		loadGameButton.addActionListener(e -> {
+			if (GameFileChooser.loadGame(frame, frame)) {
+				JOptionPane.showMessageDialog(frame, "Játékállapot sikeresen betöltve!", "Betöltés sikeres", JOptionPane.INFORMATION_MESSAGE);
+				GameState state = null; //TODO
+				startGameFromLoad(state);
+			}
+		});
+
+		exitButton.addActionListener(e -> exit());
+
+		GridBagConstraints c = new GridBagConstraints();
+		c.insets = new Insets(25, 0, 25, 0);
+		c.gridx = 0;
+
+		c.gridy = 0;
+		backgroundLabel.add(newGameButton, c);
+
+		c.gridy = 1;
+		backgroundLabel.add(loadGameButton, c);
+
+		c.gridy = 2;
+		backgroundLabel.add(exitButton, c);
+	}
+
+	/**
+	 * A játékbeli gombok stílusát állítja be.
+	 */
+	private void styleButton(JButton button, Font font, BufferedImage image, BufferedImage hovered) {
+		button.setFont(font);
+		button.setFocusable(false);
+        int BUTTON_WIDTH = 210;
+        int BUTTON_HEIGHT = 95;
+        button.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
+		button.setContentAreaFilled(false);
+		button.setBorderPainted(false);
+		button.setOpaque(false);
+
+		button.setIcon(new ImageIcon(image));
+		button.setMargin(new Insets(0,20,0,0));
+
+		button.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseEntered(java.awt.event.MouseEvent evt) {
+				button.setIcon(new ImageIcon(hovered));
+			}
+
+			public void mouseExited(java.awt.event.MouseEvent evt) {
+				button.setIcon(new ImageIcon(image));
+			}
+		});
+	}
+
+	/**
+	 * A játékosok felvételéért felel.
+	 */
+	private ArrayList<Player> addPlayers()	{
+		String insecterName1 = JOptionPane.showInputDialog(frame, "Enter name for Insecter 1:");
+		String insecterName2 = JOptionPane.showInputDialog(frame, "Enter name for Insecter 2:");
+		String shroomerName1 = JOptionPane.showInputDialog(frame, "Enter name for Shroomer 1:");
+		String shroomerName2 = JOptionPane.showInputDialog(frame, "Enter name for Shroomer 2:");
+
+		if (insecterName1 == null || insecterName2 == null || shroomerName1 == null || shroomerName2 == null ||
+				insecterName1.isBlank() || insecterName2.isBlank() || shroomerName1.isBlank() || shroomerName2.isBlank()) {
+			JOptionPane.showMessageDialog(frame, "All names must be provided.", "Input Error", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+
+		ArrayList<Player> players = new ArrayList<>();
+		players.add(new Insecter(insecterName1, false));
+		players.add(new Insecter(insecterName2, false));
+		players.add(new Shroomer(shroomerName1, false, new Mushroom( false)));
+		players.add(new Shroomer(shroomerName2, false, new Mushroom( false)));
+		return players;
+	}
+
+	GamePanel gamePanel;
+
+	/**
+	 * Az új játék elindításáért felelős gomb hatása
+	 */
+	private void startGame() {
+		ArrayList<Player> players = addPlayers();
+		if(players != null) {
+           	gamePanel = new GamePanel(players);
+        } else {
+			return;
+		}
+		makeFrame();
+	}
+	/**
+	 * A betöltött játék elindításáért felelős gomb hatása
+	 */
+	private void startGameFromLoad(GameState state){
+		makeFrame();
+	}
+	/**
+	 * Az új ablak létrehozását végző függvény
+	 */
+	private void makeFrame() {
+		frame.dispose();
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		frame.setVisible(true);
+		frame.setLayout(new BorderLayout());
+		frame.getContentPane().removeAll();
+		frame.setJMenuBar(new GameMenu(frame, gamePanel.getGameController()));
+		frame.add(gamePanel, BorderLayout.CENTER);
+		frame.revalidate();
+		frame.repaint();
+		gamePanel.requestFocusInWindow();
+	}
+	/**
+	 * A kilépés gomb hatása
+	 */
+	private void exit() {
+		System.exit(0);
+	}
 }
 
 ================
@@ -6718,6 +7134,7 @@ import main.java.GameController;
 import main.java.GamePanel;
 import main.java.Geometry;
 import main.java.insect.Insect;
+import main.java.mushroom.CanGrowBodyVisitor;
 import main.java.mushroom.GeometryString;
 import main.java.mushroom.MushroomBody;
 import main.java.mushroom.MushroomString;
@@ -6729,6 +7146,7 @@ import main.java.spore.SporeAccept;
 import main.java.spore.SporeConsumptionVisitor;
 import main.java.tecton.GeometryTecton;
 import main.java.tecton.Tecton;
+import main.java.tecton.TectonAccept;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -6752,6 +7170,13 @@ public class MouseHandler implements MouseListener {
     private MushroomString clickedMushroomString = null;
     private final GamePanel gamePanel;
 
+    /**
+     * Létrehozza az új példányt a megfelelő paraméterekkel
+     * @param gc A GameController példány, amihez tartozik
+     * @param repaintCallback A képernyő újrarajzolását végző metódus
+     * @param gamePanel A játék, amihez tartozik
+     * @param keyHandler A keyHandler pédlány, amely a játékhoz tartozik
+     */
     public MouseHandler(GameController gc, Runnable repaintCallback, GamePanel gamePanel, KeyHandler keyHandler) {
         this.gc = gc;
         this.repaintCallback = repaintCallback;
@@ -6759,6 +7184,9 @@ public class MouseHandler implements MouseListener {
         this.gamePanel = gamePanel;
     }
 
+    /**
+     * Visszaállítja a kijelölést, és a kiválasztott objektumokat semmire a második kattintás után.
+     */
     private void reset(){
         firstClick = true;
         clickedSpore = null;
@@ -6861,15 +7289,18 @@ public class MouseHandler implements MouseListener {
      * @param y a kattintás y koordinátája
      */
     private void selectMushroomString(int x, int y) {
+        
         // Beállítjuk a kiemelést a gombafonalokra
         gamePanel.setShineOn(GamePanel.ShineOn.MUSHSTRING);
         repaintCallback.run();
         for (MushroomString ms : gc.getPlanet().getMushstrings()) {
-            ArrayList<Tecton> connections = ms.getConnection();
+        	if(ms.getConnection().get(0).getGeometry() == null
+        			&& ms.getConnection().get(1).getGeometry() == null && ms.getConnection().size() != 2)
+        		continue;
+        	ArrayList<Tecton> connections = ms.getConnection();
 
             Geometry geom1;
             Geometry geom2;
-            // Az összekötött tektonok geometriáját lekérjük
             if(connections.get(1) != null){
                  geom1 = connections.get(0).getGeometry();
                  geom2 = connections.get(1).getGeometry();
@@ -6881,20 +7312,18 @@ public class MouseHandler implements MouseListener {
                 System.out.println("Buzi románok");
             }
 
-            // Csak akkor folytatjuk, ha elég közel van a klikk a fonalhoz
             if (isClickNearLine(x, y, geom1.getX(), geom1.getY(), geom2.getX(), geom2.getY())) {
                 System.out.println("Clicked on a mushroom string");
-                // Ha a current player Shroomer, akkor megnézzük, hogy az ő gombájának fonala-e
                 if (gc.getCurrentPlayer() instanceof Shroomer shroomer) {
                     if (ms.getMushroom() == shroomer.getMushroom() && !ms.getDead()) {
                         clickedMushroomString = ms;
-                        System.out.println("Selected mushroom string: " + ms.getName());
+                        System.out.println("Selected mushroom string: " + ms);
                         return;
                     }
                 } else if (gc.getCurrentPlayer() instanceof Insecter) {
                     if (!ms.getDead()) {
                         clickedMushroomString = ms;
-                        System.out.println("Selected mushroom string: " + ms.getName());
+                        System.out.println("Selected mushroom string: " + ms);
                         return;
                     }
                 }
@@ -6940,18 +7369,21 @@ public class MouseHandler implements MouseListener {
 
         if (clickedTecton != null) {
             if (p instanceof Shroomer) {
-                MushroomBody mb = new MushroomBody(clickedTecton, ((Shroomer) p).getMushroom(), 2, false);
-                for(MushroomBody m : gc.getPlanet().getMushbodies()) {
-                    if(m.getLocation().equals(clickedTecton)) {
-                        return;
+                CanGrowBodyVisitor v = new CanGrowBodyVisitor();
+                TectonAccept acceptor = (TectonAccept) clickedTecton;
+                acceptor.accept(v);
+                if(v.canPerformAction()){
+                    MushroomBody mb = new MushroomBody(clickedTecton, ((Shroomer) p).getMushroom(), 2, false);
+                    for(MushroomBody m : gc.getPlanet().getMushbodies()) {
+                        if(m.getLocation().equals(clickedTecton)) {
+                            return;
+                        }
                     }
+                    GeometryTecton tectonGeometry = clickedTecton.getGeometry();
+                    mb.setGeometry(gc.randomOffsetInsideCircle(tectonGeometry));
+                    gc.getPlanet().getMushbodies().add(mb);
                 }
-
-                // Setting geometry for mushroom body
-                GeometryTecton tectonGeometry = clickedTecton.getGeometry();
-                mb.setGeometry(gc.randomOffsetInsideCircle(tectonGeometry));
-
-                gc.getPlanet().getMushbodies().add(mb);
+                else return;
             } else if (p instanceof Insecter) {
                 for(Insect i : gc.getPlanet().getInsects()) {
                     if(i.getLocation().equals(clickedTecton)) {
@@ -6960,7 +7392,6 @@ public class MouseHandler implements MouseListener {
                 }
                 Insect i = new Insect(clickedTecton);
 
-                // THIS IS THE FIX - Set geometry for the insect
                 GeometryTecton tectonGeometry = clickedTecton.getGeometry();
                 i.setGeometry(gc.randomOffsetInsideCircle(tectonGeometry));
 
@@ -6983,7 +7414,6 @@ public class MouseHandler implements MouseListener {
         if(p instanceof Shroomer) {
             int code = keyHandler.getKeyCode();
             System.out.println("Current keyCode: " + code);
-            //System.out.println("Clicked at " + mouseX + ", " + mouseY);
             //A gombára,vagy fonalra mehet
             if(keyHandler.getKeyCode() == KeyHandler.KEY_MUSHROOM){ // click on mushroom
                 System.out.println("Mushroom at " + mouseX + ", " + mouseY);
@@ -7041,8 +7471,9 @@ public class MouseHandler implements MouseListener {
                 }
                 else if(clickedTecton.canGrowHypha(gc.getPlanet().getMushstrings())){
                     if(clickedMushroomString != null){
-                        if(clickedMushroomString.branch(clickedTecton, gc.getPlanet().getMushstrings()))
+                        if(clickedMushroomString.branch(clickedTecton, gc.getPlanet().getMushstrings())){
                             gc.nextTurnCheck();
+                        }
                     }
                     else if(clickedMushroomBody != null && keyHandler.getKeyCode() == KeyHandler.KEY_HYPHA){ // H = hypha
                             if(clickedMushroomBody.getLocation().equals(clickedTecton)){
@@ -7050,7 +7481,7 @@ public class MouseHandler implements MouseListener {
                                 connection.add(clickedTecton);
                                 connection.add(null);
                                 GeometryString geom = new GeometryString(clickedMushroomBody.getGeometry().getX(), clickedMushroomBody.getGeometry().getY(), clickedTecton.getGeometry().getX(), clickedTecton.getGeometry().getY());
-                                gc.getPlanet().getMushstrings().add(new MushroomString("hypha", ((Shroomer) gc.getCurrentPlayer()).getMushroom(), connection, new ArrayList<>(Arrays.asList(null, null)), gc.getTurnCounter(), geom));
+                                gc.getPlanet().getMushstrings().add(new MushroomString(((Shroomer) gc.getCurrentPlayer()).getMushroom(), connection, new ArrayList<>(Arrays.asList(null, null)), gc.getTurnCounter(), geom, true));
                                 gc.nextTurnCheck();
                             }
                     }
@@ -7059,7 +7490,7 @@ public class MouseHandler implements MouseListener {
             reset();
         }
         else if(p instanceof Insecter) {
-            //A kattintás egy tektonra, spórára, vagy fonalra mehet, de lehet itt is célszerű lenne gombokkal szabályozni, hogy ne lehessen véletlenül mondjuk félrekattintani, emiatt az if-ek ideiglenesek
+            //A kattintás egy tektonra, spórára, vagy fonalra mehet
             if(keyHandler.getKeyCode() == KeyHandler.KEY_MOVE){ // M = move
                 selectTecton(mouseX, mouseY);
             }
@@ -7072,19 +7503,25 @@ public class MouseHandler implements MouseListener {
 
             if(clickedTecton != null && clickedInsect.getLocation() != clickedTecton && clickedTecton.isNeighbour(clickedInsect.getLocation()) && gc.getPlanet().getMushstrings().stream()
                     .anyMatch(ms -> ms.getConnection().contains(clickedInsect.getLocation()) && ms.getConnection().contains(clickedTecton))) {
-                clickedInsect.move(clickedTecton);
-                gc.nextTurnCheck();
+                int actionNumber = clickedInsect.move(clickedTecton);
+                if(actionNumber != -3){
+                    clickedInsect.setGeometry(gc.randomOffsetInsideCircle(clickedTecton.getGeometry()));
+                    gc.nextTurnCheck();
+                    p.setActions(p.getActions() + actionNumber);
+                }
+
             }
             else if(clickedSpore != null) {
                 if (clickedInsect.getLocation() == clickedSpore.getLocation()) {
                     SporeConsumptionVisitor v = new SporeConsumptionVisitor(clickedInsect, gc);
                     ((SporeAccept) clickedSpore).accept(v);
+                gc.getCurrentPlayer().setScore(clickedInsect.getNutrients());
                     gc.nextTurnCheck();
                 }
             }
             else if(clickedMushroomString != null) {
-                clickedInsect.cutHypha(clickedMushroomString, gc.getPlanet().getMushstrings());
-                gc.nextTurnCheck();
+                if(clickedInsect.cutHypha(clickedMushroomString))
+                    gc.nextTurnCheck();
             }
           reset();
         }
@@ -7127,6 +7564,10 @@ public class MouseHandler implements MouseListener {
     @Override
     public void mouseReleased(MouseEvent e) {}
 
+    /**
+     * Az objektumok megfelelő módon történő kiemeléséért felelős függvény
+     * @param e A kattintás eseménye
+     */
     @Override
     public void mouseEntered(MouseEvent e) {
         // Ha a játék inicializáló fázisban van
@@ -7184,179 +7625,173 @@ public class MouseHandler implements MouseListener {
 }
 
 ================
-File: src/main/java/MainMenu.java
+File: src/main/java/GamePanel.java
 ================
 package main.java;
 
-import javax.swing.*;
-
-import main.java.mushroom.Mushroom;
-import main.java.player.Insecter;
-import main.java.player.Player;
-import main.java.player.Shroomer;
+import main.java.control.*;
+import main.java.player.*;
+import main.java.view.DrawManager;
 import main.java.view.UtilityTool;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class MainMenu extends JPanel {
-	
-	public static String prefix = "resources/";  //Intellij-ben írjátok be a resources/-t, eclipseben legyen üres sztring
+/**
+ * A GamePanel osztály felelős a játék megjelenítéséért.
+ */
+public class GamePanel extends JPanel {
 
-    private final JFrame frame;
-	
-	public MainMenu(JFrame frame) {
-		this.frame = frame;
+	public enum ShineOn {TECTON, MUSHBODY, MUSHSTRING, SPORE, INSECT, NONE}
+	private ShineOn shineOn = ShineOn.NONE;
 
-		UtilityTool uTool = new UtilityTool();
-		BufferedImage bgImage = uTool.load(prefix + "menu_bg6.png");
+	private GameController gameController;
+	private final DrawManager drawManager;
+	private final BufferedImage backgroundImage;
 
-		ImageIcon backgroundIcon = new ImageIcon(bgImage);
-		JLabel backgroundLabel = new JLabel(backgroundIcon);
-		frame.setSize(bgImage.getWidth(), bgImage.getHeight());
+	/**
+	 * Létrehozza magát a játékot, és minden paramétert beállít.
+	 * @param players A játékot játszó játékosok listája
+	 */
+    public GamePanel(ArrayList<Player> players) {
+		gameController = new GameController(false, 20, this::repaint);
+		gameController.setPlanet(gameController.buildPlanet());
+        for (Player player : players) {
+            gameController.addPlayer(player);
+        }
+		drawManager = new DrawManager();
+		setBackground(Color.BLACK);
+		setDoubleBuffered(true);
+		UtilityTool ut = new UtilityTool();
+		backgroundImage = ut.load(MainMenu.prefix + "Background_icon3.png");
+        KeyHandler keyHandler = new KeyHandler(gameController, this::repaint, this);
+        MouseHandler mouseHandler = new MouseHandler(gameController, this::repaint, this, keyHandler);
+		this.addMouseListener(mouseHandler);
+		this.addKeyListener(keyHandler);
+		this.setFocusable(true);
+	}
 
-		backgroundLabel.setLayout(new GridBagLayout());
-		this.setLayout(new BorderLayout());
-		this.add(backgroundLabel, BorderLayout.CENTER);
+	//Getterek, setterek
+	public void setGameController(GameController gameController) {
+		this.gameController = gameController;
+	}
 
-		Font buttonFont = new Font("SansSerif", Font.BOLD, 18);
-
-        JButton newGameButton = new JButton("");
-		BufferedImage b1Image = uTool.load(MainMenu.prefix + "bNewGame3.png");
-		BufferedImage b1ImageHovered = uTool.load(MainMenu.prefix + "bNewGame3h.png");
-		styleButton(newGameButton, buttonFont, b1Image, b1ImageHovered);
-
-        JButton loadGameButton = new JButton("");
-		BufferedImage b2Image = uTool.load(MainMenu.prefix + "bLoad3.png");
-		BufferedImage b2ImageHovered = uTool.load(MainMenu.prefix + "bLoad3h.png");
-		styleButton(loadGameButton, buttonFont, b2Image, b2ImageHovered);
-
-        JButton exitButton = new JButton("");
-		BufferedImage b3Image = uTool.load(MainMenu.prefix + "bExit3.png");
-		BufferedImage b3ImageHovered = uTool.load(MainMenu.prefix + "bExit3h.png");
-		styleButton(exitButton, buttonFont, b3Image, b3ImageHovered);
-
-		newGameButton.addActionListener(e -> startGame());
-
-		loadGameButton.addActionListener(e -> {
-			if (GameFileChooser.loadGame(frame, frame)) {
-				JOptionPane.showMessageDialog(frame, "Játékállapot sikeresen betöltve!", "Betöltés sikeres", JOptionPane.INFORMATION_MESSAGE);
-				GameState state = null; //TODO
-				startGameFromLoad(state);
-			}
-		});
-
-		exitButton.addActionListener(e -> exit());
-
-		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(25, 0, 25, 0);
-		c.gridx = 0;
-
-		c.gridy = 0;
-		backgroundLabel.add(newGameButton, c);
-
-		c.gridy = 1;
-		backgroundLabel.add(loadGameButton, c);
-
-		c.gridy = 2;
-		backgroundLabel.add(exitButton, c);
+	public GameController getGameController() {
+		return gameController;
 	}
 
 	/**
-	 * A játékbeli gombok stílusát állítja be.
+	 * Kiemeli az interaktálható objektumokat
+	 * @param shineOn A kijelölendő objektum
 	 */
-	private void styleButton(JButton button, Font font, BufferedImage image, BufferedImage hovered) {
-		button.setFont(font);
-		button.setFocusable(false);
-        int BUTTON_WIDTH = 210;
-        int BUTTON_HEIGHT = 95;
-        button.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
-		button.setContentAreaFilled(false);
-		button.setBorderPainted(false);
-		button.setOpaque(false);
-		button.setForeground(Color.WHITE);
-
-		Color baseColor = new Color(47, 84, 39);
-
-		button.setBackground(baseColor);
-
-		button.setIcon(new ImageIcon(image));
-		button.setMargin(new Insets(0,20,0,0));
-
-		button.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				button.setIcon(new ImageIcon(hovered));
-			}
-
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				button.setIcon(new ImageIcon(image));
-			}
-		});
+	public void setShineOn(ShineOn shineOn) {
+		this.shineOn = shineOn;
 	}
 
 	/**
-	 * A játékosok felvételéért felel.
-	 */
-	private ArrayList<Player> addPlayers()	{
-		String insecterName1 = JOptionPane.showInputDialog(frame, "Enter name for Insecter 1:");
-		String insecterName2 = JOptionPane.showInputDialog(frame, "Enter name for Insecter 2:");
-		String shroomerName1 = JOptionPane.showInputDialog(frame, "Enter name for Shroomer 1:");
-		String shroomerName2 = JOptionPane.showInputDialog(frame, "Enter name for Shroomer 2:");
+	 * Kirajzolja a játék követéséhez szükséges információkat
+ 	 * @param g2 A kirajzoló komponens
+ 	*/
+	private void drawGameStatus(Graphics2D g2) {
+		ArrayList<Player> players = gameController.getPlayers();
+		Font regularFont = new Font("SansSerif", Font.BOLD, 14);
+		g2.setFont(regularFont);
+		g2.setColor(Color.WHITE);
 
-		if (insecterName1 == null || insecterName2 == null || shroomerName1 == null || shroomerName2 == null ||
-				insecterName1.isBlank() || insecterName2.isBlank() || shroomerName1.isBlank() || shroomerName2.isBlank()) {
-			JOptionPane.showMessageDialog(frame, "All names must be provided.", "Input Error", JOptionPane.ERROR_MESSAGE);
-			return null;
+		int padding = 10;
+		int lineHeight = g2.getFontMetrics().getHeight();
+		int startX = getWidth() - 150;
+		int startY = padding + lineHeight;
+
+		for (int i = 0; i < players.size(); i++) {
+			Player p = players.get(i);
+			String text = p.getName() + " - " + p.getScore();
+			g2.drawString(text, startX, startY + i * lineHeight);
 		}
 
-		ArrayList<Player> players = new ArrayList<>();
-		players.add(new Insecter(insecterName1, false));
-		players.add(new Insecter(insecterName2, false));
-		players.add(new Shroomer(shroomerName1, false, new Mushroom( false)));
-		players.add(new Shroomer(shroomerName2, false, new Mushroom( false)));
-		return players;
-	}
+		Font statusFont = new Font("SansSerif", Font.BOLD, 16);
+		g2.setFont(statusFont);
 
-	GamePanel gamePanel;
+		int statusHeight = lineHeight * 2 + padding * 2;
+		int statusWidth = 250;
+		int statusX = getWidth() - statusWidth - padding;
+		int statusY = getHeight() - statusHeight - padding;
+
+		g2.setColor(new Color(0, 0, 0, 180));
+		g2.fillRoundRect(statusX, statusY, statusWidth, statusHeight, 10, 10);
+
+		g2.setColor(Color.WHITE);
+		Player currentPlayer = gameController.getCurrentPlayer();
+		int remainingRounds = gameController.getMaxTurn() - gameController.getTurnCounter();
+		String playerText = "Current Player: " + (currentPlayer != null ? currentPlayer.getName() : "None");
+		String roundText = "Remaining Rounds: " + remainingRounds;
+
+		g2.drawString(playerText, statusX + padding, statusY + lineHeight);
+		g2.drawString(roundText, statusX + padding, statusY + lineHeight * 2);
+
+		if (currentPlayer != null) {
+			Color playerColor;
+			if (currentPlayer instanceof Shroomer) {
+				playerColor = new Color(243, 3, 3);
+			} else {
+				playerColor = new Color(255, 215, 0);
+			}
+
+			g2.setColor(playerColor);
+			g2.fillRoundRect(statusX + 160, statusY + lineHeight - 12, 10, 10, 5, 5);
+
+			g2.setColor(Color.WHITE);
+			g2.setFont(new Font("SansSerif", Font.PLAIN, 14));
+			String actionsText = "Actions left: " + currentPlayer.getActions();
+			g2.drawString(actionsText, statusX + padding, statusY + lineHeight * 3);
+			if(gameController.getTurnCounter() == gameController.getMaxTurn())
+			{
+				ArrayList<Player> winners = gameController.nextTurnCheck();
+				if (!winners.isEmpty()) {
+					gameEndsPopup(winners);
+				}
+			}
+		}
+	}
 
 	/**
-	 * Az új játék elindításáért felel.
+	 * A játék végét jelző pop-up ablak megvalósítása
+	 * @param winners A győztesek listája
 	 */
-	private void startGame() {
-		ArrayList<Player> players = addPlayers();
-		if(players != null) {
-           	gamePanel = new GamePanel(players);
-        } else {
-			return;
+	private void gameEndsPopup(ArrayList<Player> winners) {
+        String message = "The winners are: " +
+                winners.get(0).getName() + " and " +
+                winners.get(1).getName() + "!";
+
+		JOptionPane.showMessageDialog(this, message, "Game Over", JOptionPane.INFORMATION_MESSAGE);
+
+		JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+		frame.setJMenuBar(null);
+		frame.getContentPane().removeAll();
+		MainMenu menu = new MainMenu(frame);
+		menu.setBackground(new Color(6, 26, 14));
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		frame.add(menu);
+		frame.revalidate();
+		frame.repaint();
+	}
+
+	/**
+	 * A játék megjelenítéséért felelős függvény
+	 * @param g A kirajzoló komponens
+	 */
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		if (backgroundImage != null) {
+			g2.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 		}
-		frame.dispose();
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		frame.setVisible(true);
-		frame.setLayout(new BorderLayout());
-		frame.getContentPane().removeAll();
-		frame.setJMenuBar(new GameMenu(frame, gamePanel.getGameController()));
-		frame.add(gamePanel, BorderLayout.CENTER);
-		frame.revalidate();
-		frame.repaint();
-		gamePanel.requestFocusInWindow();
-	}
-
-	private void startGameFromLoad(GameState state){
-		frame.dispose();
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		frame.setVisible(true);
-		frame.setLayout(new BorderLayout());
-		frame.getContentPane().removeAll();
-		frame.setJMenuBar(new GameMenu(frame, gamePanel.getGameController()));
-		frame.add(gamePanel, BorderLayout.CENTER);
-		frame.revalidate();
-		frame.repaint();
-		gamePanel.requestFocusInWindow();
-	}
-
-	private void exit() {
-		System.exit(0);
+		drawManager.drawPlanet(g2, gameController.getPlanet(), shineOn);
+		drawGameStatus(g2);
 	}
 }
 
@@ -7385,7 +7820,7 @@ public class GameController {
     private final boolean testing;
     private final ArrayList<Player> players;
     private Player currentPlayer;
-    private final Runnable repaintCallback;
+    private final transient Runnable repaintCallback;
 
     private boolean init = true;
     
@@ -7404,7 +7839,7 @@ public class GameController {
     }
 
     /**
-     * A kirajzoláskor egy vélwtlen eltolást hoz létre az adott tektonon, hogy ne minden objektum egymáson legyen.
+     * A kirajzoláskor egy véletlen eltolást hoz létre az adott tektonon, hogy ne minden objektum egymáson legyen.
      *
      * @param geometry a felhasznált GeometryTecton példány
      * @return az új geometry
@@ -7421,42 +7856,66 @@ public class GameController {
         return g;
     }
 
-    public void setInit(boolean init) {
-        this.init = init;
-    }
-
     /**
-     * Létrehozza a pályát - ez egyelőre placeholder, kell több tecton majd
+     * Létrehozza a pályát, elhelyezi a tektonokat
      */
     public Planet buildPlanet() {
     	Planet planet = new Planet();
     	
-    	BigTecton t1 = new BigTecton(3);
-    	t1.setGeometry(new GeometryTecton(600, 200, 110));
+    	BigTecton bt1 = new BigTecton(4);
+    	bt1.setGeometry(new GeometryTecton(600, 200, 110));
+        BigTecton bt2 = new BigTecton(4);
+        bt2.setGeometry(new GeometryTecton(532, 830, 110));
+        BigTecton bt3 = new BigTecton(4);
+        bt3.setGeometry(new GeometryTecton(1734, 325, 110));
+        BigTecton bt4 = new BigTecton(4);
+        bt4.setGeometry(new GeometryTecton(1264, 267, 110));
+        BigTecton bt5 = new BigTecton(4);
+        bt5.setGeometry(new GeometryTecton(900, 800, 110));
 
-    	SmallTecton t2 = new SmallTecton(3);
-    	t2.setGeometry(new GeometryTecton(900, 400, 55));
+    	SmallTecton st1 = new SmallTecton(2);
+    	st1.setGeometry(new GeometryTecton(900, 400, 55));
+        SmallTecton st2 = new SmallTecton(2);
+        st2.setGeometry(new GeometryTecton(100, 731, 55));
+        SmallTecton st3 = new SmallTecton(2);
+        st3.setGeometry(new GeometryTecton(1510, 412, 55));
     	
-    	HealingTecton t3 = new HealingTecton(3);
-    	t3.setGeometry(new GeometryTecton(250, 250, 85));
+    	HealingTecton ht1 = new HealingTecton(3);
+    	ht1.setGeometry(new GeometryTecton(250, 250, 85));
+        HealingTecton ht2 = new HealingTecton(3);
+        ht2.setGeometry(new GeometryTecton(1123, 581, 85));
+        HealingTecton ht3 = new HealingTecton(3);
+        ht3.setGeometry(new GeometryTecton(310, 700, 85));
     	
-    	CoarseTecton t4 = new CoarseTecton(3);
-    	t4.setGeometry(new GeometryTecton(400, 400, 90));
+    	CoarseTecton ct1 = new CoarseTecton(3);
+    	ct1.setGeometry(new GeometryTecton(400, 400, 90));
+        CoarseTecton ct2 = new CoarseTecton(3);
+        ct2.setGeometry(new GeometryTecton(1564, 153, 90));
+        CoarseTecton ct3 = new CoarseTecton(3);
+        ct3.setGeometry(new GeometryTecton(700, 420, 90));
     	
-    	ToxicTecton t5 = new ToxicTecton(3);
-    	t5.setGeometry(new GeometryTecton(600, 600, 95));
+    	ToxicTecton tt1 = new ToxicTecton(3);
+    	tt1.setGeometry(new GeometryTecton(600, 600, 95));
+        ToxicTecton tt2 = new ToxicTecton(3);
+        tt2.setGeometry(new GeometryTecton(1400, 800, 95));
 
-        //Mushroom m = new Mushroom(false);
-        //MushroomString ms1 = new MushroomString("hypha", m, new ArrayList<>(), new ArrayList<>(), 0, new GeometryString(0, 0, 100, 100));
-    	
-    	planet.addTecton(t1);
-    	planet.addTecton(t2);
-    	planet.addTecton(t3);
-    	planet.addTecton(t4);
-    	planet.addTecton(t5);
-        //planet.addMushroomString(ms1);
+    	planet.addTecton(bt1);
+        planet.addTecton(bt2);
+        planet.addTecton(bt3);
+        planet.addTecton(bt4);
+        planet.addTecton(bt5);
+        planet.addTecton(st1);
+        planet.addTecton(st2);
+        planet.addTecton(st3);
+        planet.addTecton(ht1);
+        planet.addTecton(ht2);
+        planet.addTecton(ht3);
+        planet.addTecton(ct1);
+        planet.addTecton(ct2);
+        planet.addTecton(ct3);
+        planet.addTecton(tt1);
+        planet.addTecton(tt2);
         planet.recalcNeighbours();
-    	
     	return planet;
     }
 
@@ -7511,6 +7970,9 @@ public class GameController {
 
     public boolean getInit() {
         return init;
+    }
+    public void setInit(boolean init) {
+        this.init = init;
     }
     
     /**
@@ -7574,164 +8036,6 @@ public class GameController {
         }
         return winners;
     }
-}
-
-================
-File: src/main/java/GamePanel.java
-================
-package main.java;
-
-import main.java.control.*;
-import main.java.player.*;
-import main.java.view.DrawManager;
-import main.java.view.UtilityTool;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-
-public class GamePanel extends JPanel {
-
-	public enum ShineOn {TECTON, MUSHBODY, MUSHSTRING, SPORE, INSECT, NONE}
-	private ShineOn shineOn = ShineOn.NONE;
-
-	private GameController gameController;
-	private final DrawManager drawManager;
-	private final BufferedImage backgroundImage;
-
-    public GamePanel(ArrayList<Player> players) {
-		gameController = new GameController(false, 20, this::repaint);
-		gameController.setPlanet(gameController.buildPlanet());
-        for (Player player : players) {
-            gameController.addPlayer(player);
-        }
-		drawManager = new DrawManager();
-		setBackground(Color.BLACK);
-		setDoubleBuffered(true);
-		UtilityTool ut = new UtilityTool();
-		backgroundImage = ut.load(MainMenu.prefix + "Background_icon3.png");
-        KeyHandler keyHandler = new KeyHandler(gameController, this::repaint, this);
-        MouseHandler mouseHandler = new MouseHandler(gameController, this::repaint, this, keyHandler);
-		this.addMouseListener(mouseHandler);
-		this.addKeyListener(keyHandler);
-		this.setFocusable(true);
-	}
-
-	public void setGameController(GameController gameController) {
-		this.gameController = gameController;
-	}
-
-	public GameController getGameController() {
-		return gameController;
-	}
-
-	//Getter és setter a kiemelés állításához
-	public void setShineOn(ShineOn shineOn) {
-		this.shineOn = shineOn;
-	}
-
-	/**
-	 * Draws the game status information including player scores and current game state
- 	 * @param g2 The Graphics2D context to draw on
- 	*/
-	private void drawGameStatus(Graphics2D g2) {
-		ArrayList<Player> players = gameController.getPlayers();
-		Font regularFont = new Font("SansSerif", Font.BOLD, 14);
-		g2.setFont(regularFont);
-		g2.setColor(Color.WHITE);
-
-		int padding = 10;
-		int lineHeight = g2.getFontMetrics().getHeight();
-		int startX = getWidth() - 150;
-		int startY = padding + lineHeight;
-
-		for (int i = 0; i < players.size(); i++) {
-			Player p = players.get(i);
-			String text = p.getName() + " - " + p.getScore();
-			g2.drawString(text, startX, startY + i * lineHeight);
-		}
-
-		Font statusFont = new Font("SansSerif", Font.BOLD, 16);
-		g2.setFont(statusFont);
-
-		// Create a transparent background for better readability
-		int statusHeight = lineHeight * 2 + padding * 2;
-		int statusWidth = 250;
-		int statusX = getWidth() - statusWidth - padding;
-		int statusY = getHeight() - statusHeight - padding;
-
-		// Draw status background
-		g2.setColor(new Color(0, 0, 0, 180)); // Semi-transparent black
-		g2.fillRoundRect(statusX, statusY, statusWidth, statusHeight, 10, 10);
-
-		// Draw status text
-		g2.setColor(Color.WHITE);
-		Player currentPlayer = gameController.getCurrentPlayer();
-		int remainingRounds = gameController.getMaxTurn() - gameController.getTurnCounter();
-		String playerText = "Current Player: " + (currentPlayer != null ? currentPlayer.getName() : "None");
-		String roundText = "Remaining Rounds: " + remainingRounds;
-
-		// Draw the status text
-		g2.drawString(playerText, statusX + padding, statusY + lineHeight);
-		g2.drawString(roundText, statusX + padding, statusY + lineHeight * 2);
-
-		// If you want to highlight the current player's turn with a color
-		if (currentPlayer != null) {
-			Color playerColor;
-			if (currentPlayer instanceof Shroomer) {
-				playerColor = new Color(243, 3, 3); // Red for Shroomer
-			} else {
-				playerColor = new Color(255, 215, 0);   // Yellow for Insecter
-			}
-
-			g2.setColor(playerColor);
-			g2.fillRoundRect(statusX + 160, statusY + lineHeight - 12, 10, 10, 5, 5);
-
-			// Add player's remaining actions
-			g2.setColor(Color.WHITE);
-			g2.setFont(new Font("SansSerif", Font.PLAIN, 14));
-			String actionsText = "Actions left: " + currentPlayer.getActions();
-			g2.drawString(actionsText, statusX + padding, statusY + lineHeight * 3);
-			if(gameController.getTurnCounter() == gameController.getMaxTurn())
-			{
-				ArrayList<Player> winners = gameController.nextTurnCheck();
-				if (!winners.isEmpty()) {
-					gameEndsPopup(winners);
-				}
-			}
-		}
-	}
-
-	private void gameEndsPopup(ArrayList<Player> winners) {
-        String message = "The winners are: " +
-                winners.get(0).getName() + " and " +
-                winners.get(1).getName() + "!";
-
-		JOptionPane.showMessageDialog(this, message, "Game Over", JOptionPane.INFORMATION_MESSAGE);
-
-		JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-		frame.setJMenuBar(null);
-		frame.getContentPane().removeAll();
-		MainMenu menu = new MainMenu(frame);
-		menu.setBackground(new Color(6, 26, 14));
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		frame.add(menu);
-		frame.revalidate();
-		frame.repaint();
-	}
-
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		if (backgroundImage != null) {
-			g2.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-		}
-		drawManager.drawPlanet(g2, gameController.getPlanet(), shineOn);
-		drawGameStatus(g2);
-	}
 }
 
 

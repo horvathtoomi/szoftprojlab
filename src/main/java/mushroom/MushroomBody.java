@@ -6,6 +6,7 @@ import main.java.tecton.*;
 import main.java.spore.*;
 import main.java.player.Shroomer;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,6 +16,9 @@ import java.util.Random;
  * a növekedést és a halált. Ezen kívül kezeli a gomba elhelyezkedését és annak állapotát.
  */
 public class MushroomBody implements Updatable, Serializable {
+	@Serial
+	private static final long serialVersionUID = 1L;
+
 	private final Tecton location;
 	private final Mushroom mushroom;
 	private int remainingSporulations;

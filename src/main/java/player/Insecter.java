@@ -2,6 +2,7 @@ package main.java.player;
 
 import main.java.insect.Insect;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
  * aki rovarokat irányít a játék során.
  */
 public class Insecter extends Player implements PlayerAccept, Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     List<Insect> insects;
 

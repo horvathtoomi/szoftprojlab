@@ -1,5 +1,6 @@
 package main.java.mushroom;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import main.java.Updatable;
@@ -11,6 +12,9 @@ import main.java.tecton.*;
  * fonalak, a gombája, érettségi szintje, és az állapota, hogy életben van-e, vagy már elpusztult
  */
 public class MushroomString implements Updatable, Serializable {
+	@Serial
+	private static final long serialVersionUID = 1L;
+
 	private final ArrayList<Tecton> connection;
 	private final ArrayList<MushroomString> neighbours;
 	private final Mushroom mushroom;

@@ -1,12 +1,16 @@
 package main.java.mushroom;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * A Mushroom osztály egy gombát reprezentál a játékban, amelyhez tartozik egy gombász (shroomer),
  * egy név, valamint lehet élő vagy halott állapotban.
  */
-public class Mushroom {
+public class Mushroom implements Serializable {
+	@Serial
+	private static final long serialVersionUID = 1L;
 
 	boolean dead;
 	boolean testing;

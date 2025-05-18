@@ -2,6 +2,7 @@ package main.java.tecton;
 
 import main.java.mushroom.MushroomString;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
@@ -12,6 +13,8 @@ import java.util.function.Supplier;
  * Egyedi névvel rendelkezik, ezért a Nameable leszármazottja, valamint vannak szomszédai és eltárolja, hogy mennyi fonal lehet rajta maximálisan
  */
 public abstract class Tecton implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private ArrayList<Tecton> neighbours;
     private int maxStrings;
