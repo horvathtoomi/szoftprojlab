@@ -12,7 +12,6 @@ public class CommandCompleter {
     
     private String lastCompletion = null;
     private final List<String> currentCompletions = new ArrayList<>(getScriptFiles());
-    private List<String> scriptFiles = new ArrayList<>();
     private int currentIndex = -1;
 
     private final List<String> commands = Arrays.asList(
@@ -48,19 +47,16 @@ public class CommandCompleter {
             String partial = hasSpaceAtTheEnd ? "" : parts[parts.length - 1].toLowerCase();
 
             if ("script".equals(mainCommand)) {
+                currentCompletions.clear();
+                currentIndex = -1;
+                lastCompletion = partial;
                 if (!hasSpaceAtTheEnd) {
-                    currentCompletions.clear();
-                    currentIndex = -1;
-                    lastCompletion = partial;
 
                     if ("script".startsWith(partial)) {
                         currentCompletions.add("script");
                     }
                 } else {
-                    currentCompletions.clear();
-                    currentIndex = -1;
-                    lastCompletion = partial;
-                    scriptFiles = getScriptFiles();
+                    List<String> scriptFiles = getScriptFiles();
                     if (currentCompletions.isEmpty()) {
                         currentCompletions.addAll(scriptFiles);
                     }

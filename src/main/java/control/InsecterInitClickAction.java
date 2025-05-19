@@ -11,6 +11,7 @@ import main.java.tecton.Tecton;
  * Az dönti el, hogy egy kattintást hogyan kell feldolgozni, ha azt egy rovarász végzi, és a játék inicializációs fázisban van.
  */
 public class InsecterInitClickAction implements ClickAction {
+
     private final MouseHandler mouseHandler;
 
     /**

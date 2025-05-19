@@ -53,7 +53,7 @@ public class ScriptModeDocument extends DefaultStyledDocument {
         try {
             insertString(getLength(), "> ", promptStyle);
         } catch (BadLocationException e) {
-
+            System.out.println(e.getMessage());
         }
     }
 
@@ -72,7 +72,7 @@ public class ScriptModeDocument extends DefaultStyledDocument {
                 insertString(getLength(), text + "\n", textStyle);
             }
         } catch (BadLocationException e) {
-
+            System.out.println(e.getMessage());
         }
     }
 
@@ -80,7 +80,7 @@ public class ScriptModeDocument extends DefaultStyledDocument {
         try {
             insertString(getLength(), text + "\n", systemStyle);
         } catch (BadLocationException e) {
-
+            System.out.println(e.getMessage());
         }
     }
 

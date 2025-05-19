@@ -20,9 +20,9 @@ public class UtilityTool {
         try {
             bufim = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)));
         } catch (IOException e) {
-            //System.out.println("[UTILITYTOOL] ERROR: " + e.getMessage());
+            System.out.println("[UTILITYTOOL] ERROR: " + e.getMessage());
         } catch (NullPointerException e) {
-            //System.out.println("[UTILITYTOOL] ERROR: File not found at path: " + path);
+            System.out.println("[UTILITYTOOL] ERROR: File not found at path: " + path);
         }
         return bufim;
     }

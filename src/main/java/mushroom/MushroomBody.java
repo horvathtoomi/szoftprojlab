@@ -303,7 +303,7 @@ public class MushroomBody implements Updatable, Serializable {
 		tecton.markBodyGrown();
         for (Spore spore : spores)
             if (spore.getLocation() == tecton) spore.die();
-        shroomer.score++;
+        shroomer.setScore(shroomer.getScore() + 1);
         return new MushroomBody(tecton, this.mushroom, 0, false);
 	}
 	

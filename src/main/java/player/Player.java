@@ -19,8 +19,8 @@ public abstract class Player extends Nameable implements Updatable, Serializable
     @Serial
     private static final long serialVersionUID = -119107727171198036L;
 
-    public int score;
-    public int remainingActions;
+    private int score;
+    private int remainingActions;
 
     /**
      * Létrehoz egy új játékost.
