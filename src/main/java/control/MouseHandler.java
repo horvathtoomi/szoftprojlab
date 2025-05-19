@@ -1,6 +1,7 @@
 package main.java.control;
 
 import main.java.GameController;
+import main.java.player.PlayerVisitor;
 import main.java.GamePanel;
 import main.java.Geometry;
 import main.java.insect.Insect;
@@ -176,19 +177,23 @@ public class MouseHandler implements MouseListener {
             }
 
             if (isClickNearLine(x, y, geom1.getX(), geom1.getY(), geom2.getX(), geom2.getY())) {
-                //System.out.println("Clicked on a mushroom string");
-                if (gc.getCurrentPlayer() instanceof Shroomer shroomer) {
-                    if (ms.getMushroom() == shroomer.getMushroom() && !ms.getDead()) {
-                        clickedMushroomString = ms;
-                        //System.out.println("Selected mushroom string: " + ms);
-                        return;
+                clickedMushroomString = null;
+                gc.getCurrentPlayer().accept(new PlayerVisitor() {
+                    @Override
+                    public void visit(Shroomer shroomer) {
+                        if (ms.getMushroom() == shroomer.getMushroom() && !ms.getDead()) {
+                            clickedMushroomString = ms;
+                        }
                     }
-                } else if (gc.getCurrentPlayer() instanceof Insecter) {
-                    if (!ms.getDead()) {
-                        clickedMushroomString = ms;
-                        //System.out.println("Selected mushroom string: " + ms);
-                        return;
+                    @Override
+                    public void visit(Insecter insecter) {
+                        if (!ms.getDead()) {
+                            clickedMushroomString = ms;
+                        }
                     }
+                });
+                if (clickedMushroomString != null) {
+                    return;
                 }
             }
         }
@@ -230,24 +235,26 @@ public class MouseHandler implements MouseListener {
         selectTecton(mouseX, mouseY);
 
         if (clickedTecton != null) {
-            if (p instanceof Shroomer) {
-                int mushCountBefore = gc.getPlanet().getMushbodies().size();
-                handleGameClick(p, mouseX, mouseY);
-                int mushCountAfter = gc.getPlanet().getMushbodies().size();
-
-                if (mushCountAfter > mushCountBefore) {
+            p.accept(new PlayerVisitor() {
+                @Override
+                public void visit(Shroomer shroomer) {
+                    int mushCountBefore = gc.getPlanet().getMushbodies().size();
+                    handleGameClick(shroomer, mouseX, mouseY);
+                    int mushCountAfter = gc.getPlanet().getMushbodies().size();
+                    if (mushCountAfter > mushCountBefore) {
+                        gc.setInitCheck();
+                        gc.setCurrentPlayerToNextPlayer();
+                        reset();
+                    }
+                }
+                @Override
+                public void visit(Insecter insecter) {
+                    handleGameClick(insecter, mouseX, mouseY);
                     gc.setInitCheck();
                     gc.setCurrentPlayerToNextPlayer();
                     reset();
                 }
-                // Ha nem nőtt a lista, nem történik semmi
-            } else {
-                // Más játékos (Tecton, Insect...) esetén minden kattintás lépésnek számít
-                handleGameClick(p, mouseX, mouseY);
-                gc.setInitCheck();
-                gc.setCurrentPlayerToNextPlayer();
-                reset();
-            }
+            });
         }
     }
 
@@ -295,47 +302,42 @@ public class MouseHandler implements MouseListener {
         // Ha a játék inicializáló fázisban van
         Player p = gc.getCurrentPlayer();
         if (gc.getInit()) {
-            if (p instanceof Shroomer) {
-                gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
-            } else if (p instanceof Insecter) {
-                gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
-            }
+            gamePanel.setShineOn(GamePanel.ShineOn.TECTON);   // mindkét játékos-típusnál ugyanaz
         } else {
-            // Normál játékmenet esetén
             int key = keyHandler.getKeyCode();
-
-            if (p instanceof Shroomer) {
-                if (firstClick) {
-                    // Első kattintás esetén a megfelelő kiemelés beállítása a billentyű alapján
-                    if (key == KeyHandler.KEY_GROW_BODY) {
-                        gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
-                    } else if (key == KeyHandler.KEY_MUSHROOM) {
-                        gamePanel.setShineOn(GamePanel.ShineOn.MUSHBODY);
-                    } else if (key == KeyHandler.KEY_BRANCH) {
-                        gamePanel.setShineOn(GamePanel.ShineOn.MUSHSTRING);
-                    }
-                } else {
-                    // Második kattintás esetén
-                    if (clickedMushroomBody != null && key == KeyHandler.KEY_SPREAD_SPORE) {
-                        gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
-                    } else if (clickedMushroomString != null) {
-                        gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
-                    }
-                }
-            } else if (p instanceof Insecter) {
-                if (firstClick) {
-                    gamePanel.setShineOn(GamePanel.ShineOn.INSECT);
-                } else {
-                    // Második kattintás esetén az insecter akcióinak megfelelő kiemelés
-                    if (key == KeyHandler.KEY_MOVE) {
-                        gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
-                    } else if (key == KeyHandler.KEY_EAT) {
-                        gamePanel.setShineOn(GamePanel.ShineOn.SPORE);
-                    } else if (key == KeyHandler.KEY_CUT) {
-                        gamePanel.setShineOn(GamePanel.ShineOn.MUSHSTRING);
+            p.accept(new PlayerVisitor() {
+                @Override
+                public void visit(Shroomer shroomer) {
+                    if (firstClick) {
+                        if (key == KeyHandler.KEY_GROW_BODY) {
+                            gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
+                        } else if (key == KeyHandler.KEY_MUSHROOM) {
+                            gamePanel.setShineOn(GamePanel.ShineOn.MUSHBODY);
+                        } else if (key == KeyHandler.KEY_BRANCH) {
+                            gamePanel.setShineOn(GamePanel.ShineOn.MUSHSTRING);
+                        }
+                    } else {
+                        if (clickedMushroomBody != null && key == KeyHandler.KEY_SPREAD_SPORE
+                                || clickedMushroomString != null) {
+                            gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
+                        }
                     }
                 }
-            }
+                @Override
+                public void visit(Insecter insecter) {
+                    if (firstClick) {
+                        gamePanel.setShineOn(GamePanel.ShineOn.INSECT);
+                    } else {
+                        if (key == KeyHandler.KEY_MOVE) {
+                            gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
+                        } else if (key == KeyHandler.KEY_EAT) {
+                            gamePanel.setShineOn(GamePanel.ShineOn.SPORE);
+                        } else if (key == KeyHandler.KEY_CUT) {
+                            gamePanel.setShineOn(GamePanel.ShineOn.MUSHSTRING);
+                        }
+                    }
+                }
+            });
         }
         repaintCallback.run();
     }

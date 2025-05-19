@@ -115,4 +115,5 @@ public abstract class Player extends Nameable implements Updatable, Serializable
      */
     public abstract Color getPlayerColor();
 
+    public abstract void accept(PlayerVisitor visitor);
 }

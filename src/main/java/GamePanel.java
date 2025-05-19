@@ -1,6 +1,7 @@
 package main.java;
 
 import main.java.control.*;
+import main.java.view.GameOverPanel;
 import main.java.player.*;
 import main.java.view.DrawManager;
 import main.java.view.UtilityTool;
@@ -136,21 +137,24 @@ public class GamePanel extends JPanel {
 	 * @param winners A győztesek listája
 	 */
 	private void gameEndsPopup(ArrayList<Player> winners) {
-        String message = "The winners are: " +
-                winners.get(0).getName() + " and " +
-                winners.get(1).getName() + "!";
 
-		JOptionPane.showMessageDialog(this, message, "Game Over", JOptionPane.INFORMATION_MESSAGE);
+	    /* ----- kinyerjük a nevek szerintük típusát ----- */
+	    final String[] shName = {""};
+	    final String[] inName = {""};
+	    for (Player w : winners) {
+	        w.accept(new PlayerVisitor() {            // CHANGED: visitor-t használunk
+	            @Override public void visit(Shroomer s)  { shName[0] = s.getName(); }
+	            @Override public void visit(Insecter i) { inName[0] = i.getName(); }
+	        });
+	    }
 
-		JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-		frame.setJMenuBar(null);
-		frame.getContentPane().removeAll();
-		MainMenu menu = new MainMenu(frame);
-		menu.setBackground(new Color(6, 26, 14));
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		frame.add(menu);
-		frame.revalidate();
-		frame.repaint();
+	    /* ----- a GameOverPanel betöltése a keretbe ----- */
+	    JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+	    frame.getContentPane().removeAll();           // előző tartalom törlése
+	    GameOverPanel gop = new GameOverPanel(frame, shName[0], inName[0]); // CHANGED
+	    frame.add(gop);
+	    frame.revalidate();
+	    frame.repaint();
 	}
 
 	/**
