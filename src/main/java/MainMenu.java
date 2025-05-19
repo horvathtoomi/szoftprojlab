@@ -34,11 +34,21 @@ public class MainMenu extends JPanel {
 		MainMenu.frame = frame;
 
 		UtilityTool uTool = new UtilityTool();
-		BufferedImage bgImage = uTool.load(prefix + "menu_bg6.png");
+		BufferedImage originalBgImage = uTool.load(prefix + "menu_bg6.png");
 
-		ImageIcon backgroundIcon = new ImageIcon(bgImage);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int screenWidth = screenSize.width;
+		int screenHeight = screenSize.height;
+
+		int targetWidth = (int)(screenWidth * 0.8);
+		int targetHeight = (int)(screenHeight * 0.8);
+
+		Image scaledBgImage = originalBgImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
+		ImageIcon backgroundIcon = new ImageIcon(scaledBgImage);
 		JLabel backgroundLabel = new JLabel(backgroundIcon);
-		frame.setSize(bgImage.getWidth(), bgImage.getHeight());
+
+		frame.setSize(targetWidth, targetHeight);
+		frame.setLocationRelativeTo(null);
 
 		backgroundLabel.setLayout(new GridBagLayout());
 		this.setLayout(new BorderLayout());
@@ -46,45 +56,44 @@ public class MainMenu extends JPanel {
 
 		Font buttonFont = new Font("SansSerif", Font.BOLD, 18);
 
-        JButton newGameButton = new JButton("");
+		JButton newGameButton = new JButton("");
 		BufferedImage b1Image = uTool.load(MainMenu.prefix + "bNewGame3.png");
 		BufferedImage b1ImageHovered = uTool.load(MainMenu.prefix + "bNewGame3h.png");
 		styleButton(newGameButton, buttonFont, b1Image, b1ImageHovered);
 
-        JButton loadGameButton = new JButton("");
+		JButton loadGameButton = new JButton("");
 		BufferedImage b2Image = uTool.load(MainMenu.prefix + "bLoad3.png");
 		BufferedImage b2ImageHovered = uTool.load(MainMenu.prefix + "bLoad3h.png");
 		styleButton(loadGameButton, buttonFont, b2Image, b2ImageHovered);
 
-        JButton exitButton = new JButton("");
+		JButton exitButton = new JButton("");
 		BufferedImage b3Image = uTool.load(MainMenu.prefix + "bExit3.png");
 		BufferedImage b3ImageHovered = uTool.load(MainMenu.prefix + "bExit3h.png");
 		styleButton(exitButton, buttonFont, b3Image, b3ImageHovered);
+
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setOpaque(false);
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+		buttonPanel.add(Box.createVerticalStrut(20));
+		buttonPanel.add(newGameButton);
+		buttonPanel.add(Box.createVerticalStrut(15));
+		buttonPanel.add(loadGameButton);
+		buttonPanel.add(Box.createVerticalStrut(15));
+		buttonPanel.add(exitButton);
+
+		backgroundLabel.add(buttonPanel);
 
 		newGameButton.addActionListener(e -> createPlayerSelector());
 
 		loadGameButton.addActionListener(e -> {
 			GameState loadedState = GameFileChooser.loadGame(frame);
-			if(loadedState != null) {
+			if (loadedState != null) {
 				JOptionPane.showMessageDialog(frame, "Játékállapot sikeresen betöltve!", "Betöltés sikeres", JOptionPane.INFORMATION_MESSAGE);
 				startGameFromLoad(loadedState);
 			}
 		});
 
-		exitButton.addActionListener(e -> exit());
-
-		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(25, 0, 25, 0);
-		c.gridx = 0;
-
-		c.gridy = 0;
-		backgroundLabel.add(newGameButton, c);
-
-		c.gridy = 1;
-		backgroundLabel.add(loadGameButton, c);
-
-		c.gridy = 2;
-		backgroundLabel.add(exitButton, c);
+		exitButton.addActionListener(e -> System.exit(0));
 	}
 
 	/**
@@ -180,6 +189,7 @@ public class MainMenu extends JPanel {
 		BufferedImage logo = uTool.load(MainMenu.prefix + "mb_big.png");
 		frame.setIconImage(logo);
 		JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 		frame.add(panel);
 
 		BufferedImage cursorImage = uTool.load(MainMenu.prefix + "cursor3.png");
@@ -221,7 +231,6 @@ public class MainMenu extends JPanel {
 		frame.setLocationRelativeTo(null);
 		frame.setUndecorated(true);
 		frame.setVisible(true);
-		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 	}
 	/**
 	 * A játékosmenübeli gombok stílusát állítja be.
@@ -268,8 +277,8 @@ public class MainMenu extends JPanel {
 		label.setForeground(Color.WHITE);
 		label.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		field.setPreferredSize(new Dimension(120, 20));
-		field.setMinimumSize(new Dimension(120, 20));
+		//field.setPreferredSize(new Dimension(120, 20));
+		//field.setMinimumSize(new Dimension(120, 20));
 		field.setMaximumSize(new Dimension(120, 20));
 		field.setEditable(true);
 		field.setBackground(Color.LIGHT_GRAY);

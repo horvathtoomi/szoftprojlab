@@ -24,20 +24,6 @@ public class GameOverPanel extends JPanel {
         background = tool.load(MainMenu.prefix + "gameover_picture.jpg");
 
         setLayout(new BorderLayout());
-
-        // Exit gomb
-        JButton exitButton = new JButton("Exit");
-        exitButton.addActionListener(e -> {
-            frame.setJMenuBar(null);
-            frame.getContentPane().removeAll();
-            MainMenu menu = new MainMenu(frame);
-            menu.setBackground(new Color(6, 26, 14));
-            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            frame.add(menu);
-            frame.revalidate();
-            frame.repaint();
-        });
-        add(exitButton, BorderLayout.SOUTH);
     }
 
     @Override
@@ -50,8 +36,9 @@ public class GameOverPanel extends JPanel {
         }
 
         // nyertesek nevei
-        g.setColor(new Color(255, 215, 0));           // sárga
-        g.setFont(getFont().deriveFont(Font.BOLD, 48f));
+        g.setColor(Color.WHITE);
+        Font regularFont = new Font("SansSerif", Font.BOLD, 48);
+        g.setFont(regularFont);
 
         FontMetrics fm = g.getFontMetrics();
         String shLine = "Shroomer: " + shroomerName;

@@ -17,9 +17,6 @@ public class GameMenu extends JMenuBar {
         JButton b1, b2, b3;
         JFrame frame;
 
-        Color baseColor = new Color(47, 84, 39);
-        Color hoverColor = new Color(75, 125, 64);
-
     /**
      * Létrehoz egy új példányt a aparaméterek alapján
      * @param gameController A gc, amihez tartozik
@@ -88,7 +85,7 @@ public class GameMenu extends JMenuBar {
             menu.add(b2);
             menu.add(b3);
 
-            this.setPreferredSize(new Dimension(100, 20));
+            this.setPreferredSize(new Dimension(100, 25));
             this.add(menu);
         }
 
