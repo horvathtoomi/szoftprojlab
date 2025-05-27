@@ -9,7 +9,6 @@ import main.java.player.Shroomer;
 import main.java.view.UtilityTool;
 
 import java.awt.*;
-import java.awt.event.KeyAdapter;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -21,6 +20,7 @@ public class MainMenu extends JPanel {
 	public static String prefix = "resources/";  //Intellij-ben írjátok be a resources/-t, eclipseben legyen üres sztring
 	private static final UtilityTool uTool = new UtilityTool();
     private static JFrame frame;
+	private static boolean customCursor;
 
 	public static JFrame getFrame() {
 		return frame;
@@ -30,8 +30,9 @@ public class MainMenu extends JPanel {
 	 * Létrehoz egy új példányt, és elhelyezi a kapott frame-en
 	 * @param frame A kapott ablak
 	 */
-	public MainMenu(JFrame frame) {
+	public MainMenu(JFrame frame, boolean customCursor) {
 		MainMenu.frame = frame;
+		MainMenu.customCursor = customCursor;
 
 		UtilityTool uTool = new UtilityTool();
 		BufferedImage originalBgImage = uTool.load(prefix + "menu_bg6.png");
@@ -153,7 +154,7 @@ public class MainMenu extends JPanel {
 
 		// Frame beállítása
 		frame.getContentPane().removeAll();
-		frame.setJMenuBar(new GameMenu(frame, loadedController));
+		frame.setJMenuBar(new GameMenu(frame, loadedController, customCursor));
 		frame.add(gamePanel, BorderLayout.CENTER);
 		frame.revalidate();
 		frame.repaint();
@@ -168,7 +169,7 @@ public class MainMenu extends JPanel {
 		frame.setVisible(true);
 		frame.setLayout(new BorderLayout());
 		frame.getContentPane().removeAll();
-		frame.setJMenuBar(new GameMenu(frame, gamePanel.getGameController()));
+		frame.setJMenuBar(new GameMenu(frame, gamePanel.getGameController(), customCursor));
 		frame.add(gamePanel, BorderLayout.CENTER);
 		frame.revalidate();
 		frame.repaint();
@@ -192,10 +193,11 @@ public class MainMenu extends JPanel {
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 		frame.add(panel);
 
-		BufferedImage cursorImage = uTool.load(MainMenu.prefix + "cursor3.png");
-		Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0, 0), "cursor");
-		frame.setCursor(cursor);
-
+		if(customCursor){
+			BufferedImage cursorImage = uTool.load(MainMenu.prefix + "cursor3.png");
+			Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0, 0), "cursor");
+			frame.setCursor(cursor);
+		}
 		JLabel insecter1 = new JLabel("Insecter1:");
 		insecter1Text = new JTextField();
 		setStyle(insecter1, insecter1Text, panel);
@@ -277,8 +279,6 @@ public class MainMenu extends JPanel {
 		label.setForeground(Color.WHITE);
 		label.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		//field.setPreferredSize(new Dimension(120, 20));
-		//field.setMinimumSize(new Dimension(120, 20));
 		field.setMaximumSize(new Dimension(120, 20));
 		field.setEditable(true);
 		field.setBackground(Color.LIGHT_GRAY);
@@ -318,11 +318,5 @@ public class MainMenu extends JPanel {
 			makeFrame();
 			frame.dispose();
 		}
-	}
-	/**
-	 * A kilépés gomb hatása
-	 */
-	private void exit() {
-		System.exit(0);
 	}
 }

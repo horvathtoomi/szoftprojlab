@@ -5,8 +5,6 @@ import main.java.GamePanel;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A KeyHandler osztály felelős a billentyűzeti input kezeléséért
@@ -15,7 +13,6 @@ public class KeyHandler implements KeyListener {
 
     private int keyCode = -1; // alapértelmezett érték
     private final GameController game;
-    private final Map<Integer, Boolean> keyMap = new HashMap<>();
     private final Runnable repaintCallback;
     private final GamePanel gamePanel;
 
@@ -53,7 +50,6 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         keyCode = e.getKeyCode();
-        keyMap.put(keyCode, true);
 
         //System.out.println("Key pressed: " + (char)keyCode);
 
@@ -80,9 +76,6 @@ public class KeyHandler implements KeyListener {
             case KEY_SPREAD_SPORE:
                 gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
                 break;
-            //case KEY_MOVE:
-            //    gamePanel.setShineOn(GamePanel.ShineOn.TECTON);
-            //    break;
             case KEY_EAT:
                 gamePanel.setShineOn(GamePanel.ShineOn.SPORE);
                 break;
@@ -90,7 +83,6 @@ public class KeyHandler implements KeyListener {
                 gamePanel.setShineOn(GamePanel.ShineOn.NONE);
                 break;
         }
-        //repaintCallback.run();
     }
     /**
      * A billentyű felengedésekor lefutó függvény
@@ -98,7 +90,6 @@ public class KeyHandler implements KeyListener {
      */
     @Override
     public void keyReleased(KeyEvent e) {
-        keyMap.put(e.getKeyCode(), false);
     }
 
     /**

@@ -122,8 +122,6 @@ public class DrawManager {
 
         for(MushroomString ms : p.getMushstrings()) {
             if (ms.getConnection().size() >= 2) {
-                Tecton t1 = ms.getConnection().get(0);
-                Tecton t2 = ms.getConnection().get(1);
                 drawMushroomString(g, ms,
                         shining == GamePanel.ShineOn.MUSHSTRING);
             }

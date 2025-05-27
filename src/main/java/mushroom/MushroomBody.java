@@ -151,25 +151,13 @@ public class MushroomBody implements Updatable, Serializable {
 	private Spore createRandomSpore(Tecton target, String newName) {
 	    Random rand = new Random();
 	    int type = rand.nextInt(5);
-		Spore spore;
-        switch (type) {
-            case 1 :
-				spore = new SlowSpore(Spore.randomNutrientValue(), mushroom, target, newName);
-				break;
-			case 2 :
-				spore = new GentleSpore(Spore.randomNutrientValue(), mushroom, target, newName);
-				break;
-			case 3 :
-				spore = new ParalyzerSpore(Spore.randomNutrientValue(), mushroom, target, newName);
-				break;
-			case 4 :
-				spore = new MultiplierSpore(Spore.randomNutrientValue(), mushroom, target, newName);
-				break;
-			default :
-				spore = new FastSpore(Spore.randomNutrientValue(), mushroom, target, newName);
-				break;
-		}
-		return spore;
+        return switch (type) {
+			case 1 -> new SlowSpore(Spore.randomNutrientValue(), mushroom, target, newName);
+			case 2 -> new GentleSpore(Spore.randomNutrientValue(), mushroom, target, newName);
+			case 3 -> new ParalyzerSpore(Spore.randomNutrientValue(), mushroom, target, newName);
+			case 4 -> new MultiplierSpore(Spore.randomNutrientValue(), mushroom, target, newName);
+			default -> new FastSpore(Spore.randomNutrientValue(), mushroom, target, newName);
+		};
     }
 	
 	/**

@@ -1,7 +1,6 @@
 package main.java.view;
 
 import main.java.MainMenu;
-import main.java.view.UtilityTool;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,10 +11,8 @@ public class GameOverPanel extends JPanel {
     private final BufferedImage background;
     private final String shroomerName;
     private final String insecterName;
-    private final JFrame frame;
 
-    public GameOverPanel(JFrame frame, String shroomerName, String insecterName) {
-        this.frame = frame;
+    public GameOverPanel(String shroomerName, String insecterName) {
         this.shroomerName = shroomerName;
         this.insecterName = insecterName;
 

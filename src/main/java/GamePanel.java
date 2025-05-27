@@ -151,7 +151,7 @@ public class GamePanel extends JPanel {
 	    /* ----- a GameOverPanel betöltése a keretbe ----- */
 	    JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
 	    frame.getContentPane().removeAll();           // előző tartalom törlése
-	    GameOverPanel gop = new GameOverPanel(frame, shName[0], inName[0]); // CHANGED
+	    GameOverPanel gop = new GameOverPanel(shName[0], inName[0]); // CHANGED
 	    frame.add(gop);
 	    frame.revalidate();
 	    frame.repaint();

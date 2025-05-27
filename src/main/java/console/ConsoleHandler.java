@@ -75,7 +75,7 @@ public class ConsoleHandler {
 
         map.put("load", args -> {
             if (args.length == 2) {
-                commands.loadFile(args[1]);
+                commands.loadFile();
             } else {
                 printToConsole("Invalid format! Use 'help load' for correct usage");
             }

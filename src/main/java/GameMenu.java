@@ -1,10 +1,9 @@
 package main.java;
 
-import main.java.console.ConsoleHandler;
+
 import main.java.view.UtilityTool;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -22,7 +21,7 @@ public class GameMenu extends JMenuBar {
      * @param gameController A gc, amihez tartozik
      * @param frame Az ablak, ami tartalmazza
      */
-        public GameMenu(JFrame frame, GameController gameController) {
+        public GameMenu(JFrame frame, GameController gameController, boolean customCursor) {
             this.frame = frame;
             this.gameController = gameController;
             setBackground(new Color(77, 92, 71));
@@ -62,7 +61,7 @@ public class GameMenu extends JMenuBar {
             b3.addActionListener(e -> {
                 frame.setJMenuBar(null);
                 frame.getContentPane().removeAll();
-                MainMenu menu = new MainMenu(frame);
+                MainMenu menu = new MainMenu(frame, customCursor);
                 menu.setBackground(new Color(6, 26, 14));
                 frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 frame.add(menu);

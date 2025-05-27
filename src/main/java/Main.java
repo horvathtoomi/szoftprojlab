@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 public class Main {
 
     private static final UtilityTool uTool = new UtilityTool();
-
+	private static final boolean customCursor = true; //Ha saját cursort használunk, akkor legyen true
 	/**
 	 * A program indulásakor hívódó main függvény
 	 */
@@ -21,12 +21,12 @@ public class Main {
 
 		BufferedImage logo = uTool.load(MainMenu.prefix + "mb_big.png");
 		frame.setIconImage(logo);
-
-		BufferedImage cursorImage = uTool.load(MainMenu.prefix + "cursor3.png");
-		Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0, 0), "cursor");
-		frame.setCursor(cursor);
-
-        MainMenu menu = new MainMenu(frame);
+		if(customCursor){
+			BufferedImage cursorImage = uTool.load(MainMenu.prefix + "cursor3.png");
+			Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0, 0), "cursor");
+			frame.setCursor(cursor);
+		}
+        MainMenu menu = new MainMenu(frame, customCursor);
 		menu.setBackground(new Color(6, 26, 14));
 
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);

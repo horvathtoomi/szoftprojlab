@@ -210,7 +210,7 @@ public class MouseHandler implements MouseListener {
      * @return igaz, ha a kattintás eléggé közel esik a fonalhoz
      */
     private boolean isClickNearLine(int clickX, int clickY, float x1, float y1, float x2, float y2) {
-        final int THRESHOLD = 10;
+        final int THRESHOLD = 30;
 
         double lineLength = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
         //System.out.println("Line length: " + lineLength);

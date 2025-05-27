@@ -31,21 +31,11 @@ public class DefaultMushroomBodyDrawer extends UtilityTool implements MushroomBo
      */
     @Override
     public void draw(Graphics2D g2, MushroomBody mb) {
-        BufferedImage image;
-        switch(mb.getState()){
-            case "SMALL" :
-                image = shortImage;
-                break;
-            case "MEDIUM" :
-                image =mediumImage;
-                break;
-            case "BIG" :
-                image = grownImage;
-                break;
-            default :
-                image = shortImage;
-                break;
-        }
+        BufferedImage image = switch (mb.getState()) {
+            case "MEDIUM" -> mediumImage;
+            case "BIG" -> grownImage;
+            default -> shortImage;
+        };
 
         int width = 50;
         float drawX = mb.getGeometry().getX() - (float) width /2;

@@ -3,6 +3,7 @@ package main.java;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.function.Function;
 
 import main.java.player.*;
 import main.java.tecton.*;
@@ -60,64 +61,54 @@ public class GameController {
      * Létrehozza a pályát, elhelyezi a tektonokat
      */
     public Planet buildPlanet() {
-    	Planet planet = new Planet();
-    	
-    	BigTecton bt1 = new BigTecton(4);
-    	bt1.setGeometry(new GeometryTecton(600, 200, 110));
-        BigTecton bt2 = new BigTecton(4);
-        bt2.setGeometry(new GeometryTecton(532, 830, 110));
-        BigTecton bt3 = new BigTecton(4);
-        bt3.setGeometry(new GeometryTecton(1734, 325, 110));
-        BigTecton bt4 = new BigTecton(4);
-        bt4.setGeometry(new GeometryTecton(1264, 267, 110));
-        BigTecton bt5 = new BigTecton(4);
-        bt5.setGeometry(new GeometryTecton(900, 800, 110));
+        Planet planet = new Planet();
 
-    	SmallTecton st1 = new SmallTecton(2);
-    	st1.setGeometry(new GeometryTecton(900, 400, 55));
-        SmallTecton st2 = new SmallTecton(2);
-        st2.setGeometry(new GeometryTecton(100, 731, 55));
-        SmallTecton st3 = new SmallTecton(2);
-        st3.setGeometry(new GeometryTecton(1510, 412, 55));
-    	
-    	HealingTecton ht1 = new HealingTecton(3);
-    	ht1.setGeometry(new GeometryTecton(250, 250, 85));
-        HealingTecton ht2 = new HealingTecton(3);
-        ht2.setGeometry(new GeometryTecton(1123, 581, 85));
-        HealingTecton ht3 = new HealingTecton(3);
-        ht3.setGeometry(new GeometryTecton(310, 700, 85));
-    	
-    	CoarseTecton ct1 = new CoarseTecton(3);
-    	ct1.setGeometry(new GeometryTecton(400, 400, 90));
-        CoarseTecton ct2 = new CoarseTecton(3);
-        ct2.setGeometry(new GeometryTecton(1564, 153, 90));
-        CoarseTecton ct3 = new CoarseTecton(3);
-        ct3.setGeometry(new GeometryTecton(700, 420, 90));
-    	
-    	ToxicTecton tt1 = new ToxicTecton(3);
-    	tt1.setGeometry(new GeometryTecton(600, 600, 95));
-        ToxicTecton tt2 = new ToxicTecton(3);
-        tt2.setGeometry(new GeometryTecton(1400, 800, 95));
+        addTectons(planet, BigTecton::new, 4,
+                new GeometryTecton(600, 200, 110),
+                new GeometryTecton(532, 830, 110),
+                new GeometryTecton(1734, 325, 110),
+                new GeometryTecton(1264, 267, 110),
+                new GeometryTecton(900, 800, 110)
+        );
 
-    	planet.addTecton(bt1);
-        planet.addTecton(bt2);
-        planet.addTecton(bt3);
-        planet.addTecton(bt4);
-        planet.addTecton(bt5);
-        planet.addTecton(st1);
-        planet.addTecton(st2);
-        planet.addTecton(st3);
-        planet.addTecton(ht1);
-        planet.addTecton(ht2);
-        planet.addTecton(ht3);
-        planet.addTecton(ct1);
-        planet.addTecton(ct2);
-        planet.addTecton(ct3);
-        planet.addTecton(tt1);
-        planet.addTecton(tt2);
+        addTectons(planet, SmallTecton::new, 2,
+                new GeometryTecton(900, 400, 55),
+                new GeometryTecton(100, 731, 55),
+                new GeometryTecton(1510, 412, 55)
+        );
+
+        addTectons(planet, HealingTecton::new, 3,
+                new GeometryTecton(250, 250, 85),
+                new GeometryTecton(1123, 581, 85),
+                new GeometryTecton(310, 700, 85)
+        );
+
+        addTectons(planet, CoarseTecton::new, 3,
+                new GeometryTecton(400, 400, 90),
+                new GeometryTecton(1564, 153, 90),
+                new GeometryTecton(700, 420, 90)
+        );
+
+        addTectons(planet, ToxicTecton::new, 3,
+                new GeometryTecton(600, 600, 95),
+                new GeometryTecton(1400, 800, 95)
+        );
+
         planet.recalcNeighbours();
-    	return planet;
+        return planet;
     }
+
+    /**
+     * Segédfüggvény a tektonok létrehozásához
+     */
+    private <T extends Tecton> void addTectons(Planet planet, Function<Integer, T> constructor, int energy, GeometryTecton... geometries) {
+        for (GeometryTecton geometry : geometries) {
+            T tecton = constructor.apply(energy);
+            tecton.setGeometry(geometry);
+            planet.addTecton(tecton);
+        }
+    }
+
 
     /**
      * Megvizsgálja, hogy minden játékos letette-e már a kezdő objektumát. Ha igen, akkor innentől kezdve éles a játék.
@@ -209,6 +200,7 @@ public class GameController {
             currentPlayer = players.get(nextIndex);
             turnCounter++;
             currentPlayer.update(testing);
+            planet.growBodyOnParalyzedInsect(this);
             planet.update(!testing);
             planet.deleteDeadObjects(turnCounter, players);
         }

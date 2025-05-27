@@ -28,6 +28,6 @@ public class DefaultSporeDrawer extends UtilityTool implements SporeDrawer {
      */
     @Override
     public void draw(Graphics2D g2, Spore spore) {
-        g2.drawImage(image, (int) (spore.getGeometry().getX() - SIZE / 2), (int) (spore.getGeometry().getY() - SIZE / 2), SIZE, SIZE, null);
+        g2.drawImage(image, (spore.getGeometry().getX() - SIZE / 2), (spore.getGeometry().getY() - SIZE / 2), SIZE, SIZE, null);
     }
 }   

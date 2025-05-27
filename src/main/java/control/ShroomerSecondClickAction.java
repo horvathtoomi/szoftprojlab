@@ -41,13 +41,13 @@ public class ShroomerSecondClickAction implements ClickAction {
         Tecton clickedTecton = mouseHandler.getClickedTecton();
         MushroomBody clickedMushroomBody = mouseHandler.getClickedMushroomBody();
         MushroomString clickedMushroomString = mouseHandler.getClickedMushroomString();
-        //Tektonra mehet, ahova a spórát szórjuk, vagy fonalat növesztünk oda. Egyelőre ideiglenes elágazás, és a gombafonalas cuccok is csak így láthatatlanban első gondolatra így kellene
+        //Tektonra mehet, ahova a spórát szórjuk, vagy fonalat növesztünk oda.
         if(clickedTecton != null){
             if(keyHandler.getKeyCode() == KeyHandler.KEY_SPREAD_SPORE){ //S = spread spores
                 Spore sp = clickedMushroomBody.spreadSpores(clickedTecton, "spore", "random");
                 if(sp != null){
                     gc.getPlanet().getSpores().add(sp);
-                    System.out.println("Spore added");
+                    //System.out.println("Spore added");
                     GeometryTecton tectonGeometry = clickedTecton.getGeometry();
                     sp.setGeometry(gc.randomOffsetInsideCircle(tectonGeometry));
                     gc.nextTurnCheck();

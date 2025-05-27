@@ -1,7 +1,6 @@
 package main.java.tecton;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * BigTecton a Tecton egyik típusa, melyen 5 különböző fonal is lehet.

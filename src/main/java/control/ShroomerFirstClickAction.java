@@ -33,7 +33,7 @@ public class ShroomerFirstClickAction implements ClickAction {
             A gombára,vagy fonalra mehet*/
         MushroomString clickedMushroomString = mouseHandler.getClickedMushroomString();
         if(keyHandler.getKeyCode() == KeyHandler.KEY_MUSHROOM){ // click on mushroom
-            System.out.println("Mushroom at " + mouseX + ", " + mouseY);
+            //System.out.println("Mushroom at " + mouseX + ", " + mouseY);
             mouseHandler.selectMushroomBody(mouseX, mouseY);
             keyHandler.resetKeyCode();
         }

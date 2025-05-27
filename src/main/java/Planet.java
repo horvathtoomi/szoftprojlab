@@ -120,7 +120,7 @@ public class Planet implements Updatable, Serializable {
      *   – legalább egy élő MushroomString, amelynek egyik vége ezen a Tectonon van,
      * akkor a helyen nőjön egy új MushroomBody ugyanahhoz a gombához, mint a fonal.
      */
-    public void growBodyOnParalyzedInsect() {
+    public void growBodyOnParalyzedInsect(GameController gc) {
 
         // végigmegyünk az összes Tectonon
         for (Tecton t : tectons) {
@@ -152,11 +152,12 @@ public class Planet implements Updatable, Serializable {
                         0,                                     // kezdeti state = kicsi
                         false                                  // testing flag
                 );
-
+                GeometryTecton tectonGeometry = t.getGeometry();
+                nb.setGeometry(gc.randomOffsetInsideCircle(tectonGeometry));
                 mushbodies.add(nb);
 
-                // 5) a fonalat összekötjük a testtel, hogy élő kapcsolat legyen
-                ms.setConnectedToBody(true);
+                // 5) Fonal elpusztul
+                ms.die();
                
                 // 6) a bénult rovar(ok) elpusztítása ugyanazon a Tectonon
                 for (Insect in : insects) {
@@ -164,7 +165,6 @@ public class Planet implements Updatable, Serializable {
                         in.die();
                     }
                 }
-                // csak egy testet csíráztatunk fonalonként
                 break;
             }
         }
@@ -178,7 +178,6 @@ public class Planet implements Updatable, Serializable {
      */
     @Override
     public void update(boolean random) {
-    	growBodyOnParalyzedInsect();
         insects.forEach(i -> i.update(random));
         mushbodies.forEach(mb -> mb.update(random));
         for (MushroomString ms : mushstrings) {
@@ -222,13 +221,15 @@ public class Planet implements Updatable, Serializable {
         Random rng = new Random();
         boolean hasPlayerObject = false;
         for(MushroomBody mb : mushbodies) {
-            if(mb.getLocation() == t) {
+            if (mb.getLocation() == t) {
                 hasPlayerObject = true;
+                break;
             }
         }
         for(Insect in : insects) {
-            if(in.getLocation() == t) {
+            if (in.getLocation() == t) {
                 hasPlayerObject = true;
+                break;
             }
         }
         int n;

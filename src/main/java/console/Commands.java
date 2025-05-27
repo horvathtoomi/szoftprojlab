@@ -38,7 +38,7 @@ public class Commands {
         }
     }
 
-    public void loadFile(String filename) {
+    public void loadFile() {
         GameState loadedState = GameFileChooser.loadGame(MainMenu.getFrame());
         if(loadedState != null) {
             JOptionPane.showMessageDialog(MainMenu.getFrame(), "Játékállapot sikeresen betöltve!", "Betöltés sikeres", JOptionPane.INFORMATION_MESSAGE);
